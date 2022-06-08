@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Waystone.Common.Api\Waystone.Common.Api.csproj" />
+      <ProjectReference Include="..\Waystone.Sample.Application\Waystone.Sample.Application.csproj" />
+      <ProjectReference Include="..\Waystone.Sample.Infrastructure\Waystone.Sample.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>
