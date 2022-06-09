@@ -2,17 +2,12 @@
 
 using System.Reflection;
 using Contracts.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-/// <summary>
-/// Builder for configuring dependencies in the application.
-/// </summary>
+/// <summary>Builder for configuring dependencies in the application.</summary>
 public class WaystoneApplicationBuilder : IWaystoneApplicationBuilder
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="WaystoneApplicationBuilder"/> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="WaystoneApplicationBuilder" /> class.</summary>
     /// <param name="services">The service collection.</param>
     /// <param name="assemblyMarkers"></param>
     /// <exception cref="ArgumentNullException">The services collection does not exist.</exception>
@@ -29,5 +24,8 @@ public class WaystoneApplicationBuilder : IWaystoneApplicationBuilder
     public ICollection<Type> AssemblyMarkers { get; }
 
     /// <inheritdoc />
-    public IEnumerable<Assembly> GetAssemblies() => AssemblyMarkers.Select(marker => marker.Assembly);
+    public IEnumerable<Assembly> GetAssemblies()
+    {
+        return AssemblyMarkers.Select(marker => marker.Assembly);
+    }
 }

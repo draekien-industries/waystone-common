@@ -4,9 +4,7 @@ using FluentValidation;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 
-/// <summary>
-/// Problem details for a bad request.
-/// </summary>
+/// <summary>Problem details for a bad request.</summary>
 public class BadRequestProblemDetails : StatusCodeProblemDetails
 {
     /// <inheritdoc />

@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Waystone.Common.Application\Waystone.Common.Application.csproj" />
-      <ProjectReference Include="..\Waystone.Common.Infrastructure.Contracts\Waystone.Common.Infrastructure.Contracts.csproj" />
+        <ProjectReference Include="..\Waystone.Common.Application\Waystone.Common.Application.csproj" />
+        <ProjectReference Include="..\Waystone.Common.Infrastructure.Contracts\Waystone.Common.Infrastructure.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

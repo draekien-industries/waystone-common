@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 public interface IWaystoneApiBuilder
 {
     IServiceCollection Services { get; }
+
     IHostEnvironment Environment { get; }
+
     IConfiguration Configuration { get; }
 }

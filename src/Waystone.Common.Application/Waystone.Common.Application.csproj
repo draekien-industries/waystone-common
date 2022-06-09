@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Waystone.Common.Application.Contracts\Waystone.Common.Application.Contracts.csproj" />
-      <ProjectReference Include="..\Waystone.Common.Domain\Waystone.Common.Domain.csproj" />
+        <ProjectReference Include="..\Waystone.Common.Application.Contracts\Waystone.Common.Application.Contracts.csproj" />
+        <ProjectReference Include="..\Waystone.Common.Domain\Waystone.Common.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-      <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     </ItemGroup>
 
 </Project>

@@ -1,20 +1,29 @@
 ﻿namespace Waystone.Sample.Infrastructure.Services;
 
 using Application.Features.WeatherForecasts.Services;
+using Common.Application.Contracts.Services;
 using Domain.Entities.WeatherForecasts;
 using Microsoft.Extensions.Logging;
 
 public class WeatherForecastRepository : IWeatherForecastRepository
 {
-    private static readonly string[] Summaries = {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    private static readonly string[] Summaries =
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching",
     };
 
+    private readonly IDateTimeProvider _dateTime;
     private readonly ILogger<WeatherForecastRepository> _logger;
+    private readonly IRandomProvider _random;
 
-    public WeatherForecastRepository(ILogger<WeatherForecastRepository> logger)
+    public WeatherForecastRepository(
+        ILogger<WeatherForecastRepository> logger,
+        IDateTimeProvider dateTime,
+        IRandomProvider random)
     {
         _logger = logger;
+        _dateTime = dateTime;
+        _random = random;
     }
 
     /// <inheritdoc />
@@ -25,9 +34,9 @@ public class WeatherForecastRepository : IWeatherForecastRepository
         return Enumerable.Range(from, count)
                          .Select(
                               index => new WeatherForecast(
-                                  DateTime.Now.AddDays(index),
-                                  Random.Shared.Next(-20, 45),
-                                  Summaries[Random.Shared.Next(Summaries.Length)]))
+                                  _dateTime.Now.AddDays(index),
+                                  _random.Next(-20, 45),
+                                  Summaries[_random.Next(Summaries.Length)]))
                          .ToArray();
     }
 }

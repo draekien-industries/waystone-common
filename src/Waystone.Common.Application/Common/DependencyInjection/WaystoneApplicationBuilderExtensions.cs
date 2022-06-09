@@ -8,29 +8,24 @@ using Mappings;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-/// <summary>
-/// Extensions for configuring the dependency injection provided by the Waystone Application.
-/// </summary>
+/// <summary>Extensions for configuring the dependency injection provided by the Waystone Application.</summary>
 public static class WaystoneApplicationBuilderExtensions
 {
-    /// <summary>
-    /// Accept the default configuration of services for the Waystone Application.
-    /// </summary>
-    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder"/>.</param>
-    public static void AddDefaults(this IWaystoneApplicationBuilder builder)
+    /// <summary>Accept the default configuration of services for the Waystone Common Application.</summary>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    public static void AcceptDefaults(this IWaystoneApplicationBuilder builder)
     {
-        builder.AddAutoMapper();
-        builder.AddMediatR();
-        builder.AddFluentValidation();
+        builder.AddAutoMapper()
+               .AddMediatR()
+               .AddFluentValidation();
     }
 
     /// <summary>
-    /// Adds <see cref="AutoMapper"/> mappings to the dependency injection container, including
-    /// all instances of <see cref="Waystone.Common.Application.Contracts.Mappings.IMapFrom{T}"/> in the provided
-    /// assembly markers.
+    ///     Adds <see cref="AutoMapper" /> mappings to the dependency injection container, including all instances of
+    ///     <see cref="Waystone.Common.Application.Contracts.Mappings.IMapFrom{T}" /> in the provided assembly markers.
     /// </summary>
-    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder"/>.</param>
-    /// <param name="lifetime">The <see cref="ServiceLifetime"/>.</param>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
     /// <returns></returns>
     public static IWaystoneApplicationBuilder AddAutoMapper(
         this IWaystoneApplicationBuilder builder,
@@ -48,10 +43,11 @@ public static class WaystoneApplicationBuilderExtensions
     }
 
     /// <summary>
-    /// Adds all instances of fluent validation validators in the specified assemblies to the dependency injection container.
+    ///     Adds all instances of fluent validation validators in the specified assemblies to the dependency injection
+    ///     container.
     /// </summary>
-    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder"/>.</param>
-    /// <param name="lifetime">The <see cref="ServiceLifetime"/>.</param>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
     /// <returns></returns>
     public static IWaystoneApplicationBuilder AddFluentValidation(
         this IWaystoneApplicationBuilder builder,
@@ -63,13 +59,13 @@ public static class WaystoneApplicationBuilderExtensions
     }
 
     /// <summary>
-    /// Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container.
-    /// Also adds the <see cref="RequestValidationBehaviour{TRequest,TResponse}"/>.
+    ///     Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container. Also
+    ///     adds the <see cref="RequestValidationBehaviour{TRequest,TResponse}" />.
     /// </summary>
-    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder"/>.</param>
-    /// <param name="lifetime">The <see cref="ServiceLifetime"/>.</param>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
     /// <returns></returns>
-    /// <exception cref="ArgumentOutOfRangeException">The requested <see cref="ServiceLifetime"/> is not supported by MediatR.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">The requested <see cref="ServiceLifetime" /> is not supported by MediatR.</exception>
     public static IWaystoneApplicationBuilder AddMediatR(
         this IWaystoneApplicationBuilder builder,
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
@@ -98,7 +94,10 @@ public static class WaystoneApplicationBuilderExtensions
 
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(lifetime), lifetime, "The provided lifetime is not supported.");
+                throw new ArgumentOutOfRangeException(
+                    nameof(lifetime),
+                    lifetime,
+                    "The provided lifetime is not supported.");
         }
     }
 }

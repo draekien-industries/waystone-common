@@ -2,6 +2,7 @@ using Hellang.Middleware.ProblemDetails;
 using Serilog;
 using Serilog.Debugging;
 using Waystone.Common.Api.DependencyInjection;
+using Waystone.Common.Api.Logging;
 using Waystone.Sample.Application;
 using Waystone.Sample.Infrastructure;
 
@@ -17,10 +18,12 @@ try
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+    builder.Host.UseSerilog(
+        (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
+                                                 .Enrich.WithCorrelationIdHeader(builder.Configuration));
 
     builder.Services.AddWaystoneApiBuilder(builder.Environment, builder.Configuration)
-           .AddDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
+           .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
 
     builder.Services.AddSampleApplication();
     builder.Services.AddSampleInfrastructure();
@@ -33,6 +36,9 @@ try
         app.UseOpenApi();
         app.UseSwaggerUi3();
     }
+
+    app.UseWaystoneApi()
+       .AcceptDefaults();
 
     app.UseProblemDetails();
     app.UseHttpsRedirection();

@@ -1,0 +1,42 @@
+﻿namespace Waystone.Common.Infrastructure.DependencyInjection;
+
+using Application.Contracts.Services;
+using Contracts.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using Services;
+
+/// <summary>Extensions for configuring the Waystone Common infrastructure dependency injection.</summary>
+public static class WaystoneInfrastructureBuilderExtensions
+{
+    /// <summary>Accept the default configuration of services for the Waystone Common Infrastructure.</summary>
+    /// <param name="builder"></param>
+    public static void AcceptDefaults(this IWaystoneInfrastructureBuilder builder)
+    {
+        builder.AddDateTimeProviders()
+               .AddRandomProvider();
+    }
+
+    /// <summary>
+    ///     Adds the <see cref="IDateTimeProvider" /> and <see cref="IDateTimeOffsetProvider" /> to the
+    ///     <see cref="IServiceCollection" />.
+    /// </summary>
+    /// <param name="builder">The <see cref="IWaystoneInfrastructureBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneInfrastructureBuilder" />.</returns>
+    public static IWaystoneInfrastructureBuilder AddDateTimeProviders(this IWaystoneInfrastructureBuilder builder)
+    {
+        builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+        builder.Services.AddSingleton<IDateTimeOffsetProvider, DateTimeOffsetProvider>();
+
+        return builder;
+    }
+
+    /// <summary>Adds the <see cref="IRandomProvider" /> to the <see cref="IServiceCollection" />.</summary>
+    /// <param name="builder">The <see cref="IWaystoneInfrastructureBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneInfrastructureBuilder" />.</returns>
+    public static IWaystoneInfrastructureBuilder AddRandomProvider(this IWaystoneInfrastructureBuilder builder)
+    {
+        builder.Services.AddSingleton<IRandomProvider, RandomProvider>();
+
+        return builder;
+    }
+}

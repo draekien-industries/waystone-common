@@ -2,9 +2,9 @@ namespace Waystone.Sample.Api.Controllers;
 
 using Application.Features.WeatherForecasts.Contracts;
 using Application.Features.WeatherForecasts.Queries;
-using Microsoft.AspNetCore.Mvc;
 using Common.Api.Controllers;
 using Common.Application.Contracts.Pagination;
+using Microsoft.AspNetCore.Mvc;
 
 public class WeatherForecastController : WaystoneApiController
 {

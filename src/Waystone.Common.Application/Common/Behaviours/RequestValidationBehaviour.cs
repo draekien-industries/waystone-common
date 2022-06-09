@@ -4,18 +4,15 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 
-/// <summary>
-/// MediatR pipeline behaviour that triggers registered validators.
-/// </summary>
+/// <summary>MediatR pipeline behaviour that triggers registered validators.</summary>
 /// <typeparam name="TRequest">The request type.</typeparam>
 /// <typeparam name="TResponse">The response type.</typeparam>
-public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RequestValidationBehaviour{TRequest, TResponse}"/> class.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="RequestValidationBehaviour{TRequest, TResponse}" /> class.</summary>
     /// <param name="validators">The set of all registered validators for the request type.</param>
     public RequestValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
     {

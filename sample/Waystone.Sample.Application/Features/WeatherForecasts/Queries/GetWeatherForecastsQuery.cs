@@ -21,8 +21,8 @@ public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
 
     public class Handler : IRequestHandler<GetWeatherForecastsQuery, PaginatedResponse<WeatherForecastDto>>
     {
-        private readonly IWeatherForecastRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IWeatherForecastRepository _repository;
 
         public Handler(IWeatherForecastRepository repository, IMapper mapper)
         {
@@ -31,9 +31,13 @@ public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
         }
 
         /// <inheritdoc />
-        public Task<PaginatedResponse<WeatherForecastDto>> Handle(GetWeatherForecastsQuery request, CancellationToken cancellationToken)
+        public Task<PaginatedResponse<WeatherForecastDto>> Handle(
+            GetWeatherForecastsQuery request,
+            CancellationToken cancellationToken)
         {
-            IEnumerable<WeatherForecast> forecasts = _repository.Get(request.Cursor.GetValueOrDefault(0), request.Limit);
+            IEnumerable<WeatherForecast> forecasts = _repository.Get(
+                request.Cursor.GetValueOrDefault(0),
+                request.Limit);
 
             PaginatedResponse<WeatherForecastDto> result = new()
             {

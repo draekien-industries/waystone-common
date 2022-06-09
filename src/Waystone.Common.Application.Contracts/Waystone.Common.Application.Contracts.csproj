@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="11.0.1" />
-      <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.2" />
-      <PackageReference Include="MediatR" Version="10.0.1" />
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.2" />
+        <PackageReference Include="MediatR" Version="10.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
+        <ProjectReference Include="..\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

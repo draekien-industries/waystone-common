@@ -4,22 +4,16 @@ using System.Reflection;
 using AutoMapper;
 using Contracts.Mappings;
 
-/// <summary>
-/// The mapping profile which registers all classes implementing <see cref="IMapFrom{T}"/>.
-/// </summary>
+/// <summary>The mapping profile which registers all classes implementing <see cref="IMapFrom{T}" />.</summary>
 public class MappingProfile : Profile
 {
-    /// <summary>
-    /// Initializes a new <see cref="MappingProfile"/>.
-    /// </summary>
+    /// <summary>Initializes a new <see cref="MappingProfile" />.</summary>
     public MappingProfile()
     {
         ApplyMappingsFromAssemblies(AssemblyMarkersContainingIMapFrom);
     }
 
-    /// <summary>
-    /// The assembly markers containing classes implementing <see cref="IMapFrom{T}"/>.
-    /// </summary>
+    /// <summary>The assembly markers containing classes implementing <see cref="IMapFrom{T}" />.</summary>
     public static IEnumerable<Type> AssemblyMarkersContainingIMapFrom { get; set; } = new List<Type>();
 
     private void ApplyMappingsFromAssemblies(IEnumerable<Type> assemblyMarkers)
@@ -43,7 +37,14 @@ public class MappingProfile : Profile
             }
         }
 
-        bool TypeImplementsIMapFrom(Type type) => type.GetInterfaces().Any(TypeIsIMapFrom);
-        bool TypeIsIMapFrom(Type type) => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IMapFrom<>);
+        bool TypeImplementsIMapFrom(Type type)
+        {
+            return type.GetInterfaces().Any(TypeIsIMapFrom);
+        }
+
+        bool TypeIsIMapFrom(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IMapFrom<>);
+        }
     }
 }

@@ -2,33 +2,33 @@
 
 using System.Net.Mime;
 using Application.Contracts.Pagination;
+using ExceptionProblemDetails;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// The base controller that should be used for all API controllers. Provides access to Mediator and utility methods for
-/// generating paginated results.
+///     The base controller that should be used for all API controllers. Provides access to Mediator and utility
+///     methods for generating paginated results.
 /// </summary>
 [ApiController]
 [Route("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
+[ProducesResponseType(typeof(NotFoundProblemDetails), StatusCodes.Status400BadRequest)]
+[ProducesResponseType(typeof(UnknownProblemDetails), StatusCodes.Status500InternalServerError)]
 public class WaystoneApiController : ControllerBase
 {
     private IMediator? _mediator;
 
-    /// <summary>
-    /// Provides access to an instance of <see cref="IMediator"/> without dependency injection.
-    /// </summary>
+    /// <summary>Provides access to an instance of <see cref="IMediator" /> without dependency injection.</summary>
     protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
 
-    /// <summary>
-    /// Creates the links for a paginated response.
-    /// </summary>
+    /// <summary>Creates the links for a paginated response.</summary>
     /// <param name="actionName">The action providing the pagination.</param>
-    /// <param name="request">The <see cref="PaginatedRequest{T}"/> used in the original request.</param>
-    /// <param name="response">The <see cref="PaginatedResponse{T}"/> that will be returned as the response.</param>
+    /// <param name="request">The <see cref="PaginatedRequest{T}" /> used in the original request.</param>
+    /// <param name="response">The <see cref="PaginatedResponse{T}" /> that will be returned as the response.</param>
     /// <typeparam name="T">The type of the object that is being paginated.</typeparam>
     /// <returns>Links to the current, next, and previous page.</returns>
     protected Links CreatePaginationLinks<T>(
