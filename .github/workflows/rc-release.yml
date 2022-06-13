@@ -1,4 +1,4 @@
-name: PR
+name: Publish Release Candidate
 
 on:
   push:
