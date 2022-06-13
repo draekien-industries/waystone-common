@@ -1,0 +1,31 @@
+name: PR
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - '.github/workflows/pull-request.yml'
+
+jobs:
+  build-and-test:
+    name: Build and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+      
+      - name: Setup .NET Core 6
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.x'
+          include-prerelease: true
+      
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
