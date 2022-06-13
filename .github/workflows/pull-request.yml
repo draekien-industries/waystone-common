@@ -1,11 +1,11 @@
-name: PR
+name: Verify Pull Request
 
 on:
   pull_request:
-    branches: [ main ]
-    paths:
-      - 'src/**'
-      - '.github/workflows/pull-request.yml'
+    branches:
+      - main
+      - develop
+      - 'release/**'
 
 jobs:
   build-and-test:
