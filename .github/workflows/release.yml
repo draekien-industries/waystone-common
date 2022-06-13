@@ -1,8 +1,11 @@
-name: PR
+name: Release
 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
 
 jobs:
   calculate-version:
@@ -127,7 +130,7 @@ jobs:
       - name: Publish
         working-directory: src
         run: dotnet nuget push ./out/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
-        
+
   create-release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
@@ -151,7 +154,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Pre-release ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
           generateReleaseNotes: true
           prerelease: true
           artifacts: src/out/*.nupkg
