@@ -1,8 +1,11 @@
 name: PR
 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - 'release/**'
+    paths:
+      - 'src/**'
 
 jobs:
   calculate-version:
@@ -151,7 +154,6 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Pre-release ${{ steps.tag_version.outputs.new_tag }}
+          name: "Release Candidate: ${{ steps.tag_version.outputs.new_tag }}"
           generateReleaseNotes: true
           prerelease: true
-          artifacts: src/out/*.nupkg

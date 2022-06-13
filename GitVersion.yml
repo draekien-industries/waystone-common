@@ -6,9 +6,7 @@ patch-version-bump-message: "^(build|chore|ci|docs|fix|perf|refactor|revert|styl
 no-bump-message: "^(build|chore|ci|docs|style|test)(\\([\\w\\s-]*\\))?:"
 commit-message-incrementing: MergeMessageOnly
 branches:
-  pull-request:
-    tag: alpha
   release:
     tag: rc
   develop:
-    tag: beta
+    tag: alpha
