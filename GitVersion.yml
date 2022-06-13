@@ -7,8 +7,8 @@ no-bump-message: "^(build|chore|ci|docs|style|test)(\\([\\w\\s-]*\\))?:"
 commit-message-incrementing: MergeMessageOnly
 branches:
   pull-request:
-    tag: pr
+    tag: alpha
   release:
     tag: rc
   develop:
-    tag: alpha
+    tag: beta
