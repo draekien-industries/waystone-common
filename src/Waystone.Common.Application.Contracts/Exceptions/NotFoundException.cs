@@ -11,8 +11,8 @@ public class NotFoundException : ApplicationException
     { }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="NotFoundException" /> using an entity type and the key that was
-    ///     used to access the resource.
+    /// Initializes a new instance of the <see cref="NotFoundException" /> using an entity type and the key that was
+    /// used to access the resource.
     /// </summary>
     /// <param name="entityType">The entity type.</param>
     /// <param name="key">The key used to access the resource.</param>
@@ -26,8 +26,8 @@ public class NotFoundException : ApplicationException
     { }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="NotFoundException" /> using the specified error message and inner
-    ///     exception.
+    /// Initializes a new instance of the <see cref="NotFoundException" /> using the specified error message and inner
+    /// exception.
     /// </summary>
     /// <param name="message"></param>
     /// <param name="innerException"></param>
@@ -35,8 +35,8 @@ public class NotFoundException : ApplicationException
     { }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="NotFoundException" /> using the specified serialization
-    ///     information and context.
+    /// Initializes a new instance of the <see cref="NotFoundException" /> using the specified serialization
+    /// information and context.
     /// </summary>
     /// <param name="info">The serialization information.</param>
     /// <param name="context">The streaming context.</param>

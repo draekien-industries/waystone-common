@@ -16,8 +16,8 @@ public class ForbiddenAccessException : ApplicationException
     { }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="ForbiddenAccessException" /> class with a specified message and
-    ///     inner exception.
+    /// Initializes a new instance of the <see cref="ForbiddenAccessException" /> class with a specified message and
+    /// inner exception.
     /// </summary>
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The exception that caused the current exception.</param>

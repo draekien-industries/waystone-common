@@ -8,6 +8,7 @@ public class PaginatedResponse<T>
     public Links? Links { get; set; }
 
     /// <summary>The total number of records available.</summary>
+    /// <example>100</example>
     public int Total { get; set; }
 
     /// <summary>The current page of records.</summary>

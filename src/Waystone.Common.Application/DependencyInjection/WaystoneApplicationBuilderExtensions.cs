@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Application.Common.DependencyInjection;
+﻿namespace Waystone.Common.Application.DependencyInjection;
 
 using System.Reflection;
 using Behaviours;
@@ -12,6 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 public static class WaystoneApplicationBuilderExtensions
 {
     /// <summary>Accept the default configuration of services for the Waystone Common Application.</summary>
+    /// <remarks>
+    /// This is the recommended way of using this library. If you choose to use this method, you will not need to call
+    /// any of the other methods in this class.
+    /// </remarks>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     public static void AcceptDefaults(this IWaystoneApplicationBuilder builder)
     {
@@ -21,8 +25,8 @@ public static class WaystoneApplicationBuilderExtensions
     }
 
     /// <summary>
-    ///     Adds <see cref="AutoMapper" /> mappings to the dependency injection container, including all instances of
-    ///     <see cref="Waystone.Common.Application.Contracts.Mappings.IMapFrom{T}" /> in the provided assembly markers.
+    /// Adds <see cref="AutoMapper" /> mappings to the dependency injection container, including all instances of
+    /// <see cref="Waystone.Common.Application.Contracts.Mappings.IMapFrom{T}" /> in the provided assembly markers.
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
@@ -43,8 +47,8 @@ public static class WaystoneApplicationBuilderExtensions
     }
 
     /// <summary>
-    ///     Adds all instances of fluent validation validators in the specified assemblies to the dependency injection
-    ///     container.
+    /// Adds all instances of fluent validation validators in the specified assemblies to the dependency injection
+    /// container.
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
@@ -59,8 +63,8 @@ public static class WaystoneApplicationBuilderExtensions
     }
 
     /// <summary>
-    ///     Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container. Also
-    ///     adds the <see cref="RequestValidationBehaviour{TRequest,TResponse}" />.
+    /// Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container. Also
+    /// adds the <see cref="RequestValidationBehaviour{TRequest,TResponse}" />.
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>

@@ -9,6 +9,10 @@ using Services;
 public static class WaystoneInfrastructureBuilderExtensions
 {
     /// <summary>Accept the default configuration of services for the Waystone Common Infrastructure.</summary>
+    /// <remarks>
+    /// This is the recommended way of using this library. If you choose to use this method, you will not need to call
+    /// any of the other methods in this class.
+    /// </remarks>
     /// <param name="builder"></param>
     public static void AcceptDefaults(this IWaystoneInfrastructureBuilder builder)
     {
@@ -17,8 +21,8 @@ public static class WaystoneInfrastructureBuilderExtensions
     }
 
     /// <summary>
-    ///     Adds the <see cref="IDateTimeProvider" /> and <see cref="IDateTimeOffsetProvider" /> to the
-    ///     <see cref="IServiceCollection" />.
+    /// Adds the <see cref="IDateTimeProvider" /> and <see cref="IDateTimeOffsetProvider" /> to the
+    /// <see cref="IServiceCollection" />.
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneInfrastructureBuilder" />.</param>
     /// <returns>The <see cref="IWaystoneInfrastructureBuilder" />.</returns>

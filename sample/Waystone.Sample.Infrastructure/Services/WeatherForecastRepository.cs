@@ -7,9 +7,18 @@ using Microsoft.Extensions.Logging;
 
 public class WeatherForecastRepository : IWeatherForecastRepository
 {
-    private static readonly string[] Summaries =
+    private static readonly ForecastSummaries[] Summaries =
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching",
+        ForecastSummaries.Freezing,
+        ForecastSummaries.Bracing,
+        ForecastSummaries.Chilly,
+        ForecastSummaries.Cool,
+        ForecastSummaries.Mild,
+        ForecastSummaries.Warm,
+        ForecastSummaries.Balmy,
+        ForecastSummaries.Hot,
+        ForecastSummaries.Sweltering,
+        ForecastSummaries.Scorching,
     };
 
     private readonly IDateTimeProvider _dateTime;

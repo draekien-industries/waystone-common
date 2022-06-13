@@ -3,8 +3,8 @@
 using System.Runtime.Serialization;
 
 /// <summary>
-///     An exception that is thrown when a user attempts to perform an action that requires authenticated access, but
-///     the user is not authenticated.
+/// An exception that is thrown when a user attempts to perform an action that requires authenticated access, but
+/// the user is not authenticated.
 /// </summary>
 [Serializable]
 public class UnauthorizedException : ApplicationException
@@ -19,8 +19,8 @@ public class UnauthorizedException : ApplicationException
     { }
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="UnauthorizedException" /> with the specified message and inner
-    ///     exception.
+    /// Initializes a new instance of the <see cref="UnauthorizedException" /> with the specified message and inner
+    /// exception.
     /// </summary>
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The exception that caused the current exception.</param>

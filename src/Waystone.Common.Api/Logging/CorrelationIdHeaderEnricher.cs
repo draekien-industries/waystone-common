@@ -1,12 +1,11 @@
 ﻿namespace Waystone.Common.Api.Logging;
 
-using ConfigurationOptions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Serilog.Core;
 using Serilog.Events;
 
+/// <summary>Enriches the log event with the correlation id header.</summary>
 public class CorrelationIdHeaderEnricher : ILogEventEnricher
 {
     private const string CorrelationIdPropertyName = "CorrelationId";
@@ -15,12 +14,13 @@ public class CorrelationIdHeaderEnricher : ILogEventEnricher
     private readonly string _headerName;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>Creates a new instance of the <see cref="CorrelationIdHeaderEnricher" /> class.</summary>
+    /// <param name="headerName"></param>
     public CorrelationIdHeaderEnricher(string headerName)
     {
         _headerName = headerName;
         _httpContextAccessor = new HttpContextAccessor();
     }
-
 
     /// <inheritdoc />
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
@@ -41,6 +41,8 @@ public class CorrelationIdHeaderEnricher : ILogEventEnricher
             return correlationId.ToString();
         }
 
-        return !string.IsNullOrWhiteSpace(context.TraceIdentifier) ? context.TraceIdentifier : MissingCorrelationIdValue;
+        return !string.IsNullOrWhiteSpace(context.TraceIdentifier)
+            ? context.TraceIdentifier
+            : MissingCorrelationIdValue;
     }
 }

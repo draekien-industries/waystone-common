@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-///     The base controller that should be used for all API controllers. Provides access to Mediator and utility
-///     methods for generating paginated results.
+/// The base controller that should be used for all API controllers. Provides access to Mediator and utility
+/// methods for generating paginated results.
 /// </summary>
 [ApiController]
 [Route("[controller]")]

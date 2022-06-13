@@ -8,18 +8,24 @@ using Microsoft.Extensions.Hosting;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    ///     Creates a new <see cref="IWaystoneApiBuilder" /> for configuring dependencies provided by the Waystone Common
-    ///     Api.
+    /// Creates a new <see cref="IWaystoneApiBuilder" /> for configuring dependencies provided by the Waystone Common
+    /// Api.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="environment">The host environment.</param>
     /// <param name="configuration">The configuration.</param>
+    /// <param name="assemblyMarkers"></param>
     /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
     public static IWaystoneApiBuilder AddWaystoneApiBuilder(
         this IServiceCollection services,
         IHostEnvironment environment,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        params Type[] assemblyMarkers)
     {
-        return new WaystoneApiBuilder(services, environment, configuration);
+        return new WaystoneApiBuilder(
+            services,
+            environment,
+            configuration,
+            assemblyMarkers.Select(marker => marker.Assembly).ToList());
     }
 }

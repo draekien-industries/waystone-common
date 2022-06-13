@@ -5,6 +5,7 @@ using Waystone.Common.Api.DependencyInjection;
 using Waystone.Common.Api.Logging;
 using Waystone.Sample.Application;
 using Waystone.Sample.Infrastructure;
+using DependencyInjection = Waystone.Sample.Application.DependencyInjection;
 
 Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -22,7 +23,7 @@ try
         (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
                                                  .Enrich.WithCorrelationIdHeader(builder.Configuration));
 
-    builder.Services.AddWaystoneApiBuilder(builder.Environment, builder.Configuration)
+    builder.Services.AddWaystoneApiBuilder(builder.Environment, builder.Configuration, typeof(DependencyInjection))
            .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
 
     builder.Services.AddSampleApplication();
@@ -35,6 +36,7 @@ try
         app.UseDeveloperExceptionPage();
         app.UseOpenApi();
         app.UseSwaggerUi3();
+        app.UseReDoc(options => options.Path = "/docs");
     }
 
     app.UseWaystoneApi()

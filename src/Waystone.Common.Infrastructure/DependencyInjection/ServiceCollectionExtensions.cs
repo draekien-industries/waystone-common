@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    ///     Creates a new <see cref="IWaystoneInfrastructureBuilder" /> for configuring dependencies provided by the
-    ///     Waystone Common Infrastructure.
+    /// Creates a new <see cref="IWaystoneInfrastructureBuilder" /> for configuring dependencies provided by the
+    /// Waystone Common Infrastructure.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <returns>The infrastructure builder.</returns>

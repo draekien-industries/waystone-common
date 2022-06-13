@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Application.Common.DependencyInjection;
+﻿namespace Waystone.Common.Application.DependencyInjection;
 
 using System.Reflection;
 using Contracts.DependencyInjection;

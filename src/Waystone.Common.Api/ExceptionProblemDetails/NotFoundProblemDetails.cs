@@ -4,9 +4,12 @@ using Application.Contracts.Exceptions;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 
+/// <summary>Not found problem details.</summary>
 public class NotFoundProblemDetails : StatusCodeProblemDetails
 {
     /// <inheritdoc />
-    public NotFoundProblemDetails(NotFoundException exception) : base(StatusCodes.Status404NotFound)
-    { }
+    public NotFoundProblemDetails(NotFoundException ex) : base(StatusCodes.Status404NotFound)
+    {
+        Detail = ex.Message;
+    }
 }

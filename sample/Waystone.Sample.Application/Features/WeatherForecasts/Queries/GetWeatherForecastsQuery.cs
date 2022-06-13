@@ -8,10 +8,13 @@ using FluentValidation;
 using MediatR;
 using Services;
 
+/// <summary>A query to get a paginated set of weather forecasts.</summary>
 public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
 {
+    /// <summary>The validator for the <see cref="GetWeatherForecastsQuery" />.</summary>
     public class Validator : AbstractValidator<GetWeatherForecastsQuery>
     {
+        /// <summary>Creates a new instance of the <see cref="Validator" /> class.</summary>
         public Validator()
         {
             RuleFor(x => x.Cursor).GreaterThanOrEqualTo(0);
@@ -19,11 +22,15 @@ public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
         }
     }
 
+    /// <summary>The handler for the <see cref="GetWeatherForecastsQuery" />.</summary>
     public class Handler : IRequestHandler<GetWeatherForecastsQuery, PaginatedResponse<WeatherForecastDto>>
     {
         private readonly IMapper _mapper;
         private readonly IWeatherForecastRepository _repository;
 
+        /// <summary>Creates a new instance of the <see cref="Handler" /> class.</summary>
+        /// <param name="repository">The <see cref="IWeatherForecastRepository" />.</param>
+        /// <param name="mapper">The <see cref="IMapper" />.</param>
         public Handler(IWeatherForecastRepository repository, IMapper mapper)
         {
             _repository = repository;
@@ -36,7 +43,7 @@ public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
             CancellationToken cancellationToken)
         {
             IEnumerable<WeatherForecast> forecasts = _repository.Get(
-                request.Cursor.GetValueOrDefault(0),
+                request.Cursor,
                 request.Limit);
 
             PaginatedResponse<WeatherForecastDto> result = new()

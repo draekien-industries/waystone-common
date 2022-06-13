@@ -2,6 +2,7 @@
 
 using Application.Contracts.Services;
 
+/// <inheritdoc />
 public class RandomProvider : IRandomProvider
 {
     /// <inheritdoc />

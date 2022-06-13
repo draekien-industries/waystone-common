@@ -1,5 +1,6 @@
 ﻿namespace Waystone.Common.Api.DependencyInjection;
 
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,12 +12,18 @@ public class WaystoneApiBuilder : IWaystoneApiBuilder
     /// <param name="services">The service collection.</param>
     /// <param name="environment">The host environment.</param>
     /// <param name="configuration">The configuration.</param>
+    /// <param name="assemblies">The assemblies containing implementations of contracts provided by this library.</param>
     /// <exception cref="ArgumentNullException">One or more arguments are null.</exception>
-    public WaystoneApiBuilder(IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
+    public WaystoneApiBuilder(
+        IServiceCollection services,
+        IHostEnvironment environment,
+        IConfiguration configuration,
+        IEnumerable<Assembly> assemblies)
     {
         Services = services ?? throw new ArgumentNullException(nameof(services));
         Environment = environment ?? throw new ArgumentNullException(nameof(environment));
         Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        Assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
     }
 
     /// <inheritdoc />
@@ -27,4 +34,7 @@ public class WaystoneApiBuilder : IWaystoneApiBuilder
 
     /// <inheritdoc />
     public IConfiguration Configuration { get; }
+
+    /// <inheritdoc />
+    public IEnumerable<Assembly> Assemblies { get; }
 }

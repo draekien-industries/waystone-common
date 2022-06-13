@@ -3,7 +3,7 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-/// <summary>Application layer dependency injection registration interface.</summary>
+/// <summary>A builder that manages the dependency injection of the services provided by the library.</summary>
 public interface IWaystoneApplicationBuilder
 {
     /// <summary>The service collection.</summary>

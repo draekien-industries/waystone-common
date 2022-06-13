@@ -4,6 +4,7 @@ using Application.Contracts.Exceptions;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 
+/// <summary>Unauthorized problem details.</summary>
 public class UnauthorizedProblemDetails : StatusCodeProblemDetails
 {
     /// <inheritdoc />

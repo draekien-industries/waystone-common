@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Application.Common.Mappings;
+﻿namespace Waystone.Common.Application.Mappings;
 
 using System.Reflection;
 using AutoMapper;

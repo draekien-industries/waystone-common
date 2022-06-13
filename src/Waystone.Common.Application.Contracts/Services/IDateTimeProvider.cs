@@ -10,8 +10,8 @@ public interface IDateTimeProvider
     DateTime UtcNow { get; }
 
     /// <summary>
-    ///     Returns a DateTime representing the current date. The date part of the returned value is the current date, and
-    ///     the time part of the returned value is zero (midnight).
+    /// Returns a DateTime representing the current date. The date part of the returned value is the current date, and
+    /// the time part of the returned value is zero (midnight).
     /// </summary>
     DateTime Today { get; }
 }

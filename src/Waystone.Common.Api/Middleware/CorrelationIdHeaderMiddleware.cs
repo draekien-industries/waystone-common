@@ -11,12 +11,18 @@ public class CorrelationIdHeaderMiddleware
     private readonly RequestDelegate _next;
     private readonly CorrelationIdHeaderOptions _options;
 
+    /// <summary>Initializes a new instance of the <see cref="CorrelationIdHeaderMiddleware" /> class.</summary>
+    /// <param name="next">The <see cref="RequestDelegate" />.</param>
+    /// <param name="options">The <see cref="CorrelationIdHeaderOptions" />.</param>
     public CorrelationIdHeaderMiddleware(RequestDelegate next, IOptions<CorrelationIdHeaderOptions> options)
     {
         _next = next;
         _options = options.Value;
     }
 
+    /// <summary>Invokes the middleware that manages the correlation id header.</summary>
+    /// <param name="context">The <see cref="HttpContext" />.</param>
+    /// <returns>The result of the <see cref="RequestDelegate" />.</returns>
     public Task Invoke(HttpContext context)
     {
         context.TraceIdentifier = GetCorrelationId(context);

@@ -3,6 +3,7 @@
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 
+/// <summary>Internal server error problem details.</summary>
 public class UnknownProblemDetails : StatusCodeProblemDetails
 {
     /// <inheritdoc />

@@ -4,7 +4,7 @@ using Application.Contracts.Exceptions;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 
-/// <summary>Problem details for a forbidden request.</summary>
+/// <summary>Forbidden access problem details.</summary>
 public class ForbiddenAccessProblemDetails : StatusCodeProblemDetails
 {
     /// <inheritdoc />

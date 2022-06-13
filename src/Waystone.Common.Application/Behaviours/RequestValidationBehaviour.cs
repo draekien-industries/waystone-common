@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Application.Common.Behaviours;
+﻿namespace Waystone.Common.Application.Behaviours;
 
 using FluentValidation;
 using FluentValidation.Results;
