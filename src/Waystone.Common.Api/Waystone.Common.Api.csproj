@@ -5,6 +5,15 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Title>Waystone.Common.Api</Title>
+        <Description>The foundational code required to create .NET 6 Clean Architecture API layer projects for Draekien Industries.</Description>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Copyright>Draekien Industries</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/draekien-industries/waystone-common</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/draekien-industries/waystone-common</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
