@@ -1,13 +1,17 @@
 ﻿# Waystone.Common.Api
 
 The foundational code required to create .NET 6 Clean Architecture API layer projects for Draekien Industries.
+It is intended to be used alongside:
+
+- [Waystone.Common.Application](https://www.nuget.org/packages/Waystone.Common.Application)
+- [Waystone.Common.Infrastructure](https://www.nuget.org/packages/Waystone.Common.Infrastructure)
 
 ## Recommended Usage
 
 The below sample code is the recommended usage for this library. If you wish to
 configure your own problem details mapping (i.e. you have your own exceptions
 that must be mapped to specific status codes), then see the [Advanced Usage](#advanced-usage)
-section.
+section and do not use `AcceptDefaults()`.
 
 ```csharp
 // program.cs
