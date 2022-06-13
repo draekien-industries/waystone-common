@@ -14,7 +14,13 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/draekien-industries/waystone-common</RepositoryUrl>
         <PackageProjectUrl>https://github.com/draekien-industries/waystone-common</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" />
+    </ItemGroup>
+
 
     <ItemGroup>
         <ProjectReference Include="..\Waystone.Common.Application.Contracts\Waystone.Common.Application.Contracts.csproj" />
