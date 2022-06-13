@@ -126,4 +126,4 @@ jobs:
         
       - name: Publish
         working-directory: src
-        run: dotnet nuget push ./out/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push ./out/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
