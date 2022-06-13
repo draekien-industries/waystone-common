@@ -129,7 +129,7 @@ jobs:
         run: dotnet nuget push ./out/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
       - name: Release
-        uses: anton-yurchenko/git-release@v4.2.2
+        uses: docker://antonyurchenko/git-release:latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRE_RELEASE: true
