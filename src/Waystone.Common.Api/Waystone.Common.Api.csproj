@@ -14,7 +14,12 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/draekien-industries/waystone-common</RepositoryUrl>
         <PackageProjectUrl>https://github.com/draekien-industries/waystone-common</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" />
+    </ItemGroup>
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
