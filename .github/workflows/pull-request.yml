@@ -6,9 +6,6 @@ on:
       - main
       - develop
       - 'release/**'
-    paths:
-      - 'src/**'
-      - '.github/workflows/pull-request.yml'
 
 jobs:
   build-and-test:
