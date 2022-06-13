@@ -135,6 +135,5 @@ jobs:
           PRE_RELEASE: true
           CHANGELOG_FILE: none
           RELEASE_NAME: ${{ needs.calculate-version.outputs.semVer }}
-          RELEASE_NAME_PREFIX: "Pre-Release: "
         with:
           args: src/out/*.nupkg

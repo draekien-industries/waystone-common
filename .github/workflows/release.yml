@@ -137,6 +137,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHANGELOG_FILE: none
           RELEASE_NAME: ${{ needs.calculate-version.outputs.semVer }}
-          RELEASE_NAME_PREFIX: "Release: "
         with:
           args: src/out/*.nupkg
