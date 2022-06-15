@@ -11,14 +11,28 @@ using Services;
 /// <summary>A query to get a paginated set of weather forecasts.</summary>
 public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
 {
-    /// <summary>The validator for the <see cref="GetWeatherForecastsQuery" />.</summary>
+    /// <summary>When specified, the weather forecasts found will only have the specified summary.</summary>
+    public ForecastSummary? DesiredSummary { get; init; }
+
+    /// <summary>When specified, the weather forecasts found will all have TemperatureC above this value.</summary>
+    public int? MinimumTemperatureC { get; init; }
+
+    /// <summary>When specified, the weather forecasts found will all have TemperatureC below this value.</summary>
+    public int? MaximumTemperatureC { get; init; }
+
+    /// <summary>The validator for <see cref="GetWeatherForecastsQuery" />.</summary>
     public class Validator : AbstractValidator<GetWeatherForecastsQuery>
     {
-        /// <summary>Creates a new instance of the <see cref="Validator" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="Validator" /> class.</summary>
         public Validator()
         {
-            RuleFor(x => x.Cursor).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Limit).GreaterThan(0).LessThanOrEqualTo(5);
+            RuleFor(_ => _.DesiredSummary).IsInEnum();
+            RuleFor(_ => _.MinimumTemperatureC).InclusiveBetween(-20, 45).When(_ => _.MinimumTemperatureC.HasValue);
+            RuleFor(_ => _.MaximumTemperatureC).InclusiveBetween(-20, 45).When(_ => _.MaximumTemperatureC.HasValue);
+
+            RuleFor(_ => _.MinimumTemperatureC)
+               .LessThanOrEqualTo(_ => _.MaximumTemperatureC)
+               .When(_ => _.MinimumTemperatureC.HasValue && _.MaximumTemperatureC.HasValue);
         }
     }
 
@@ -42,14 +56,17 @@ public class GetWeatherForecastsQuery : PaginatedRequest<WeatherForecastDto>
             GetWeatherForecastsQuery request,
             CancellationToken cancellationToken)
         {
+            var filter = _mapper.Map<ForecastFilterDto>(request);
+
             IEnumerable<WeatherForecast> forecasts = _repository.Get(
                 request.Cursor,
-                request.Limit);
+                request.Limit,
+                filter);
 
             PaginatedResponse<WeatherForecastDto> result = new()
             {
                 Results = _mapper.Map<IEnumerable<WeatherForecastDto>>(forecasts),
-                Total = 100,
+                Total = _repository.Count(filter),
             };
 
             return Task.FromResult(result);

@@ -67,7 +67,7 @@ public class WaystoneApiController : ControllerBase
     {
         string? previous = default;
 
-        if (!(request.Cursor > 0)) return previous;
+        if (request.Cursor <= 0) return previous;
 
         if (request.Cursor <= request.Limit)
         {

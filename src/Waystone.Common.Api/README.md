@@ -27,6 +27,7 @@ builder.Host.UseSerilog(
 // Accept the default configuration provided by Waystone.Common.Api.
 // Currently adds:
 // - controllers
+// - route naming conventions
 // - problem details
 // - swagger (nswag)
 // - newtonsoft configuration
@@ -44,6 +45,11 @@ builder.Services
 // After creating the web application with `builder.Build()`
 // Currently adds:
 // - correlation id header middleware
+// - https redirection
+// - problem details
+// - authorization
+// - map controllers
+// - serilog request logging
 app.UseWaystoneApi()
    .AcceptDefaults();
 ```
@@ -68,6 +74,7 @@ builder.Services
            builder.Configuration,
            typeof(Program))
        .AddControllers()
+       .AddRoutingConventions()
        .AddProblemDetails(options => { /* configure problem details */ })
        .AddSwaggerDocumentation(
            apiName: "ACME",
@@ -78,4 +85,11 @@ builder.Services
 // After creating the web application with `builder.Build()`
 app.UseWaystoneApi()
    .UseCorrelationIdHeaderMiddleware();
+
+app.UseHttpsRedirection();
+app.UseProblemDetails();
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.UseSerilogRequestLogging();
 ```

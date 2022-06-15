@@ -1,7 +1,6 @@
 ﻿namespace Waystone.Common.Application.DependencyInjection;
 
 using System.Reflection;
-using Behaviours;
 using Contracts.DependencyInjection;
 using FluentValidation;
 using Mappings;
@@ -62,10 +61,7 @@ public static class WaystoneApplicationBuilderExtensions
         return builder;
     }
 
-    /// <summary>
-    /// Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container. Also
-    /// adds the <see cref="RequestValidationBehaviour{TRequest,TResponse}" />.
-    /// </summary>
+    /// <summary>Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container.</summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
     /// <returns></returns>
@@ -75,8 +71,6 @@ public static class WaystoneApplicationBuilderExtensions
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
         builder.Services.AddMediatR(builder.GetAssemblies(), config => ConfigureMediatrLifetime(config, lifetime));
-
-        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
 
         return builder;
     }

@@ -9,6 +9,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,9 +38,54 @@ public static class WaystoneApiBuilderExtensions
         string apiDescription = "")
     {
         builder.AddControllers()
+               .AddRoutingConventions()
                .AddProblemDetailMaps(options => ConfigureDefaultProblemDetailMaps(options, builder.Environment))
                .AddSwaggerDocumentation(apiName, apiVersion, apiDescription)
+               .ConfigureInvalidModelStateResponse()
                .BindCorrelationIdHeaderOptions();
+    }
+
+    /// <summary>Configures the problem details response for an invalid model state.</summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    public static IWaystoneApiBuilder ConfigureInvalidModelStateResponse(this IWaystoneApiBuilder builder)
+    {
+        builder.Services.Configure<ApiBehaviorOptions>(
+            options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Type = "https://httpstatuses.io/400",
+                        Title = "One or more validation errors occurred.",
+                        Status = StatusCodes.Status400BadRequest,
+                        Detail = "See the errors property for more information.",
+                        Instance = context.HttpContext.Request.GetDisplayUrl(),
+                    };
+
+                    problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+
+                    return new BadRequestObjectResult(problemDetails);
+                };
+            });
+
+        return builder;
+    }
+
+    /// <summary>Adds the recommended routing conventions for the Waystone Common API.</summary>
+    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
+    public static IWaystoneApiBuilder AddRoutingConventions(this IWaystoneApiBuilder builder)
+    {
+        builder.Services.AddRouting(
+            options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
+
+        return builder;
     }
 
     /// <summary>Adds the controller configuration for the Waystone Common API.</summary>
@@ -47,7 +94,7 @@ public static class WaystoneApiBuilderExtensions
     public static IWaystoneApiBuilder AddControllers(this IWaystoneApiBuilder builder)
     {
         builder.Services.AddControllers(ConfigureMvcOptions)
-               .AddFluentValidation(options => ConfigureFluentValidation(options, builder.Assemblies))
+               .AddFluentValidation(ConfigureFluentValidation)
                .AddProblemDetailsConventions()
                .AddNewtonsoftJson(ConfigureMvcNewtonsoftJson);
 
@@ -148,10 +195,9 @@ public static class WaystoneApiBuilderExtensions
 
     private static void ConfigureDefaultProblemDetailMaps(ProblemDetailsOptions options, IHostEnvironment environment)
     {
-        options.OnBeforeWriteDetails = (context, details) =>
-            details.Instance = Activity.Current?.Id ?? context.TraceIdentifier;
-
         options.IncludeExceptionDetails = (_, _) => !environment.IsProduction();
+        options.OnBeforeWriteDetails = (context, details) => details.Instance = context.Request.GetDisplayUrl();
+        options.GetTraceId = GetTraceId;
 
         options.Map<NotFoundException>(ex => new NotFoundProblemDetails(ex));
         options.Map<ValidationException>(ex => new BadRequestProblemDetails(ex));
@@ -179,14 +225,19 @@ public static class WaystoneApiBuilderExtensions
             });
 
         options.Map<Exception>(ex => new UnknownProblemDetails(ex));
+
+        string GetTraceId(HttpContext context)
+        {
+            return string.IsNullOrWhiteSpace(context.TraceIdentifier)
+                ? Activity.Current?.Id ?? string.Empty
+                : context.TraceIdentifier;
+        }
     }
 
     private static void ConfigureFluentValidation(
-        FluentValidationMvcConfiguration options,
-        IEnumerable<Assembly> assemblies)
+        FluentValidationMvcConfiguration options)
     {
-        options.AutomaticValidationEnabled = false;
-        options.RegisterValidatorsFromAssemblies(assemblies);
+        options.AutomaticValidationEnabled = true;
     }
 
     private static void ConfigureMvcOptions(MvcOptions options)

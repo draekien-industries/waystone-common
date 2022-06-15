@@ -16,7 +16,7 @@ public class WeatherForecastDto : IMapFrom<WeatherForecast>
     public int TemperatureF { get; set; }
 
     /// <summary>The summary of the forecast.</summary>
-    public ForecastSummaries Summary { get; set; } = default!;
+    public ForecastSummary Summary { get; set; } = default!;
 
     /// <summary>The date of the forecast.</summary>
     public DateTime DateTime { get; set; }

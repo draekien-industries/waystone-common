@@ -1,7 +1,7 @@
 ﻿namespace Waystone.Sample.Domain.Entities.WeatherForecasts;
 
 /// <summary>A summary of the current weather conditions for the day.</summary>
-public enum ForecastSummaries
+public enum ForecastSummary
 {
     Freezing,
     Bracing,

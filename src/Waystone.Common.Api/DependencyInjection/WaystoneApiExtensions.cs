@@ -1,7 +1,9 @@
 ﻿namespace Waystone.Common.Api.DependencyInjection;
 
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Middleware;
+using Serilog;
 
 /// <summary>Extensions for the <see cref="IWaystoneApi" />.</summary>
 public static class WaystoneApiExtensions
@@ -15,6 +17,12 @@ public static class WaystoneApiExtensions
     public static void AcceptDefaults(this IWaystoneApi app)
     {
         app.UseCorrelationIdHeaderMiddleware();
+        app.WebApplication.UseHttpsRedirection();
+        app.WebApplication.UseProblemDetails();
+        app.WebApplication.UseHttpsRedirection();
+        app.WebApplication.UseAuthorization();
+        app.WebApplication.MapControllers();
+        app.WebApplication.UseSerilogRequestLogging();
     }
 
     /// <summary>Adds the correlation id header middleware.</summary>
