@@ -2,7 +2,7 @@
 
 public class WeatherForecast
 {
-    public WeatherForecast(DateTime dateTime, int temperatureC, ForecastSummaries summary)
+    public WeatherForecast(DateTime dateTime, int temperatureC, ForecastSummary summary)
     {
         Id = Guid.NewGuid();
         DateTime = dateTime;
@@ -19,5 +19,5 @@ public class WeatherForecast
 
     public int TemperatureF { get; }
 
-    public ForecastSummaries? Summary { get; }
+    public ForecastSummary? Summary { get; }
 }
