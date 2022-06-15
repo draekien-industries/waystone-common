@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waystone.Sample.Domain", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waystone.Sample.Infrastructure", "sample\Waystone.Sample.Infrastructure\Waystone.Sample.Infrastructure.csproj", "{C6C5D4F4-35A8-45EB-8C53-230ED94CB81E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waystone.Sample.Api.IntegrationTests", "test\Waystone.Sample.Api.IntegrationTests\Waystone.Sample.Api.IntegrationTests.csproj", "{06696A48-EF59-41B8-8C58-631DE994304A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,7 @@ Global
 		{E72CBB63-EFB3-44A3-95E0-633C1CAAABDD} = {87DACD3F-6B1B-4CB0-8FBB-238E633E9ACD}
 		{3A52F36C-6914-46B1-B5CD-AFC89E32A517} = {87DACD3F-6B1B-4CB0-8FBB-238E633E9ACD}
 		{C6C5D4F4-35A8-45EB-8C53-230ED94CB81E} = {87DACD3F-6B1B-4CB0-8FBB-238E633E9ACD}
+		{06696A48-EF59-41B8-8C58-631DE994304A} = {EA9C64F3-BA8F-4493-820A-B003563A27A7}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{46159BCC-F322-4A36-B8D8-1A39B50C51E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -77,5 +80,9 @@ Global
 		{C6C5D4F4-35A8-45EB-8C53-230ED94CB81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6C5D4F4-35A8-45EB-8C53-230ED94CB81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6C5D4F4-35A8-45EB-8C53-230ED94CB81E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06696A48-EF59-41B8-8C58-631DE994304A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06696A48-EF59-41B8-8C58-631DE994304A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06696A48-EF59-41B8-8C58-631DE994304A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06696A48-EF59-41B8-8C58-631DE994304A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
