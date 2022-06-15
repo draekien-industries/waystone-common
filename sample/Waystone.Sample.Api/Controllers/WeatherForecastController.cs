@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 public class WeatherForecastController : WaystoneApiController
 {
     /// <summary>Gets a set of weather forecasts.</summary>
-    /// <param name="query">The <see cref="GetWeatherForecastsQuery" />.</param>
+    /// <param name="query"></param>
     /// <param name="cancellationToken">The <see cref="CancellationToken" />.</param>
     /// <returns>The paginated list of <see cref="WeatherForecastDto" />.</returns>
     [HttpGet]

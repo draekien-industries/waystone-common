@@ -1,4 +1,3 @@
-using Hellang.Middleware.ProblemDetails;
 using Serilog;
 using Serilog.Debugging;
 using Waystone.Common.Api.DependencyInjection;
@@ -42,11 +41,6 @@ try
     app.UseWaystoneApi()
        .AcceptDefaults();
 
-    app.UseProblemDetails();
-    app.UseHttpsRedirection();
-    app.UseAuthorization();
-    app.MapControllers();
-
     await app.RunAsync();
 }
 catch (Exception ex)
@@ -60,3 +54,6 @@ finally
     Log.Information("Waystone.Sample.Api stopped");
     Log.CloseAndFlush();
 }
+
+public partial class Program
+{ }
