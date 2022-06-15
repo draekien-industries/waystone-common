@@ -23,7 +23,7 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="11.0.1" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.2" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.3" />
         <PackageReference Include="MediatR" Version="10.0.1" />
         <PackageReference Include="ZymLabs.NSwag.FluentValidation" Version="0.5.1" />
     </ItemGroup>
