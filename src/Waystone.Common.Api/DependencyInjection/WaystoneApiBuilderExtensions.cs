@@ -2,8 +2,8 @@
 
 using System.Diagnostics;
 using System.Reflection;
-using Application.Contracts.Exceptions;
 using ConfigurationOptions;
+using Domain.Contracts.Exceptions;
 using ExceptionProblemDetails;
 using FluentValidation;
 using FluentValidation.AspNetCore;

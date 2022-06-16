@@ -5,8 +5,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Title>Waystone.Common.Application.Contracts</Title>
-        <Description>The contracts required to create .NET 6 Clean Architecture Application layer projects for Draekien Industries.</Description>
+        <Title>Waystone.Common.Domain.Contracts</Title>
+        <Description>The contracts required to create .NET 6 Clean Architecture Domain layer projects for Draekien Industries.</Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <Copyright>Draekien Industries</Copyright>
@@ -16,20 +16,5 @@
         <PackageProjectUrl>https://github.com/draekien-industries/waystone-common</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
-
-    <ItemGroup>
-        <None Include="README.md" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="11.0.1" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="11.0.3" />
-        <PackageReference Include="MediatR" Version="10.0.1" />
-        <PackageReference Include="ZymLabs.NSwag.FluentValidation" Version="0.5.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
-    </ItemGroup>
 
 </Project>

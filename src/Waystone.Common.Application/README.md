@@ -4,6 +4,7 @@ The foundational code required to create .NET 6 Clean Architecture Application l
 It is intended to be used alongside:
 
 - [Waystone.Common.Api](https://www.nuget.org/packages/Waystone.Common.Api)
+- [Waystone.Common.Domain.Contracts](https://www.nuget.org/packages/Waystone.Common.Domain.Contracts)
 - [Waystone.Common.Infrastructure](https://www.nuget.org/packages/Waystone.Common.Infrastructure)
 
 ## Recommended Usage
