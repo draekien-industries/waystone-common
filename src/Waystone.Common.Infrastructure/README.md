@@ -6,6 +6,8 @@ It is intended to be used alongside:
 
 - [Waystone.Common.Api](https://www.nuget.org/packages/Waystone.Common.Api)
 - [Waystone.Common.Application](https://www.nuget.org/packages/Waystone.Common.Application)
+-
+    - [Waystone.Common.Domain.Contracts](https://www.nuget.org/packages/Waystone.Common.Domain.Contracts)
 
 ## Recommended Usage
 
