@@ -241,7 +241,7 @@ public static class WaystoneApiBuilderExtensions
     private static void ConfigureFluentValidation(
         FluentValidationMvcConfiguration options)
     {
-        options.AutomaticValidationEnabled = true;
+        options.AutomaticValidationEnabled = false;
     }
 
     private static void ConfigureMvcOptions(MvcOptions options)

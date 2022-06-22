@@ -1,6 +1,7 @@
 ﻿namespace Waystone.Common.Application.DependencyInjection;
 
 using System.Reflection;
+using Behaviours;
 using Contracts.DependencyInjection;
 using FluentValidation;
 using Mappings;
@@ -57,6 +58,8 @@ public static class WaystoneApplicationBuilderExtensions
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
         builder.Services.AddValidatorsFromAssemblies(builder.GetAssemblies(), lifetime);
+
+        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
         return builder;
     }

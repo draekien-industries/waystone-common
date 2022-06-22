@@ -80,7 +80,7 @@
             "schema": {
               "type": "string",
               "format": "guid",
-              "example": "1d15c919-c4d6-439f-96f0-1f218a98afbf"
+              "example": "5909a37c-5203-4af5-9ed5-3d769a7bbc20"
             }
           }
         ],
@@ -144,7 +144,7 @@
             "schema": {
               "type": "string",
               "format": "guid",
-              "example": "6aff9cea-4773-4ae8-a5bb-31b5344071ef"
+              "example": "739ed952-866f-4b64-817d-9c5b65a1afc3"
             }
           }
         ],

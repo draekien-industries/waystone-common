@@ -17,12 +17,12 @@ public static class WaystoneApiExtensions
     public static void AcceptDefaults(this IWaystoneApi app)
     {
         app.UseCorrelationIdHeaderMiddleware();
+        app.WebApplication.UseSerilogRequestLogging();
         app.WebApplication.UseHttpsRedirection();
         app.WebApplication.UseProblemDetails();
         app.WebApplication.UseHttpsRedirection();
         app.WebApplication.UseAuthorization();
         app.WebApplication.MapControllers();
-        app.WebApplication.UseSerilogRequestLogging();
     }
 
     /// <summary>Adds the correlation id header middleware.</summary>

@@ -12,7 +12,7 @@ public static class DependencyInjection
         services.AddWaystoneInfrastructureBuilder()
                 .AcceptDefaults();
 
-        services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+        services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
 
         return services;
     }
