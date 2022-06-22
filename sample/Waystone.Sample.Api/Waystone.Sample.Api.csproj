@@ -14,4 +14,21 @@
         <ProjectReference Include="..\Waystone.Sample.Infrastructure\Waystone.Sample.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="NSwag.MSBuild" Version="13.16.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="nswag.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <Target Name="PostBuild" Condition="'$(Configuration)'=='Debug'" AfterTargets="PostBuildEvent">
+        <Exec Command="$(NSwagExe_Net60) run nswag.json /variables:OutputPath=$(OutputPath)" />
+    </Target>
+
 </Project>

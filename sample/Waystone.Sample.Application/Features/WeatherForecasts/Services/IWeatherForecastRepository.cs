@@ -17,4 +17,14 @@ public interface IWeatherForecastRepository
     /// <param name="filter"></param>
     /// <returns></returns>
     int Count(ForecastFilterDto? filter);
+
+    /// <summary>Checks to see if the weather forecast with the specified id exists.</summary>
+    /// <param name="id">The id of the forecast.</param>
+    /// <returns>True when the id exists.</returns>
+    bool Any(Guid id);
+
+    /// <summary>Gets the weather forecast with the specified id.</summary>
+    /// <param name="id">The id of the forecast.</param>
+    /// <returns>The weather forecast.</returns>
+    WeatherForecast? Get(Guid id);
 }

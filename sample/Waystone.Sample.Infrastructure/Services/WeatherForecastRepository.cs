@@ -56,6 +56,18 @@ public class WeatherForecastRepository : IWeatherForecastRepository
         return query.Count();
     }
 
+    /// <inheritdoc />
+    public bool Any(Guid id)
+    {
+        return _weatherForecasts.Any(x => x.Id == id);
+    }
+
+    /// <inheritdoc />
+    public WeatherForecast? Get(Guid id)
+    {
+        return _weatherForecasts.SingleOrDefault(x => x.Id == id);
+    }
+
     private IEnumerable<WeatherForecast> GenerateForecasts()
     {
         return Enumerable.Range(0, 100)

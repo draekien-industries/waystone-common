@@ -54,7 +54,7 @@ public static class WaystoneApplicationBuilderExtensions
     /// <returns></returns>
     public static IWaystoneApplicationBuilder AddFluentValidation(
         this IWaystoneApplicationBuilder builder,
-        ServiceLifetime lifetime = ServiceLifetime.Transient)
+        ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
         builder.Services.AddValidatorsFromAssemblies(builder.GetAssemblies(), lifetime);
 
