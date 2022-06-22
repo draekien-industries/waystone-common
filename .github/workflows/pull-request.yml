@@ -14,13 +14,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.4.2
-      
+
       - name: Setup .NET Core 6
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '6.x'
           include-prerelease: true
-      
+
       - name: Restore
         run: dotnet restore
 
@@ -29,3 +29,8 @@ jobs:
 
       - name: Test
         run: dotnet test --no-restore --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+      - name: Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
