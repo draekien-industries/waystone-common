@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Builder;
 
 /// <inheritdoc />
-public class WaystoneApi : IWaystoneApi
+internal class WaystoneApi : IWaystoneApi
 {
     /// <summary>Initializes a new instance of the <see cref="WaystoneApi" /> class.</summary>
     /// <param name="app">The <see cref="WebApplication" />.</param>

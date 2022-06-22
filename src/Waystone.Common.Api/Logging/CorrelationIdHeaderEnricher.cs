@@ -6,7 +6,7 @@ using Serilog.Core;
 using Serilog.Events;
 
 /// <summary>Enriches the log event with the correlation id header.</summary>
-public class CorrelationIdHeaderEnricher : ILogEventEnricher
+internal class CorrelationIdHeaderEnricher : ILogEventEnricher
 {
     private const string CorrelationIdPropertyName = "CorrelationId";
     private const string MissingCorrelationIdValue = "None";

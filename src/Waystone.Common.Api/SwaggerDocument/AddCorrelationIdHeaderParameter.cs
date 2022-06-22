@@ -6,7 +6,7 @@ using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Contexts;
 
 /// <summary>A processor for adding the correlation id header parameter.</summary>
-public class AddCorrelationIdHeaderParameter : IOperationProcessor
+internal class AddCorrelationIdHeaderParameter : IOperationProcessor
 {
     private readonly string _headerName;
 
