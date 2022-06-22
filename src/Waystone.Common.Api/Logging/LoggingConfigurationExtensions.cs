@@ -16,10 +16,12 @@ public static class LoggingConfigurationExtensions
         this LoggerEnrichmentConfiguration loggerConfig,
         IConfiguration appConfig)
     {
-        IConfigurationSection? correlationIdHeaderConfig = appConfig.GetSection(CorrelationIdHeaderOptions.SectionName);
-        var headerName = correlationIdHeaderConfig?.GetValue<string>(nameof(CorrelationIdHeaderOptions.HeaderName));
+        var config = appConfig.GetSection(CorrelationIdHeaderOptions.SectionName)
+                              .Get<CorrelationIdHeaderOptions>();
 
-        return loggerConfig.With(
-            new CorrelationIdHeaderEnricher(headerName ?? CorrelationIdHeaderOptions.DefaultHeaderName));
+        string headerName = config?.HeaderName ?? CorrelationIdHeaderOptions.DefaultHeaderName;
+        CorrelationIdHeaderEnricher enricher = new(headerName);
+
+        return loggerConfig.With(enricher);
     }
 }

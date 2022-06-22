@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>

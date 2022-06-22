@@ -55,5 +55,8 @@ finally
     Log.CloseAndFlush();
 }
 
+/// <summary>
+/// Expose Program for integration tests
+/// </summary>
 public partial class Program
 { }

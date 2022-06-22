@@ -2,8 +2,8 @@
 
 using System.Diagnostics;
 using System.Reflection;
-using Application.Contracts.Exceptions;
 using ConfigurationOptions;
+using Domain.Contracts.Exceptions;
 using ExceptionProblemDetails;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Converters;
+using NJsonSchema;
 using SwaggerDocument;
 using ZymLabs.NSwag.FluentValidation;
 
@@ -164,9 +165,12 @@ public static class WaystoneApiBuilderExtensions
                 options.Title = apiName;
                 options.Version = apiVersion;
                 options.Description = apiDescription;
-                options.GenerateEnumMappingDescription = true;
-                options.ResolveExternalXmlDocumentation = true;
+                options.SchemaType = SchemaType.OpenApi3;
+
                 options.UseXmlDocumentation = true;
+                options.ResolveExternalXmlDocumentation = true;
+
+                options.GenerateEnumMappingDescription = true;
                 options.GenerateExamples = true;
 
                 var headerOptions = serviceProvider.GetRequiredService<IOptions<CorrelationIdHeaderOptions>>();
