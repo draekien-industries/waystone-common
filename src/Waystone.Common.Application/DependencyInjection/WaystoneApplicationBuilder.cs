@@ -5,11 +5,11 @@ using Contracts.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>Builder for configuring dependencies in the application.</summary>
-public class WaystoneApplicationBuilder : IWaystoneApplicationBuilder
+internal class WaystoneApplicationBuilder : IWaystoneApplicationBuilder
 {
     /// <summary>Initializes a new instance of the <see cref="WaystoneApplicationBuilder" /> class.</summary>
     /// <param name="services">The service collection.</param>
-    /// <param name="assemblyMarkers"></param>
+    /// <param name="assemblyMarkers">The assemblies that make up the consuming app's application layer.</param>
     /// <exception cref="ArgumentNullException">The services collection does not exist.</exception>
     public WaystoneApplicationBuilder(IServiceCollection services, ICollection<Type> assemblyMarkers)
     {

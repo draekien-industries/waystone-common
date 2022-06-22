@@ -4,7 +4,7 @@ using Contracts.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>Builder for configuring infrastructure dependencies.</summary>
-public class WaystoneInfrastructureBuilder : IWaystoneInfrastructureBuilder
+internal class WaystoneInfrastructureBuilder : IWaystoneInfrastructureBuilder
 {
     /// <summary>Initializes a new instance of the <see cref="WaystoneInfrastructureBuilder" /> class.</summary>
     /// <param name="services">The service collection.</param>
