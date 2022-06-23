@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
     /// <param name="configuration">The configuration.</param>
     /// <param name="assemblyMarkers"></param>
     /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
-    public static IWaystoneApiServiceBuilder AddWaystoneApiBuilder(
+    public static IWaystoneApiServiceBuilder AddWaystoneApiServiceBuilder(
         this IServiceCollection services,
         IHostEnvironment environment,
         IConfiguration configuration,
