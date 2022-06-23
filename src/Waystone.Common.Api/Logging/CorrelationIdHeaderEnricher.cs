@@ -16,10 +16,11 @@ internal class CorrelationIdHeaderEnricher : ILogEventEnricher
 
     /// <summary>Creates a new instance of the <see cref="CorrelationIdHeaderEnricher" /> class.</summary>
     /// <param name="headerName"></param>
-    public CorrelationIdHeaderEnricher(string headerName)
+    /// <param name="httpContextAccessor"></param>
+    public CorrelationIdHeaderEnricher(string headerName, IHttpContextAccessor httpContextAccessor)
     {
         _headerName = headerName;
-        _httpContextAccessor = new HttpContextAccessor();
+        _httpContextAccessor = httpContextAccessor;
     }
 
     /// <inheritdoc />
@@ -29,7 +30,8 @@ internal class CorrelationIdHeaderEnricher : ILogEventEnricher
 
         string correlationId = GetCorrelationId(_httpContextAccessor.HttpContext);
 
-        LogEventProperty correlationIdProperty = new(CorrelationIdPropertyName, new ScalarValue(correlationId));
+        LogEventProperty correlationIdProperty =
+            propertyFactory.CreateProperty(CorrelationIdPropertyName, correlationId);
 
         logEvent.AddOrUpdateProperty(correlationIdProperty);
     }
