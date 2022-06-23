@@ -1,4 +1,4 @@
-﻿namespace Waystone.Sample.Application.Features.WeatherForecasts.Services;
+﻿namespace Waystone.Sample.Application.WeatherForecasts.Services;
 
 using Contracts;
 using Domain.Entities.WeatherForecasts;

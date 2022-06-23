@@ -1,12 +1,13 @@
-﻿namespace Waystone.Common.Api.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Configuration;
+using Hosting;
 
 /// <summary>The contract used to register the services provided by Waystone.Common.Api.</summary>
-public interface IWaystoneApiBuilder
+public interface IWaystoneApiServiceBuilder
 {
     /// <inheritdoc cref="IServiceCollection" />
     IServiceCollection Services { get; }
