@@ -18,11 +18,12 @@ section and do not use `AcceptDefaults()`.
 using Waystone.Common.Api;
 
 // after creating the web application builder
-builder.Host.UseSerilog(
-    (context, configuration) => 
-        configuration.ReadFrom.Configuration(context.Configuration)
-                     .Enrich.WithCorrelationIdHeader(builder.Configuration)
-);
+// configures serilog using appsettings and enrichers:
+// - Correlation ID Header Enricher
+// - Http Request Context Enricher
+builder.Host
+       .UseWaystoneApiHostBuilder()
+       .AcceptDefaults();
 
 // Accept the default configuration provided by Waystone.Common.Api.
 // Currently adds:
@@ -32,8 +33,9 @@ builder.Host.UseSerilog(
 // - swagger (nswag)
 // - newtonsoft configuration
 // - correlation id header options
+// - http request context action filter
 builder.Services
-       .AddWaystoneApiBuilder(
+       .AddWaystoneApiServiceBuilder(
            builder.Environment,
            builder.Configuration,
            typeof(Program))
@@ -50,7 +52,8 @@ builder.Services
 // - authorization
 // - map controllers
 // - serilog request logging
-app.UseWaystoneApi()
+// - http request context logging middleware
+app.UseWaystoneApiApplicationBuilder()
    .AcceptDefaults();
 ```
 
@@ -62,14 +65,15 @@ using Waystone.Common.Api;
 
 // after creating the web application builder
 builder.Host.UseSerilog(
-    (context, configuration) => 
+    (context, provider, configuration) => 
         configuration.ReadFrom.Configuration(context.Configuration)
-                     .Enrich.WithCorrelationIdHeader(builder.Configuration)
+                     .Enrich.WithCorrelationIdHeader(builder.Configuration, provider)
+                     .Enrich.WithHttpContext(provider);
 );
 
 // Manually configure Waystone.Common.Api
 builder.Services
-       .AddWaystoneApiBuilder(
+       .AddWaystoneApiServiceBuilder(
            builder.Environment,
            builder.Configuration,
            typeof(Program))
@@ -83,8 +87,9 @@ builder.Services
        .BindCorrelationIdHeaderOptions();
        
 // After creating the web application with `builder.Build()`
-app.UseWaystoneApi()
-   .UseCorrelationIdHeaderMiddleware();
+app.UseWaystoneApiApplicationBuilder()
+   .UseCorrelationIdHeaderMiddleware()
+   .UseHttpContextDtoMiddleware();
 
 app.UseHttpsRedirection();
 app.UseProblemDetails();
