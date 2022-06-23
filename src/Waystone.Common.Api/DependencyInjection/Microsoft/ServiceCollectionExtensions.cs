@@ -1,28 +1,29 @@
-﻿namespace Waystone.Common.Api.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
 
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+namespace Microsoft.Extensions.DependencyInjection;
+
+using Configuration;
+using Hosting;
 
 /// <summary>Extensions for the <see cref="IServiceCollection" />.</summary>
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Creates a new <see cref="IWaystoneApiBuilder" /> for configuring dependencies provided by the Waystone Common
+    /// Creates a new <see cref="IWaystoneApiServiceBuilder" /> for configuring dependencies provided by the Waystone Common
     /// Api.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="environment">The host environment.</param>
     /// <param name="configuration">The configuration.</param>
     /// <param name="assemblyMarkers"></param>
-    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
-    public static IWaystoneApiBuilder AddWaystoneApiBuilder(
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder AddWaystoneApiBuilder(
         this IServiceCollection services,
         IHostEnvironment environment,
         IConfiguration configuration,
         params Type[] assemblyMarkers)
     {
-        return new WaystoneApiBuilder(
+        return new WaystoneApiServiceBuilder(
             services,
             environment,
             configuration,

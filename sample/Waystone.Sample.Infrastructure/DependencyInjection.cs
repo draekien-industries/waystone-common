@@ -1,7 +1,6 @@
 ﻿namespace Waystone.Sample.Infrastructure;
 
-using Application.Features.WeatherForecasts.Services;
-using Common.Infrastructure.DependencyInjection;
+using Application.WeatherForecasts.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Services;
 

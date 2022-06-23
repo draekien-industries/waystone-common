@@ -1,7 +1,5 @@
 using Serilog;
 using Serilog.Debugging;
-using Waystone.Common.Api.DependencyInjection;
-using Waystone.Common.Api.Logging;
 using Waystone.Sample.Application;
 using Waystone.Sample.Infrastructure;
 using DependencyInjection = Waystone.Sample.Application.DependencyInjection;
@@ -18,15 +16,14 @@ try
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog(
-        (context, configuration) => configuration.ReadFrom.Configuration(context.Configuration)
-                                                 .Enrich.WithCorrelationIdHeader(builder.Configuration));
-
     builder.Services.AddWaystoneApiBuilder(builder.Environment, builder.Configuration, typeof(DependencyInjection))
            .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
 
     builder.Services.AddSampleApplication();
     builder.Services.AddSampleInfrastructure();
+
+    builder.Host.UseWaystoneApiHostBuilder()
+           .AcceptDefaults();
 
     WebApplication app = builder.Build();
 
@@ -38,7 +35,7 @@ try
         app.UseReDoc(options => options.Path = "/docs");
     }
 
-    app.UseWaystoneApi()
+    app.UseWaystoneApiApplicationBuilder()
        .AcceptDefaults();
 
     await app.RunAsync();
@@ -55,8 +52,6 @@ finally
     Log.CloseAndFlush();
 }
 
-/// <summary>
-/// Expose Program for integration tests
-/// </summary>
+/// <summary>Expose Program for integration tests</summary>
 public partial class Program
 { }

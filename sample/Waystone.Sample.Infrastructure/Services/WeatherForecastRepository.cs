@@ -1,7 +1,7 @@
 ﻿namespace Waystone.Sample.Infrastructure.Services;
 
-using Application.Features.WeatherForecasts.Contracts;
-using Application.Features.WeatherForecasts.Services;
+using Application.WeatherForecasts.Contracts;
+using Application.WeatherForecasts.Services;
 using Common.Application.Contracts.Services;
 using Domain.Entities.WeatherForecasts;
 using Microsoft.Extensions.Logging;

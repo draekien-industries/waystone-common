@@ -1,6 +1,5 @@
 ﻿namespace Waystone.Sample.Application;
 
-using Common.Application.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>Dependency injection for the sample application.</summary>

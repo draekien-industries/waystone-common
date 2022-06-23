@@ -1,23 +1,26 @@
-﻿namespace Waystone.Common.Api.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 using System.Diagnostics;
 using System.Reflection;
-using ConfigurationOptions;
-using Domain.Contracts.Exceptions;
-using ExceptionProblemDetails;
+using AspNetCore.Http;
+using AspNetCore.Http.Extensions;
+using AspNetCore.Mvc;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
+using Hosting;
 using Newtonsoft.Json.Converters;
 using NJsonSchema;
-using SwaggerDocument;
+using Options;
+using Waystone.Common.Api.ConfigurationOptions;
+using Waystone.Common.Api.ExceptionProblemDetails;
+using Waystone.Common.Api.Filters;
+using Waystone.Common.Api.Logging;
+using Waystone.Common.Api.SwaggerDocument;
+using Waystone.Common.Domain.Contracts.Exceptions;
 using ZymLabs.NSwag.FluentValidation;
 
 /// <summary>Extensions for configuring the Waystone Common API dependency injection.</summary>
@@ -28,30 +31,43 @@ public static class WaystoneApiBuilderExtensions
     /// This is the recommended way of using this library. If you choose to use this method, you will not need to call
     /// any of the other methods in this class.
     /// </remarks>
-    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
     /// <param name="apiName">The name of the api.</param>
     /// <param name="apiVersion">The version of the api.</param>
     /// <param name="apiDescription">The description of the api.</param>
     public static void AcceptDefaults(
-        this IWaystoneApiBuilder builder,
+        this IWaystoneApiServiceBuilder serviceBuilder,
         string apiName,
         string apiVersion,
         string apiDescription = "")
     {
-        builder.AddControllers()
-               .AddRoutingConventions()
-               .AddProblemDetailMaps(options => ConfigureDefaultProblemDetailMaps(options, builder.Environment))
-               .AddSwaggerDocumentation(apiName, apiVersion, apiDescription)
-               .ConfigureInvalidModelStateResponse()
-               .BindCorrelationIdHeaderOptions();
+        serviceBuilder.AddHttpContextDtoMiddleware();
+        serviceBuilder.AddControllers()
+                      .AddRoutingConventions()
+                      .AddProblemDetailMaps(
+                           options => ConfigureDefaultProblemDetailMaps(options, serviceBuilder.Environment))
+                      .AddSwaggerDocumentation(apiName, apiVersion, apiDescription)
+                      .ConfigureInvalidModelStateResponse()
+                      .BindCorrelationIdHeaderOptions();
+    }
+
+    /// <summary>Adds the services required for the http context logging middleware.</summary>
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder AddHttpContextDtoMiddleware(this IWaystoneApiServiceBuilder serviceBuilder)
+    {
+        serviceBuilder.Services.AddScoped<HttpContextDto>();
+
+        return serviceBuilder;
     }
 
     /// <summary>Configures the problem details response for an invalid model state.</summary>
-    /// <param name="builder"></param>
+    /// <param name="serviceBuilder"></param>
     /// <returns></returns>
-    public static IWaystoneApiBuilder ConfigureInvalidModelStateResponse(this IWaystoneApiBuilder builder)
+    public static IWaystoneApiServiceBuilder ConfigureInvalidModelStateResponse(
+        this IWaystoneApiServiceBuilder serviceBuilder)
     {
-        builder.Services.Configure<ApiBehaviorOptions>(
+        serviceBuilder.Services.Configure<ApiBehaviorOptions>(
             options =>
             {
                 options.InvalidModelStateResponseFactory = context =>
@@ -71,61 +87,61 @@ public static class WaystoneApiBuilderExtensions
                 };
             });
 
-        return builder;
+        return serviceBuilder;
     }
 
     /// <summary>Adds the recommended routing conventions for the Waystone Common API.</summary>
-    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
-    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
-    public static IWaystoneApiBuilder AddRoutingConventions(this IWaystoneApiBuilder builder)
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder AddRoutingConventions(this IWaystoneApiServiceBuilder serviceBuilder)
     {
-        builder.Services.AddRouting(
+        serviceBuilder.Services.AddRouting(
             options =>
             {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
             });
 
-        return builder;
+        return serviceBuilder;
     }
 
     /// <summary>Adds the controller configuration for the Waystone Common API.</summary>
-    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
-    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
-    public static IWaystoneApiBuilder AddControllers(this IWaystoneApiBuilder builder)
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder AddControllers(this IWaystoneApiServiceBuilder serviceBuilder)
     {
-        builder.Services.AddControllers(ConfigureMvcOptions)
-               .AddFluentValidation(ConfigureFluentValidation)
-               .AddProblemDetailsConventions()
-               .AddNewtonsoftJson(ConfigureMvcNewtonsoftJson);
+        serviceBuilder.Services.AddControllers(ConfigureMvcOptions)
+                      .AddFluentValidation(ConfigureFluentValidation)
+                      .AddProblemDetailsConventions()
+                      .AddNewtonsoftJson(ConfigureMvcNewtonsoftJson);
 
-        builder.Services.AddHttpContextAccessor();
-        builder.Services.AddHealthChecks();
+        serviceBuilder.Services.AddHttpContextAccessor();
+        serviceBuilder.Services.AddHealthChecks();
 
-        return builder;
+        return serviceBuilder;
     }
 
     /// <summary>Adds the problem detail maps for your api.</summary>
-    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
     /// <param name="options">The action that configures the <see cref="ProblemDetailsOptions" />.</param>
-    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
-    public static IWaystoneApiBuilder AddProblemDetailMaps(
-        this IWaystoneApiBuilder builder,
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder AddProblemDetailMaps(
+        this IWaystoneApiServiceBuilder serviceBuilder,
         Action<ProblemDetailsOptions> options)
     {
-        builder.Services.AddProblemDetails(options);
+        serviceBuilder.Services.AddProblemDetails(options);
 
-        return builder;
+        return serviceBuilder;
     }
 
     /// <summary>Adds swagger documentation to the api.</summary>
-    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
     /// <param name="title">The title of your api.</param>
     /// <param name="version">The version of your api.</param>
     /// <param name="description">The description of your api.</param>
-    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
-    public static IWaystoneApiBuilder AddSwaggerDocumentation(
-        this IWaystoneApiBuilder builder,
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder AddSwaggerDocumentation(
+        this IWaystoneApiServiceBuilder serviceBuilder,
         string title,
         string version,
         string description = "")
@@ -155,9 +171,9 @@ public static class WaystoneApiBuilderExtensions
             }
         }
 
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddScoped<FluentValidationSchemaProcessor>();
-        builder.Services.AddSwaggerDocument(
+        serviceBuilder.Services.AddEndpointsApiExplorer();
+        serviceBuilder.Services.AddScoped<FluentValidationSchemaProcessor>();
+        serviceBuilder.Services.AddSwaggerDocument(
             (options, serviceProvider) =>
             {
                 IServiceProvider scopedServiceProvider = serviceProvider.CreateScope().ServiceProvider;
@@ -183,18 +199,19 @@ public static class WaystoneApiBuilderExtensions
                 options.SchemaProcessors.Add(fluentValidationSchemaProcessor);
             });
 
-        return builder;
+        return serviceBuilder;
     }
 
     /// <summary>Binds the <see cref="CorrelationIdHeaderOptions" /> from the api appsettings file.</summary>
-    /// <param name="builder">The <see cref="IWaystoneApiBuilder" />.</param>
-    /// <returns>The <see cref="IWaystoneApiBuilder" />.</returns>
-    public static IWaystoneApiBuilder BindCorrelationIdHeaderOptions(this IWaystoneApiBuilder builder)
+    /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
+    public static IWaystoneApiServiceBuilder BindCorrelationIdHeaderOptions(
+        this IWaystoneApiServiceBuilder serviceBuilder)
     {
-        builder.Services.AddOptions<CorrelationIdHeaderOptions>()
-               .Bind(builder.Configuration.GetSection(CorrelationIdHeaderOptions.SectionName));
+        serviceBuilder.Services.AddOptions<CorrelationIdHeaderOptions>()
+                      .Bind(serviceBuilder.Configuration.GetSection(CorrelationIdHeaderOptions.SectionName));
 
-        return builder;
+        return serviceBuilder;
     }
 
     private static void ConfigureDefaultProblemDetailMaps(ProblemDetailsOptions options, IHostEnvironment environment)
@@ -249,6 +266,7 @@ public static class WaystoneApiBuilderExtensions
         options.ReturnHttpNotAcceptable = true;
         options.RespectBrowserAcceptHeader = true;
         options.SuppressAsyncSuffixInActionNames = true;
+        options.Filters.Add<PopulateHttpContextDtoFilter>();
     }
 
     private static void ConfigureMvcNewtonsoftJson(MvcNewtonsoftJsonOptions options)

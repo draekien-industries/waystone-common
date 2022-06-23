@@ -1,6 +1,6 @@
-﻿namespace Waystone.Common.Infrastructure.Contracts.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
 
-using Microsoft.Extensions.DependencyInjection;
+namespace Microsoft.Extensions.DependencyInjection;
 
 /// <summary>Infrastructure layer dependency injection registration interface.</summary>
 public interface IWaystoneInfrastructureBuilder

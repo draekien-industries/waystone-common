@@ -2,8 +2,8 @@
 
 using System.Net;
 using System.Net.Mime;
-using Application.Features.WeatherForecasts.Contracts;
-using Application.Features.WeatherForecasts.Queries;
+using Application.WeatherForecasts.Contracts;
+using Application.WeatherForecasts.Queries;
 using Common.Application.Contracts.Pagination;
 using Common.Application.Extensions;
 using Microsoft.AspNetCore.Http;
