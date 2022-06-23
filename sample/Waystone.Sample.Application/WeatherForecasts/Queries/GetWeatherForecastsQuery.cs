@@ -1,4 +1,4 @@
-﻿namespace Waystone.Sample.Application.Features.WeatherForecasts.Queries;
+﻿namespace Waystone.Sample.Application.WeatherForecasts.Queries;
 
 using AutoMapper;
 using Common.Application.Contracts.Pagination;

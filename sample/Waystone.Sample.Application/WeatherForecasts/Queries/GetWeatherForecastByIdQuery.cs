@@ -1,4 +1,4 @@
-﻿namespace Waystone.Sample.Application.Features.WeatherForecasts.Queries;
+﻿namespace Waystone.Sample.Application.WeatherForecasts.Queries;
 
 using AutoMapper;
 using Common.Domain.Contracts.Exceptions;
@@ -19,9 +19,11 @@ public class GetWeatherForecastByIdQuery : IRequest<WeatherForecastDto>
     public class Validator : AbstractValidator<GetWeatherForecastByIdQuery>
     {
         /// <summary>Creates a new instance of <see cref="Validator" />.</summary>
-        public Validator()
+        public Validator(IWeatherForecastRepository repository)
         {
-            RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.Id)
+               .Must(repository.Any)
+               .WithMessage((_, id) => $"Weather forecast with id '{id}' does not exist.");
         }
     }
 

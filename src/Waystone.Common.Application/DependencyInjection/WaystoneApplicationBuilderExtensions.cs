@@ -1,11 +1,12 @@
-﻿namespace Waystone.Common.Application.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 using System.Reflection;
-using Contracts.DependencyInjection;
 using FluentValidation;
-using Mappings;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+using Waystone.Common.Application.Behaviours;
+using Waystone.Common.Application.Mappings;
 
 /// <summary>Extensions for configuring the dependency injection provided by the Waystone Application.</summary>
 public static class WaystoneApplicationBuilderExtensions
@@ -57,6 +58,8 @@ public static class WaystoneApplicationBuilderExtensions
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
         builder.Services.AddValidatorsFromAssemblies(builder.GetAssemblies(), lifetime);
+
+        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
         return builder;
     }

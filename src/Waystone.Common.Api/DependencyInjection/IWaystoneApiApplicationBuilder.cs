@@ -1,9 +1,11 @@
-﻿namespace Waystone.Common.Api.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
 
-using Microsoft.AspNetCore.Builder;
+namespace Microsoft.Extensions.DependencyInjection;
+
+using AspNetCore.Builder;
 
 /// <summary>The contract used to register the Waystone API middleware.</summary>
-public interface IWaystoneApi
+public interface IWaystoneApiApplicationBuilder
 {
     /// <inheritdoc cref="WebApplication" />
     WebApplication WebApplication { get; }

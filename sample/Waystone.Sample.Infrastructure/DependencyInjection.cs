@@ -1,7 +1,6 @@
 ﻿namespace Waystone.Sample.Infrastructure;
 
-using Application.Features.WeatherForecasts.Services;
-using Common.Infrastructure.DependencyInjection;
+using Application.WeatherForecasts.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Services;
 
@@ -12,7 +11,7 @@ public static class DependencyInjection
         services.AddWaystoneInfrastructureBuilder()
                 .AcceptDefaults();
 
-        services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+        services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
 
         return services;
     }

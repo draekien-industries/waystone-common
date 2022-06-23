@@ -1,7 +1,8 @@
-﻿namespace Waystone.Common.Application.Contracts.DependencyInjection;
+﻿// ReSharper disable once CheckNamespace
+
+namespace Microsoft.Extensions.DependencyInjection;
 
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>A builder that manages the dependency injection of the services provided by the library.</summary>
 public interface IWaystoneApplicationBuilder
