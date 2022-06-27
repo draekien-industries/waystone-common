@@ -49,4 +49,14 @@ public static class LoggerEnrichmentConfigurationExtensions
 
         return loggerConfig.With(enricher);
     }
+
+    /// <summary>
+    /// Registers the <see cref="OpenTelemetryContextLogEventEnricher" />.
+    /// </summary>
+    /// <param name="config">The <see cref="LoggerEnrichmentConfiguration" />.</param>
+    /// <returns>The <see cref="LoggerConfiguration" />.</returns>
+    public static LoggerConfiguration WithOpenTelemetryContext(this LoggerEnrichmentConfiguration config)
+    {
+        return config.With(new OpenTelemetryContextLogEventEnricher());
+    }
 }

@@ -47,5 +47,6 @@ public static class WaystoneApiHostBuilderExtensions
         loggerConfiguration.ReadFrom.Configuration(configuration);
         loggerConfiguration.Enrich.WithCorrelationIdHeader(configuration, serviceProvider);
         loggerConfiguration.Enrich.WithHttpContext(serviceProvider);
+        loggerConfiguration.Enrich.WithOpenTelemetryContext();
     }
 }
