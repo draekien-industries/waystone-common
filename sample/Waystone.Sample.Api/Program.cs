@@ -16,11 +16,14 @@ try
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddWaystoneApiServiceBuilder(builder.Environment, builder.Configuration, typeof(DependencyInjection))
+    builder.Services.AddWaystoneApiServiceBuilder(
+                builder.Environment,
+                builder.Configuration,
+                typeof(DependencyInjection))
            .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
 
     builder.Services.AddSampleApplication();
-    builder.Services.AddSampleInfrastructure();
+    builder.Services.AddSampleInfrastructure(builder.Configuration);
 
     builder.Host.UseWaystoneApiHostBuilder()
            .AcceptDefaults();

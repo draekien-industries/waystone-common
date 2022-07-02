@@ -1,6 +1,7 @@
 ﻿namespace Waystone.Sample.Application.WeatherForecasts.Queries;
 
 using AutoMapper;
+using Common.Application.Contracts.Caching;
 using Common.Domain.Contracts.Exceptions;
 using Contracts;
 using Domain.Entities.WeatherForecasts;
@@ -10,10 +11,16 @@ using Microsoft.Extensions.Logging;
 using Services;
 
 /// <summary>A query to get a weather forecast by it's ID.</summary>
-public class GetWeatherForecastByIdQuery : IRequest<WeatherForecastDto>
+public class GetWeatherForecastByIdQuery : ICachedRequest<WeatherForecastDto>
 {
     /// <summary>The id the of the weather forecast to get.</summary>
     public Guid Id { get; init; }
+
+    /// <inheritdoc />
+    public string CacheKey => Id.ToString();
+
+    /// <inheritdoc />
+    public TimeSpan CacheDuration => TimeSpan.FromMinutes(15);
 
     /// <summary>Validator for <see cref="GetWeatherForecastsQuery" /></summary>
     public class Validator : AbstractValidator<GetWeatherForecastByIdQuery>

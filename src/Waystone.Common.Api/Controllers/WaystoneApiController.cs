@@ -18,7 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 [Consumes(MediaTypeNames.Application.Json)]
 [ProducesResponseType(typeof(NotFoundProblemDetails), StatusCodes.Status400BadRequest)]
 [ProducesResponseType(typeof(UnknownProblemDetails), StatusCodes.Status500InternalServerError)]
-public class WaystoneApiController : ControllerBase
+public abstract class WaystoneApiController : ControllerBase
 {
     private IMediator? _mediator;
 

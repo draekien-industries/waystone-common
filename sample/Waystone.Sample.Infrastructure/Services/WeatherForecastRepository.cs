@@ -48,6 +48,13 @@ public class WeatherForecastRepository : IWeatherForecastRepository
         return query.Skip(from).Take(count);
     }
 
+
+    /// <inheritdoc />
+    public WeatherForecast? Get(Guid id)
+    {
+        return _weatherForecasts.SingleOrDefault(x => x.Id == id);
+    }
+
     /// <inheritdoc />
     public int Count(ForecastFilterDto? filter)
     {
@@ -60,12 +67,6 @@ public class WeatherForecastRepository : IWeatherForecastRepository
     public bool Any(Guid id)
     {
         return _weatherForecasts.Any(x => x.Id == id);
-    }
-
-    /// <inheritdoc />
-    public WeatherForecast? Get(Guid id)
-    {
-        return _weatherForecasts.SingleOrDefault(x => x.Id == id);
     }
 
     private IEnumerable<WeatherForecast> GenerateForecasts()
