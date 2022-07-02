@@ -5,7 +5,7 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-internal class ValidationPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+internal sealed class ValidationPipelineBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
     private readonly ILogger<ValidationPipelineBehaviour<TRequest, TResponse>> _logger;

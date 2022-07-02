@@ -5,7 +5,7 @@ using static PaginationOptions;
 
 /// <summary>The base class for all paginated requests.</summary>
 /// <typeparam name="T">The type of the record in the results set.</typeparam>
-public class PaginatedRequest<T> : IRequest<PaginatedResponse<T>>
+public abstract class PaginatedRequest<T> : IRequest<PaginatedResponse<T>>
 {
     private readonly int? _limit;
 

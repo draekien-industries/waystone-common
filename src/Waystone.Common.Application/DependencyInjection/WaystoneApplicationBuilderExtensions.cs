@@ -6,12 +6,22 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Waystone.Common.Application.Behaviours;
+using Waystone.Common.Application.Contracts.Caching;
 using Waystone.Common.Application.Mappings;
 
-/// <summary>Extensions for configuring the dependency injection provided by the Waystone Application.</summary>
+/// <summary>
+/// Extensions for configuring the dependency injection provided by the Waystone Application.
+/// </summary>
 public static class WaystoneApplicationBuilderExtensions
 {
-    /// <summary>Accept the default configuration of services for the Waystone Common Application.</summary>
+    /// <summary>
+    /// Accept the default configuration of services for the Waystone Common Application. Adds the following services:
+    /// - AutoMapper
+    /// - MediatR
+    /// - FluentValidation
+    /// - FluentValidation pipeline behavior
+    /// - Caching pipeline behaviour
+    /// </summary>
     /// <remarks>
     /// This is the recommended way of using this library. If you choose to use this method, you will not need to call
     /// any of the other methods in this class.
@@ -20,8 +30,40 @@ public static class WaystoneApplicationBuilderExtensions
     public static void AcceptDefaults(this IWaystoneApplicationBuilder builder)
     {
         builder.AddAutoMapper()
+               .AddFluentValidation()
                .AddMediatR()
-               .AddFluentValidation();
+               .AddValidationPipelineBehaviour()
+               .AddCachingPipelineBehaviour();
+    }
+
+    /// <summary>
+    /// Accept the default configuration of services for the Waystone Common Application with some configurations. Adds the
+    /// following services:
+    /// - AutoMapper
+    /// - MediatR
+    /// - FluentValidation
+    /// - FluentValidation pipeline behavior
+    /// - Caching pipeline behaviour
+    /// </summary>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    /// <param name="options">The action to configure the <see cref="WaystoneApplicationBuilderOptions" />.</param>
+    public static void Configure(
+        this IWaystoneApplicationBuilder builder,
+        Action<WaystoneApplicationBuilderOptions> options)
+    {
+        WaystoneApplicationBuilderOptions optionsInstance = new();
+
+        options(optionsInstance);
+
+        if (optionsInstance.UseValidationPipelineBehaviour)
+        {
+            builder.AddValidationPipelineBehaviour();
+        }
+
+        if (optionsInstance.UseCachingPipelineBehaviour)
+        {
+            builder.AddCachingPipelineBehaviour();
+        }
     }
 
     /// <summary>
@@ -30,7 +72,7 @@ public static class WaystoneApplicationBuilderExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
-    /// <returns></returns>
+    /// <returns>The <see cref="IWaystoneApplicationBuilder" />.</returns>
     public static IWaystoneApplicationBuilder AddAutoMapper(
         this IWaystoneApplicationBuilder builder,
         ServiceLifetime lifetime = ServiceLifetime.Transient)
@@ -52,14 +94,12 @@ public static class WaystoneApplicationBuilderExtensions
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
-    /// <returns></returns>
+    /// <returns>The <see cref="IWaystoneApplicationBuilder" />.</returns>
     public static IWaystoneApplicationBuilder AddFluentValidation(
         this IWaystoneApplicationBuilder builder,
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
         builder.Services.AddValidatorsFromAssemblies(builder.GetAssemblies(), lifetime);
-
-        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
         return builder;
     }
@@ -67,13 +107,39 @@ public static class WaystoneApplicationBuilderExtensions
     /// <summary>Adds all MediatR requests and handlers in the specified assemblies to the dependency injection container.</summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="lifetime">The <see cref="ServiceLifetime" />.</param>
-    /// <returns></returns>
+    /// <returns>The <see cref="IWaystoneApplicationBuilder" />.</returns>
     /// <exception cref="ArgumentOutOfRangeException">The requested <see cref="ServiceLifetime" /> is not supported by MediatR.</exception>
     public static IWaystoneApplicationBuilder AddMediatR(
         this IWaystoneApplicationBuilder builder,
         ServiceLifetime lifetime = ServiceLifetime.Scoped)
     {
         builder.Services.AddMediatR(builder.GetAssemblies(), config => ConfigureMediatrLifetime(config, lifetime));
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Registers a <see cref="IPipelineBehavior{TRequest,TResponse}" /> to add validation to all MediatR requests that
+    /// have at least one associated <see cref="AbstractValidator{T}" />.
+    /// </summary>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApplicationBuilder" />.</returns>
+    public static IWaystoneApplicationBuilder AddValidationPipelineBehaviour(this IWaystoneApplicationBuilder builder)
+    {
+        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Registers a <see cref="IPipelineBehavior{TRequest,TResponse}" /> to add caching to all MediatR requests that
+    /// implement <see cref="ICachedRequest{TResponse}" />.
+    /// </summary>
+    /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneApplicationBuilder" />.</returns>
+    public static IWaystoneApplicationBuilder AddCachingPipelineBehaviour(this IWaystoneApplicationBuilder builder)
+    {
+        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CachingPipelineBehaviour<,>));
 
         return builder;
     }
