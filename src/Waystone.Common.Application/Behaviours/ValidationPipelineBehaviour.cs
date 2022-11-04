@@ -29,12 +29,12 @@ internal sealed class ValidationPipelineBehaviour<TRequest, TResponse> : IPipeli
 
         if (!_validators.Any())
         {
-            _logger.LogInformation("No validators found for request of type {RequestType}", requestType);
+            _logger.LogDebug("No validators found for request of type {RequestType}", requestType);
 
             return await next();
         }
 
-        var context = new ValidationContext<TRequest>(request);
+        ValidationContext<TRequest> context = new(request);
 
         IEnumerable<Task<ValidationResult>> validationTasks = _validators.Select(
             validator => validator.ValidateAsync(context, cancellationToken));
@@ -48,12 +48,12 @@ internal sealed class ValidationPipelineBehaviour<TRequest, TResponse> : IPipeli
 
         if (failures.Any())
         {
-            _logger.LogInformation("Validation Failures found for request of type {RequestType}", requestType);
+            _logger.LogDebug("Validation Failures found for request of type {RequestType}", requestType);
 
             throw new ValidationException(failures);
         }
 
-        _logger.LogInformation("No validation failures found for request of type {RequestType}", requestType);
+        _logger.LogDebug("No validation failures found for request of type {RequestType}", requestType);
 
         return await next();
     }

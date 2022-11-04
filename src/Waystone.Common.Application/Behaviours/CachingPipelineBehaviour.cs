@@ -50,7 +50,7 @@ internal sealed class CachingPipelineBehaviour<TRequest, TResponse> : IPipelineB
 
         TResponse response = await next();
 
-        await _cache.PutObjectAsync(key, response, duration!, cancellationToken);
+        await _cache.PutObjectAsync(key, response, duration, cancellationToken);
 
         return response;
     }

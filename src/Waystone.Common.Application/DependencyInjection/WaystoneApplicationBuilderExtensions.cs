@@ -37,17 +37,11 @@ public static class WaystoneApplicationBuilderExtensions
     }
 
     /// <summary>
-    /// Accept the default configuration of services for the Waystone Common Application with some configurations. Adds the
-    /// following services:
-    /// - AutoMapper
-    /// - MediatR
-    /// - FluentValidation
-    /// - FluentValidation pipeline behavior
-    /// - Caching pipeline behaviour
+    /// Configures the pipeline behaviours used by MediatR based on the options specified.
     /// </summary>
     /// <param name="builder">The <see cref="IWaystoneApplicationBuilder" />.</param>
     /// <param name="options">The action to configure the <see cref="WaystoneApplicationBuilderOptions" />.</param>
-    public static void Configure(
+    public static void ConfigurePipelineBehaviours(
         this IWaystoneApplicationBuilder builder,
         Action<WaystoneApplicationBuilderOptions> options)
     {
