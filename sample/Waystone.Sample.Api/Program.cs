@@ -23,7 +23,7 @@ try
            .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
 
     builder.Services.AddSampleApplication();
-    builder.Services.AddSampleInfrastructure(builder.Configuration, builder.Environment);
+    builder.Services.AddSampleInfrastructure(builder.Configuration);
 
     builder.Host.UseWaystoneApiHostBuilder()
            .AcceptDefaults();

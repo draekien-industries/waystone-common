@@ -23,13 +23,10 @@ public static class WaystoneInfrastructureBuilderExtensions
     /// any of the other methods in this class.
     /// </remarks>
     /// <param name="builder">The <see cref="IWaystoneInfrastructureBuilder" />.</param>
-    /// <param name="useRedis">A flag to opt-in to using redis for distributed caching. Default value is `false`.</param>
-    public static void AcceptDefaults(this IWaystoneInfrastructureBuilder builder, bool useRedis = false)
+    public static void AcceptDefaults(this IWaystoneInfrastructureBuilder builder)
     {
         builder.AddDateTimeProviders()
                .AddRandomProvider();
-
-        if (useRedis) builder.AddRedisCaching();
     }
 
     /// <summary>

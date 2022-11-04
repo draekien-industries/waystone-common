@@ -20,7 +20,6 @@ public static class WaystoneApplicationBuilderExtensions
     /// - MediatR
     /// - FluentValidation
     /// - FluentValidation pipeline behavior
-    /// - Caching pipeline behaviour
     /// </summary>
     /// <remarks>
     /// This is the recommended way of using this library. If you choose to use this method, you will not need to call
@@ -32,8 +31,7 @@ public static class WaystoneApplicationBuilderExtensions
         builder.AddAutoMapper()
                .AddFluentValidation()
                .AddMediatR()
-               .AddValidationPipelineBehaviour()
-               .AddCachingPipelineBehaviour();
+               .AddValidationPipelineBehaviour();
     }
 
     /// <summary>
