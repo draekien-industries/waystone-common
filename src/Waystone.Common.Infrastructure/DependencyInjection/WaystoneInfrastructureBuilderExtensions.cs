@@ -1,4 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
+// ReSharper disable once CheckNamespace
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -67,7 +67,7 @@ public static class WaystoneInfrastructureBuilderExtensions
     public static IWaystoneInfrastructureBuilder AddRedisCaching(this IWaystoneInfrastructureBuilder builder)
     {
         builder.Services.AddStackExchangeRedisCache(options => ConfigureRedisCache(options, builder.Configuration));
-        builder.Services.AddSingleton<IDistributedCacheFacade, RedisCacheFacade>();
+        builder.Services.TryAddSingleton<IDistributedCacheFacade, DistributedCacheFacade>();
 
         return builder;
     }
