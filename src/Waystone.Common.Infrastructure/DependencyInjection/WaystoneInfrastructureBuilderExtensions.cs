@@ -1,10 +1,11 @@
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 using System.Reflection;
 using Caching.StackExchangeRedis;
 using Configuration;
+using Extensions;
 using StackExchange.Redis;
 using Waystone.Common.Application.Contracts.Caching;
 using Waystone.Common.Application.Contracts.Services;
@@ -67,6 +68,23 @@ public static class WaystoneInfrastructureBuilderExtensions
     public static IWaystoneInfrastructureBuilder AddRedisCaching(this IWaystoneInfrastructureBuilder builder)
     {
         builder.Services.AddStackExchangeRedisCache(options => ConfigureRedisCache(options, builder.Configuration));
+        builder.Services.TryAddSingleton<IDistributedCacheFacade, DistributedCacheFacade>();
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Registers dependencies required to use an in memory cache. Provides a service facade
+    /// for easier cache usage. See <see cref="IDistributedCacheFacade" />.
+    /// </summary>
+    /// <remarks>
+    /// Do not invoke this method if already invoking <see cref="AddRedisCaching" />.
+    /// </remarks>
+    /// <param name="builder">The <see cref="IWaystoneInfrastructureBuilder" />.</param>
+    /// <returns>The <see cref="IWaystoneInfrastructureBuilder" />.</returns>
+    public static IWaystoneInfrastructureBuilder AddInMemoryCaching(this IWaystoneInfrastructureBuilder builder)
+    {
+        builder.Services.AddDistributedMemoryCache();
         builder.Services.TryAddSingleton<IDistributedCacheFacade, DistributedCacheFacade>();
 
         return builder;

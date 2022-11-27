@@ -12,8 +12,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddWaystoneInfrastructureBuilder(configuration)
-
-                 // .AddRedisCaching() if you want to enable redis
+                .AddInMemoryCaching() // or invoke AddRedisCaching when using redis
                 .AcceptDefaults();
 
         services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
