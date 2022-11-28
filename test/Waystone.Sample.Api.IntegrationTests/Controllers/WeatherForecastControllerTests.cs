@@ -56,6 +56,43 @@ public class WeatherForecastControllerTests : IClassFixture<WebApplicationFactor
     }
 
     [Fact]
+    public async Task WhenInvokingGetWeatherForecastById_ThenReturnTheExpected()
+    {
+        // Arrange
+        HttpClient client = _factory.CreateClient();
+        GetWeatherForecastsQuery getWeatherForecastsQuery = new()
+        {
+            Cursor = 0,
+            Limit = 10,
+        };
+
+        var queryString = QueryString.Create(
+            new KeyValuePair<string, string?>[]
+            {
+                new(nameof(getWeatherForecastsQuery.Cursor), getWeatherForecastsQuery.Cursor.ToString()),
+                new(nameof(getWeatherForecastsQuery.Limit), getWeatherForecastsQuery.Limit.ToString()),
+            });
+
+        Uri getUri = new($"weatherforecast{queryString}", UriKind.Relative);
+        HttpResponseMessage getResponse = await client.GetAsync(getUri);
+        getResponse.EnsureSuccessStatusCode();
+        var getContent = await getResponse.Content.DeserializeObjectAsync<PaginatedResponse<WeatherForecastDto>>();
+        List<WeatherForecastDto> forecasts = getContent!.Results.ToList();
+        WeatherForecastDto expected = forecasts.First();
+
+        Uri getByIdUri = new($"weatherforecast/{expected.Id}", UriKind.Relative);
+
+        // Act
+        HttpResponseMessage getByIdResponse = await client.GetAsync(getByIdUri);
+
+        // Assert
+        getByIdResponse.EnsureSuccessStatusCode();
+
+        var getByIdContent = await getByIdResponse.Content.DeserializeObjectAsync<WeatherForecastDto>();
+        getByIdContent.Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
     public async Task
         GivenCursorIsWithinLimitOfForecastCount_WhenInvokingGetWeatherForecast_ThenLinksShouldNotContainNext()
     {

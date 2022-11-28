@@ -4,11 +4,11 @@ using Application.Contracts.Caching;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
-internal class RedisCacheFacade : IDistributedCacheFacade
+internal class DistributedCacheFacade : IDistributedCacheFacade
 {
     private readonly IDistributedCache _cache;
 
-    public RedisCacheFacade(IDistributedCache cache)
+    public DistributedCacheFacade(IDistributedCache cache)
     {
         _cache = cache ?? throw new ArgumentNullException(nameof(cache));
     }

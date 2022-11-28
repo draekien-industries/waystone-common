@@ -12,6 +12,7 @@ using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Hosting;
+using Logging;
 using Newtonsoft.Json.Converters;
 using NJsonSchema;
 using Options;
@@ -172,7 +173,15 @@ public static class WaystoneApiBuilderExtensions
         }
 
         serviceBuilder.Services.AddEndpointsApiExplorer();
-        serviceBuilder.Services.AddScoped<FluentValidationSchemaProcessor>();
+        serviceBuilder.Services.AddScoped(
+            provider =>
+            {
+                var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
+                var loggerFactory = provider.GetService<ILoggerFactory>();
+
+                return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
+            });
+
         serviceBuilder.Services.AddSwaggerDocument(
             (options, serviceProvider) =>
             {
