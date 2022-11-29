@@ -68,6 +68,7 @@ public static class WaystoneInfrastructureBuilderExtensions
     public static IWaystoneInfrastructureBuilder AddRedisCaching(this IWaystoneInfrastructureBuilder builder)
     {
         builder.Services.AddStackExchangeRedisCache(options => ConfigureRedisCache(options, builder.Configuration));
+        builder.Services.Configure<DefaultCacheOptions>(builder.Configuration.GetSection(nameof(DefaultCacheOptions)));
         builder.Services.TryAddSingleton<IDistributedCacheFacade, DistributedCacheFacade>();
 
         return builder;
@@ -85,6 +86,7 @@ public static class WaystoneInfrastructureBuilderExtensions
     public static IWaystoneInfrastructureBuilder AddInMemoryCaching(this IWaystoneInfrastructureBuilder builder)
     {
         builder.Services.AddDistributedMemoryCache();
+        builder.Services.Configure<DefaultCacheOptions>(builder.Configuration.GetSection(nameof(DefaultCacheOptions)));
         builder.Services.TryAddSingleton<IDistributedCacheFacade, DistributedCacheFacade>();
 
         return builder;

@@ -6,6 +6,11 @@ using Domain.Entities.WeatherForecasts;
 /// <summary>The repository providing the weather forecasts.</summary>
 public interface IWeatherForecastRepository
 {
+    /// <summary>Gets the weather forecast with the specified id.</summary>
+    /// <param name="id">The id of the forecast.</param>
+    /// <returns>The weather forecast.</returns>
+    WeatherForecast? Get(Guid id);
+
     /// <summary>Gets the weather forecasts in the specified range.</summary>
     /// <param name="from"></param>
     /// <param name="count"></param>
@@ -22,9 +27,4 @@ public interface IWeatherForecastRepository
     /// <param name="id">The id of the forecast.</param>
     /// <returns>True when the id exists.</returns>
     bool Any(Guid id);
-
-    /// <summary>Gets the weather forecast with the specified id.</summary>
-    /// <param name="id">The id of the forecast.</param>
-    /// <returns>The weather forecast.</returns>
-    WeatherForecast? Get(Guid id);
 }

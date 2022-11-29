@@ -17,10 +17,10 @@ public class GetWeatherForecastByIdQuery : ICachedRequest<WeatherForecastDto>
     public Guid Id { get; init; }
 
     /// <inheritdoc />
-    public string CacheKey => Id.ToString();
+    public string CacheKey => $"{nameof(GetWeatherForecastsQuery)}_{Id}";
 
     /// <inheritdoc />
-    public TimeSpan CacheDuration => TimeSpan.FromMinutes(15);
+    public TimeSpan? CacheSeconds => TimeSpan.FromMinutes(15);
 
     /// <summary>Validator for <see cref="GetWeatherForecastsQuery" /></summary>
     public class Validator : AbstractValidator<GetWeatherForecastByIdQuery>

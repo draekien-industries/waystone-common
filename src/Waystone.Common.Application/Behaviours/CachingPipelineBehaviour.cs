@@ -2,6 +2,8 @@
 
 using Contracts.Caching;
 using MediatR;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 
 /// <summary>
 /// A <see cref="IPipelineBehavior{TRequest,TResponse}" /> that caches the result of a request, storing
@@ -13,18 +15,21 @@ internal sealed class CachingPipelineBehaviour<TRequest, TResponse> : IPipelineB
     where TRequest : IRequest<TResponse> where TResponse : new()
 {
     private readonly IDistributedCacheFacade _cache;
+    private readonly DefaultCacheOptions _defaultCacheOptions;
 
     /// <summary>
     /// Creates a new instance of the <see cref="CachingPipelineBehaviour{TRequest,TResponse}" /> class.
     /// </summary>
     /// <param name="cache">The <see cref="IDistributedCacheFacade" />.</param>
+    /// <param name="cacheOptions"></param>
     /// <exception cref="ArgumentNullException">
     /// The <see cref="IDistributedCacheFacade" /> has not been registered in the DI
     /// container.
     /// </exception>
-    public CachingPipelineBehaviour(IDistributedCacheFacade cache)
+    public CachingPipelineBehaviour(IDistributedCacheFacade cache, IOptions<DefaultCacheOptions> cacheOptions)
     {
         _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        _defaultCacheOptions = cacheOptions.Value;
     }
 
     /// <inheritdoc />
@@ -36,22 +41,20 @@ internal sealed class CachingPipelineBehaviour<TRequest, TResponse> : IPipelineB
         if (request is not ICachedRequest<TResponse> cachedRequest) return await next();
 
         string key = cachedRequest.CacheKey;
-        TimeSpan duration = cachedRequest.CacheDuration;
+        TimeSpan? duration = cachedRequest.CacheSeconds;
 
-        if (duration == default
-         || duration <= TimeSpan.Zero)
+        if (duration <= TimeSpan.Zero)
         {
-            duration = TimeSpan.FromMinutes(5);
+            duration = TimeSpan.FromSeconds(_defaultCacheOptions.ExpirySeconds);
         }
 
-        var cachedResponse = await _cache.GetObjectAsync<TResponse>(key, cancellationToken);
-
-        if (cachedResponse is not null) return cachedResponse;
-
-        TResponse response = await next();
-
-        await _cache.PutObjectAsync(key, response, duration, cancellationToken);
-
-        return response;
+        return await _cache.GetOrCreateObjectAsync(
+            key,
+            () => next(),
+            new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = duration,
+            },
+            cancellationToken);
     }
 }

@@ -22,7 +22,7 @@ try
                 typeof(ApplicationAssemblyMarker))
            .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
 
-    builder.Services.AddSampleApplication();
+    builder.Services.AddSampleApplication(builder.Configuration);
     builder.Services.AddSampleInfrastructure(builder.Configuration);
 
     builder.Host.UseWaystoneApiHostBuilder()
