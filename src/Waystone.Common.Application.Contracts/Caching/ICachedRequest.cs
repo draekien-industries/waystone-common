@@ -15,7 +15,7 @@ public interface ICachedRequest<out TResponse> : IRequest<TResponse> where TResp
     public string CacheKey { get; }
 
     /// <summary>
-    /// The time to live for the response in the cache. Defaults to 5 minutes when not specified.
+    /// An optional time to live for the response in the cache.
     /// </summary>
-    public TimeSpan CacheDuration { get; }
+    public TimeSpan? CacheSeconds { get; }
 }

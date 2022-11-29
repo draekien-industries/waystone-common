@@ -131,6 +131,7 @@ public static class WaystoneApplicationBuilderExtensions
     /// <returns>The <see cref="IWaystoneApplicationBuilder" />.</returns>
     public static IWaystoneApplicationBuilder AddCachingPipelineBehaviour(this IWaystoneApplicationBuilder builder)
     {
+        builder.Services.Configure<DefaultCacheOptions>(builder.Configuration.GetSection(nameof(DefaultCacheOptions)));
         builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(CachingPipelineBehaviour<,>));
 
         return builder;

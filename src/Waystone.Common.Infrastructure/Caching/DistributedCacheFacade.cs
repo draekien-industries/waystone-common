@@ -2,15 +2,18 @@
 
 using Application.Contracts.Caching;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 internal class DistributedCacheFacade : IDistributedCacheFacade
 {
     private readonly IDistributedCache _cache;
+    private readonly DefaultCacheOptions _defaultCacheOptions;
 
-    public DistributedCacheFacade(IDistributedCache cache)
+    public DistributedCacheFacade(IDistributedCache cache, IOptions<DefaultCacheOptions> defaultCacheOptions)
     {
         _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+        _defaultCacheOptions = defaultCacheOptions.Value;
     }
 
     /// <inheritdoc />
@@ -26,38 +29,92 @@ internal class DistributedCacheFacade : IDistributedCacheFacade
     }
 
     /// <inheritdoc />
+    public async Task<string> GetOrCreateAsync(
+        string key,
+        Func<Task<string>> factory,
+        DistributedCacheEntryOptions? options = default,
+        CancellationToken cancellationToken = default)
+    {
+        string? storedValue = await GetAsync(key, cancellationToken);
+
+        if (!string.IsNullOrWhiteSpace(storedValue)) return storedValue;
+
+        string valueToStore = await factory();
+
+        await PutAsync(key, valueToStore, options, cancellationToken);
+
+        return valueToStore;
+    }
+
+    /// <inheritdoc />
+    public async Task<T> GetOrCreateObjectAsync<T>(
+        string key,
+        Func<Task<T>> factory,
+        DistributedCacheEntryOptions? options = default,
+        CancellationToken cancellationToken = default) where T : new()
+    {
+        var storedValue = await GetObjectAsync<T>(key, cancellationToken);
+
+        if (storedValue is not null) return storedValue;
+
+        T valueToStore = await factory();
+
+        await PutObjectAsync(key, valueToStore, options, cancellationToken);
+
+        return valueToStore;
+    }
+
+    /// <inheritdoc />
+    public async Task<Stream> GetOrCreateStreamAsync(
+        string key,
+        Func<Task<Stream>> factory,
+        DistributedCacheEntryOptions? options = default,
+        CancellationToken cancellationToken = default)
+    {
+        Stream? storedValue = await GetStreamAsync(key, cancellationToken);
+
+        if (storedValue is not null) return storedValue;
+
+        Stream valueToStore = await factory();
+
+        await PutStreamAsync(key, valueToStore, options, cancellationToken);
+
+        return valueToStore;
+    }
+
+    /// <inheritdoc />
     public Task PutAsync(
         string key,
         string value,
-        TimeSpan expiresIn,
+        DistributedCacheEntryOptions? options = default,
         CancellationToken cancellationToken = default)
     {
-        return _cache.SetStringAsync(key, value, GetOptions(expiresIn), cancellationToken);
+        return _cache.SetStringAsync(key, value, GetFinalOptions(options), cancellationToken);
     }
 
     /// <inheritdoc />
     public Task PutObjectAsync<T>(
         string key,
         T value,
-        TimeSpan expiresIn,
+        DistributedCacheEntryOptions? options = default,
         CancellationToken cancellationToken = default) where T : new()
     {
         string json = JsonConvert.SerializeObject(value, Formatting.None);
 
-        return _cache.SetStringAsync(key, json, GetOptions(expiresIn), cancellationToken);
+        return _cache.SetStringAsync(key, json, GetFinalOptions(options), cancellationToken);
     }
 
     /// <inheritdoc />
     public async Task PutStreamAsync(
         string key,
         Stream value,
-        TimeSpan expiresIn,
+        DistributedCacheEntryOptions? options = default,
         CancellationToken cancellationToken = default)
     {
         using MemoryStream memoryStream = new();
 
         await value.CopyToAsync(memoryStream, cancellationToken);
-        await _cache.SetAsync(key, memoryStream.ToArray(), GetOptions(expiresIn), cancellationToken);
+        await _cache.SetAsync(key, memoryStream.ToArray(), GetFinalOptions(options), cancellationToken);
     }
 
     /// <inheritdoc />
@@ -98,8 +155,11 @@ internal class DistributedCacheFacade : IDistributedCacheFacade
         return stream;
     }
 
-    private static DistributedCacheEntryOptions GetOptions(TimeSpan expiresIn)
+    private DistributedCacheEntryOptions GetFinalOptions(DistributedCacheEntryOptions? options = default)
     {
-        return new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = expiresIn };
+        if (options is not null) return options;
+
+        return new DistributedCacheEntryOptions
+            { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_defaultCacheOptions.ExpirySeconds) };
     }
 }

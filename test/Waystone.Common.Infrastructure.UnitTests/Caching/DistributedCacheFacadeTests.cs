@@ -4,6 +4,7 @@ using System.Text;
 using Application.Contracts.Caching;
 using Infrastructure.Caching;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using NSubstitute.ReturnsExtensions;
 
@@ -12,6 +13,7 @@ public class DistributedCacheFacadeTests
     private readonly IDistributedCache _distributedCache;
     private readonly TimeSpan _expiry;
     private readonly IFixture _fixture;
+    private readonly DistributedCacheEntryOptions _options;
     private readonly IDistributedCacheFacade _sut;
 
     public DistributedCacheFacadeTests()
@@ -19,8 +21,12 @@ public class DistributedCacheFacadeTests
         _fixture = new Fixture();
         _fixture.Inject(Stream.Null);
         _expiry = TimeSpan.FromMinutes(15);
+        _options = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = _expiry,
+        };
         _distributedCache = Substitute.For<IDistributedCache>();
-        _sut = new DistributedCacheFacade(_distributedCache);
+        _sut = new DistributedCacheFacade(_distributedCache, Options.Create(new DefaultCacheOptions()));
     }
 
     [Fact]
@@ -32,7 +38,7 @@ public class DistributedCacheFacadeTests
         string? serialized = JsonConvert.SerializeObject(value, Formatting.None);
 
         // Act
-        await _sut.PutObjectAsync(key, value, _expiry);
+        await _sut.PutObjectAsync(key, value, _options);
 
         // Assert
         await _distributedCache.Received(1)
@@ -54,7 +60,7 @@ public class DistributedCacheFacadeTests
         await stream.CopyToAsync(memoryStream);
 
         // Act
-        await _sut.PutStreamAsync(key, stream, _expiry);
+        await _sut.PutStreamAsync(key, stream, _options);
 
         // Assert
         await _distributedCache.Received(1)
@@ -97,6 +103,45 @@ public class DistributedCacheFacadeTests
 
         // Assert
         result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GivenStoredValue_WhenInvokingGetOrCreateAsync_ThenReturnStoredValue()
+    {
+        // Arrange
+        var key = _fixture.Create<string>();
+        var value = _fixture.Create<string>();
+
+        _distributedCache.GetAsync(key).Returns(Encoding.UTF8.GetBytes(value));
+
+        // Act
+        string result = await _sut.GetOrCreateAsync(key, () => Task.FromResult(value));
+
+        // Assert
+        await _distributedCache.Received(0).SetAsync(key, Encoding.UTF8.GetBytes(value));
+        result.Should().Be(value);
+    }
+
+    [Fact]
+    public async Task GivenNoStoredValue_WhenInvokingGetOrCreateAsync_ThenCreateValueFromFactory()
+    {
+        // Arrange
+        var key = _fixture.Create<string>();
+        var value = _fixture.Create<string>();
+        Func<Task<string>> factory = () => Task.FromResult(value);
+
+        _distributedCache.GetAsync(key).ReturnsNull();
+
+        // Act
+        string result = await _sut.GetOrCreateAsync(key, factory);
+
+        // Assert
+        await _distributedCache.Received(1)
+                               .SetAsync(
+                                    key,
+                                    Arg.Is<byte[]>(b => b.SequenceEqual(Encoding.UTF8.GetBytes(value))),
+                                    Arg.Any<DistributedCacheEntryOptions>());
+        result.Should().Be(value);
     }
 
     private class ObjectToStore

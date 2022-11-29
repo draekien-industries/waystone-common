@@ -2,6 +2,8 @@
 
 namespace Microsoft.Extensions.DependencyInjection;
 
+using Configuration;
+
 /// <summary>Extensions for the <see cref="IServiceCollection" /> interface.</summary>
 public static class ServiceCollectionExtensions
 {
@@ -10,6 +12,7 @@ public static class ServiceCollectionExtensions
     /// Common Application.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The app's configuration.</param>
     /// <param name="assemblyMarkers">
     /// The assembly markers (types) which will be used to look for mappings, validators, and
     /// request handlers.
@@ -17,8 +20,9 @@ public static class ServiceCollectionExtensions
     /// <returns>The application builder.</returns>
     public static IWaystoneApplicationBuilder AddWaystoneApplicationBuilder(
         this IServiceCollection services,
+        IConfiguration configuration,
         params Type[] assemblyMarkers)
     {
-        return new WaystoneApplicationBuilder(services, assemblyMarkers);
+        return new WaystoneApplicationBuilder(services, configuration, assemblyMarkers);
     }
 }
