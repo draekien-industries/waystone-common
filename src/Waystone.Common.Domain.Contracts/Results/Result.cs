@@ -12,7 +12,7 @@ public class Result
     /// </summary>
     /// <param name="success">Is the result a success or failure.</param>
     /// <param name="error">An <see cref="Error" /> that must be provided when initializing a fail result.</param>
-    /// <exception cref="InvalidOperationException">Error cannot be provided in a success result.</exception>
+    /// <exception cref="InvalidResultException">Error cannot be provided in a success result.</exception>
     protected Result(bool success, Error? error = default) : this(
         success,
         error is null ? Array.Empty<Error>() : new[] { error })
@@ -23,7 +23,7 @@ public class Result
     /// </summary>
     /// <param name="success">Is the result a success or failure.</param>
     /// <param name="errors">The collection of errors associated with the result.</param>
-    /// <exception cref="InvalidOperationException">Errors cannot be provided in a success result.</exception>
+    /// <exception cref="InvalidResultException">Errors cannot be provided in a success result.</exception>
     protected Result(bool success, IEnumerable<Error> errors)
     {
         Error[] errorsArray = errors.ToArray();
@@ -48,6 +48,11 @@ public class Result
     /// The collection of errors associated with this result.
     /// </summary>
     public IEnumerable<Error> Errors { get; }
+
+    /// <summary>
+    /// A shortcut for converting the collection of errors into an error message.
+    /// </summary>
+    public string Error => string.Join("; ", Errors);
 
     /// <summary>
     /// Creates a result in it's success state with no internal value.
@@ -142,9 +147,9 @@ public class Result
         switch (success)
         {
             case true when errors.Any():
-                throw new InvalidOperationException();
+                throw new InvalidResultException("Cannot assign errors when creating a successful result.");
             case false when !errors.Any():
-                throw new InvalidOperationException();
+                throw new InvalidResultException("Cannot create a failed result when there are no errors.");
         }
     }
 }
@@ -155,33 +160,48 @@ public class Result
 /// <typeparam name="TValue">The type of the value associated with a successful result.</typeparam>
 public class Result<TValue> : Result
 {
+    private readonly TValue? _value;
+
     /// <inheritdoc />
     protected internal Result(bool success, TValue? value = default, Error? error = default) : base(success, error)
     {
-        Value = value;
+        _value = value;
     }
 
     /// <inheritdoc />
     protected internal Result(bool success, TValue? value, IEnumerable<Error> errors) : base(success, errors)
     {
-        Value = value;
+        _value = value;
     }
 
     /// <summary>
     /// The value of the current successful result.
     /// </summary>
-    /// <remarks>
-    /// Value will be null when the result is in it's failed state.
-    /// </remarks>
-    public TValue? Value { get; }
+    /// <exception cref="InvalidResultException">The value cannot be accessed in the current result's state.</exception>
+    public TValue Value => GetValue();
 
     /// <summary>
     /// Implicitly converts a value of type TValue into a <see cref="Result" /> in it's success state.
     /// </summary>
     /// <param name="value">The value to store inside the created result.</param>
     /// <returns>A result containing a value of type TValue.</returns>
-    public static implicit operator Result<TValue?>(TValue? value)
+    public static implicit operator Result<TValue>(TValue value)
     {
         return Success(value);
+    }
+
+    private TValue GetValue()
+    {
+        if (Failed)
+        {
+            throw new InvalidResultException("Cannot access the value of a failed result.");
+        }
+
+        if (_value == null)
+        {
+            throw new InvalidResultException("The value of the result was not initialized.");
+        }
+
+        return _value;
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Waystone.Sample.Application.WeatherForecasts.Services;
 
+using Common.Domain.Contracts.Results;
 using Contracts;
 using Domain.Entities.WeatherForecasts;
 
@@ -9,7 +10,7 @@ public interface IWeatherForecastRepository
     /// <summary>Gets the weather forecast with the specified id.</summary>
     /// <param name="id">The id of the forecast.</param>
     /// <returns>The weather forecast.</returns>
-    WeatherForecast? Get(Guid id);
+    Result<WeatherForecast> Get(Guid id);
 
     /// <summary>Gets the weather forecasts in the specified range.</summary>
     /// <param name="from"></param>

@@ -3,6 +3,7 @@
 using AutoMapper;
 using Common.Application.Contracts.Caching;
 using Common.Domain.Contracts.Exceptions;
+using Common.Domain.Contracts.Results;
 using Contracts;
 using Domain.Entities.WeatherForecasts;
 using FluentValidation;
@@ -57,16 +58,16 @@ public class GetWeatherForecastByIdQuery : ICachedRequest<WeatherForecastDto>
         {
             _logger.LogInformation("Getting weather forecast by id: {Id}", request.Id.ToString());
 
-            WeatherForecast? forecast = _repository.Get(request.Id);
+            Result<WeatherForecast> getForecastResult = _repository.Get(request.Id);
 
-            if (forecast == null)
+            if (getForecastResult.Failed)
             {
                 _logger.LogError("Weather forecast not found: {Id}", request.Id.ToString());
 
-                throw new NotFoundException("Weather forecast not found.");
+                throw new NotFoundException(getForecastResult.Error);
             }
 
-            var result = _mapper.Map<WeatherForecastDto>(forecast);
+            var result = _mapper.Map<WeatherForecastDto>(getForecastResult.Value);
 
             return Task.FromResult(result);
         }

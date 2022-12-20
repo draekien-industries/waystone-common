@@ -3,6 +3,7 @@
 using Application.WeatherForecasts.Contracts;
 using Application.WeatherForecasts.Services;
 using Common.Application.Contracts.Services;
+using Common.Domain.Contracts.Results;
 using Domain.Entities.WeatherForecasts;
 using Microsoft.Extensions.Logging;
 
@@ -50,9 +51,16 @@ public class WeatherForecastRepository : IWeatherForecastRepository
 
 
     /// <inheritdoc />
-    public WeatherForecast? Get(Guid id)
+    public Result<WeatherForecast> Get(Guid id)
     {
-        return _weatherForecasts.SingleOrDefault(x => x.Id == id);
+        WeatherForecast? forecast = _weatherForecasts.FirstOrDefault(x => x.Id == id);
+
+        if (forecast is null)
+        {
+            return Result.Fail<WeatherForecast>("WeatherForecast_Get", $"Forecast does not exist for ID {id}.");
+        }
+
+        return forecast;
     }
 
     /// <inheritdoc />

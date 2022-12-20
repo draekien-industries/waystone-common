@@ -4,7 +4,6 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -26,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Waystone.Common.Infrastructure\Waystone.Common.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\src\Waystone.Common.Infrastructure\Waystone.Common.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
