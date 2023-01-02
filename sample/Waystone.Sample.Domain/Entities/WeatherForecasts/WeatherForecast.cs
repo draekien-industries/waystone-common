@@ -1,23 +1,36 @@
 ﻿namespace Waystone.Sample.Domain.Entities.WeatherForecasts;
 
-public class WeatherForecast
+using Common.Domain.Contracts.Primitives;
+
+public class WeatherForecast : Entity<Guid>
 {
-    public WeatherForecast(DateTime dateTime, int temperatureC, ForecastSummary summary)
+    public WeatherForecast(Guid id, DateTime dateTime, int temperatureC, ForecastSummary summary) : base(id)
     {
-        Id = Guid.NewGuid();
         DateTime = dateTime;
         TemperatureC = temperatureC;
-        TemperatureF = 32 + (int)(temperatureC / 0.5556);
         Summary = summary;
     }
 
-    public Guid Id { get; }
+    public WeatherForecast(DateTime dateTime, int temperatureC, ForecastSummary summary) : base(Guid.NewGuid())
+    {
+        DateTime = dateTime;
+        TemperatureC = temperatureC;
+        Summary = summary;
+    }
 
     public DateTime DateTime { get; }
 
     public int TemperatureC { get; }
 
-    public int TemperatureF { get; }
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 
     public ForecastSummary? Summary { get; }
+
+    /// <inheritdoc />
+    protected override IEnumerable<object?> GetSignatureComponents()
+    {
+        yield return DateTime;
+        yield return TemperatureC;
+        yield return Summary;
+    }
 }
