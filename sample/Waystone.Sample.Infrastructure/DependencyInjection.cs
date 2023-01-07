@@ -1,9 +1,10 @@
 ﻿namespace Waystone.Sample.Infrastructure;
 
-using Application.WeatherForecasts.Services;
+using Application.Shared;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Services;
+using Shared;
 
 public static class DependencyInjection
 {
@@ -15,7 +16,17 @@ public static class DependencyInjection
                 .AddInMemoryCaching() // or invoke AddRedisCaching when using redis
                 .AcceptDefaults();
 
-        services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
+        services.AddDbContext<IRepository, SampleDbContext>(
+            options =>
+            {
+                options.UseSqlServer(
+                    configuration.GetConnectionString("Database"),
+                    optionsBuilder =>
+                    {
+                        optionsBuilder.MigrationsAssembly(
+                            typeof(DependencyInjection).Assembly.FullName);
+                    });
+            });
 
         return services;
     }

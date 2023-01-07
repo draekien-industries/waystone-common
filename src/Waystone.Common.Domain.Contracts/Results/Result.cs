@@ -47,12 +47,12 @@ public class Result
     /// <summary>
     /// The collection of errors associated with this result.
     /// </summary>
-    public IEnumerable<Error> Errors { get; }
+    public Error[] Errors { get; }
 
     /// <summary>
     /// A shortcut for converting the collection of errors into an error message.
     /// </summary>
-    public string Error => string.Join("; ", Errors);
+    public string Error => string.Join("; ", Errors.Select(e => $"{e.Code}: {e.Message}").ToList());
 
     /// <summary>
     /// Creates a result in it's success state with no internal value.
@@ -141,6 +141,25 @@ public class Result
         return new Result<TValue>(false, default, errors);
     }
 
+    /// <summary>
+    /// Implicitly converts an error into a <see cref="Result" /> in it's failed state.
+    /// </summary>
+    /// <param name="error">The error to store inside the created result.</param>
+    /// <returns>A result containing the error.</returns>
+    public static implicit operator Result(Error error)
+    {
+        return Fail(error);
+    }
+
+    /// <summary>
+    /// Implicitly converts an array of errors into a <see cref="Result" /> in it's failed state.
+    /// </summary>
+    /// <param name="errors">The errors to store inside the created result.</param>
+    /// <returns>A result containing the errors.</returns>
+    public static implicit operator Result(Error[] errors)
+    {
+        return Fail(errors);
+    }
 
     private static void ValidateResult(bool success, IEnumerable<Error> errors)
     {
@@ -188,6 +207,26 @@ public class Result<TValue> : Result
     public static implicit operator Result<TValue>(TValue value)
     {
         return Success(value);
+    }
+
+    /// <summary>
+    /// Implicitly converts an error into a <see cref="Result" /> in it's failed state.
+    /// </summary>
+    /// <param name="error">The error to store inside the created result.</param>
+    /// <returns>A result containing the error.</returns>
+    public static implicit operator Result<TValue>(Error error)
+    {
+        return Fail<TValue>(error);
+    }
+
+    /// <summary>
+    /// Implicitly converts an array of errors into a <see cref="Result" /> in it's failed state.
+    /// </summary>
+    /// <param name="errors">The errors to store inside the created result.</param>
+    /// <returns>A result containing the errors.</returns>
+    public static implicit operator Result<TValue>(Error[] errors)
+    {
+        return Fail<TValue>(errors);
     }
 
     private TValue GetValue()

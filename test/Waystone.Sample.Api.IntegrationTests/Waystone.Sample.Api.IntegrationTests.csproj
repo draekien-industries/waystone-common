@@ -29,4 +29,8 @@
       <ProjectReference Include="..\..\sample\Waystone.Sample.Api\Waystone.Sample.Api.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Controllers" />
+    </ItemGroup>
+
 </Project>

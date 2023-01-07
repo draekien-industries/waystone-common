@@ -10,7 +10,7 @@ public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
     }
 
     /// <inheritdoc />
-    public TId? Id { get; }
+    public TId? Id { get; private set; }
 
     /// <inheritdoc />
     public bool IsTransient()
@@ -35,6 +35,7 @@ public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
         }
     }
 
+
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
@@ -43,6 +44,11 @@ public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
         if (obj.GetType() != GetType()) return false;
 
         return Equals((Entity<TId>)obj);
+    }
+
+    public void AssignId(TId id)
+    {
+        Id = id;
     }
 
     /// <summary>
