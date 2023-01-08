@@ -1,12 +1,10 @@
-﻿namespace Waystone.Sample.Application.Products;
+﻿namespace Waystone.Sample.Application.Products.GetProduct;
 
+using Common.Application.Contracts.Mediator;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 
-public record GetProductByIdQuery(Guid Id) : IRequest<Result<ProductDto>>
-{ }
-
-public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<ProductDto>>
+internal sealed class GetProductByIdQueryHandler : IQueryHandler<GetProductByIdQuery, ProductDto>
 {
     private readonly IRepository _repository;
 

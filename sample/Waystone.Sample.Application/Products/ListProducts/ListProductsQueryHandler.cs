@@ -1,13 +1,11 @@
-﻿namespace Waystone.Sample.Application.Products;
+﻿namespace Waystone.Sample.Application.Products.ListProducts;
 
+using Common.Application.Contracts.Mediator;
 using Common.Application.Contracts.Pagination;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 
-public sealed class ListProductsQuery : PaginatedRequest<ProductDto>
-{ }
-
-public class ListProductsQueryHandler : IRequestHandler<ListProductsQuery, Result<PaginatedResponse<ProductDto>>>
+internal sealed class ListProductsQueryHandler : IQueryHandler<ListProductsQuery, PaginatedResponse<ProductDto>>
 {
     private readonly IRepository _repository;
 

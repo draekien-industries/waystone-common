@@ -22,10 +22,19 @@ public class Error
         Exception = exception;
     }
 
+    /// <summary>
+    /// The code associated with the error.
+    /// </summary>
     public string Code { get; }
 
+    /// <summary>
+    /// The message associated with the error.
+    /// </summary>
     public string Message { get; }
 
+    /// <summary>
+    /// The exception which caused the error.
+    /// </summary>
     public Exception? Exception { get; }
 }
 
@@ -59,5 +68,8 @@ public class HttpError : Error
         HttpStatusCode = httpStatusCode;
     }
 
+    /// <summary>
+    /// The HTTP Status Code this error should be mapped to.
+    /// </summary>
     public HttpStatusCode HttpStatusCode { get; }
 }

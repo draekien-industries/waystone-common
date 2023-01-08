@@ -2,7 +2,7 @@
 
 using Common.Domain.Contracts.Results;
 
-public static class ProductErrors
+internal static class ProductErrors
 {
     public static Error UnNamed => new("Products_UnNamed", "A product cannot be created without a name.");
 

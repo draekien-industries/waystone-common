@@ -20,16 +20,16 @@ internal sealed class ProductEntityTypeConfiguration : IEntityTypeConfiguration<
         builder.OwnsOne(p => p.Price)
                .Property(p => p.AmountExcludingTax)
                .HasColumnName("AmountExcludingTax")
-               .HasPrecision(18);
+               .HasPrecision(18, 2);
 
         builder.OwnsOne(p => p.Price)
                .Property(p => p.TaxPercentage)
                .HasColumnName("TaxPercentage")
-               .HasPrecision(18);
+               .HasPrecision(18, 2);
 
         builder.OwnsOne(p => p.Price)
                .Property(p => p.DiscountPercentage)
                .HasColumnName("DiscountPercentage")
-               .HasPrecision(18);
+               .HasPrecision(18, 2);
     }
 }

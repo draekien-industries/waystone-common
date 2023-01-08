@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Waystone.Sample.Infrastructure.Shared;
 
@@ -11,9 +12,11 @@ using Waystone.Sample.Infrastructure.Shared;
 namespace Waystone.Sample.Infrastructure.Migrations
 {
     [DbContext(typeof(SampleDbContext))]
-    partial class SampleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230108073143_CreateUsersTable")]
+    partial class CreateUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace Waystone.Sample.Infrastructure.Migrations
                     b.HasIndex(new[] { "Name" }, "UIX_Products_Name")
                         .IsUnique();
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Waystone.Sample.Domain.Users.User", b =>
@@ -79,12 +82,12 @@ namespace Waystone.Sample.Infrastructure.Migrations
                     b.HasIndex(new[] { "Username" }, "UIX_Users_Username")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Waystone.Sample.Domain.Products.Product", b =>
                 {
-                    b.OwnsOne("Waystone.Sample.Domain.Products.Product.Price#Waystone.Sample.Domain.Prices.Price", "Price", b1 =>
+                    b.OwnsOne("Waystone.Sample.Domain.Prices.Price", "Price", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("uniqueidentifier");
@@ -106,7 +109,7 @@ namespace Waystone.Sample.Infrastructure.Migrations
 
                             b1.HasKey("ProductId");
 
-                            b1.ToTable("Products", (string)null);
+                            b1.ToTable("Products");
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");

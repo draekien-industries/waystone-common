@@ -8,7 +8,7 @@ using Serilog;
 using Waystone.Common.Api.Middleware;
 
 /// <summary>Extensions for the <see cref="IWaystoneApiApplicationBuilder" />.</summary>
-public static class WaystoneApiExtensions
+public static class WaystoneApiApplicationBuilderExtensions
 {
     /// <summary>Accepts all the default middlewares for <see cref="IWaystoneApiApplicationBuilder" />.</summary>
     /// <remarks>

@@ -1,6 +1,10 @@
 ﻿namespace Waystone.Sample.Api.Controllers;
 
 using Application.Products;
+using Application.Products.CreateProduct;
+using Application.Products.DeleteProduct;
+using Application.Products.GetProduct;
+using Application.Products.ListProducts;
 using Common.Api.Controllers;
 using Common.Api.ExceptionProblemDetails;
 using Common.Application.Contracts.Pagination;

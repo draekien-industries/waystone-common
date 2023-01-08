@@ -59,25 +59,31 @@ public abstract class WaystoneApiController : ControllerBase
         return BuildLinks(self, next, previous);
     }
 
-    protected IActionResult HandleResult<T>(Result<T> result, Func<T, IActionResult> successFactory)
+    /// <summary>
+    /// Converts a <see cref="Result{T}" /> into an <see cref="IActionResult" /> based on whether it was a success or failure.
+    /// </summary>
+    /// <param name="result">The result that will be processed.</param>
+    /// <param name="actionResultFactory">
+    /// The factory that is invoked to create the action result representing a success status
+    /// code.
+    /// </param>
+    /// <typeparam name="T">The object that is returned inside the action result.</typeparam>
+    /// <returns>An instance of IActionResult.</returns>
+    protected IActionResult HandleResult<T>(Result<T> result, Func<T, IActionResult> actionResultFactory)
     {
-        if (result.Succeeded)
-        {
-            return successFactory(result.Value);
-        }
-
-        return CreateProblem(result);
+        return result.Succeeded ? actionResultFactory(result.Value) : CreateProblem(result);
     }
 
+    /// <summary>
+    /// Converts a <see cref="Result" /> into a NoContent action result or a Problem action result based on whether it was
+    /// successful or not.
+    /// </summary>
+    /// <param name="result">The result to process.</param>
+    /// <returns><c>NoContent</c> if the result was a success; otherwise a <c>Problem</c>.</returns>
     protected IActionResult HandleResult(
         Result result)
     {
-        if (result.Succeeded)
-        {
-            return NoContent();
-        }
-
-        return CreateProblem(result);
+        return result.Succeeded ? NoContent() : CreateProblem(result);
     }
 
     private IActionResult CreateProblem(Result result)

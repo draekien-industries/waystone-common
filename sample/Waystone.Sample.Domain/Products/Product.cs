@@ -4,20 +4,44 @@ using Common.Domain.Contracts.Primitives;
 using Common.Domain.Contracts.Results;
 using Prices;
 
+/// <summary>
+/// A product that can be sold.
+/// </summary>
 public class Product : Entity<Guid>
 {
+    /// <summary>
+    /// The max length of the product's name.
+    /// </summary>
     public const int NameMaxLength = 255;
+
+    /// <summary>
+    /// The max length of the product description.
+    /// </summary>
     public const int DescriptionMaxLength = 1280;
 
     private Product()
     { }
 
-    public string Name { get; private set; }
+    /// <summary>
+    /// The product name.
+    /// </summary>
+    public string Name { get; private set; } = default!;
 
-    public string Description { get; private set; }
+    /// <summary>
+    /// The product description.
+    /// </summary>
+    public string Description { get; private set; } = default!;
 
-    public Price Price { get; private set; }
+    /// <summary>
+    /// THe product's price.
+    /// </summary>
+    public Price Price { get; private set; } = default!;
 
+    /// <summary>
+    /// Updates the name of the product.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public Result<Product> UpdateName(string name)
     {
         Result validationResult = ProductValidators.ValidateName(name);
@@ -32,6 +56,11 @@ public class Product : Entity<Guid>
         return this;
     }
 
+    /// <summary>
+    /// Updates the description of the product.
+    /// </summary>
+    /// <param name="description"></param>
+    /// <returns></returns>
     public Result<Product> UpdateDescription(string description)
     {
         Result validationResult = ProductValidators.ValidateDescription(description);
@@ -46,6 +75,11 @@ public class Product : Entity<Guid>
         return this;
     }
 
+    /// <summary>
+    /// Updates the price of the product.
+    /// </summary>
+    /// <param name="price"></param>
+    /// <returns></returns>
     public Result<Product> UpdatePrice(Price price)
     {
         Result validationResult = ProductValidators.ValidatePrice(price);

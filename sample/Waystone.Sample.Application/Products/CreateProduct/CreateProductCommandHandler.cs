@@ -1,19 +1,12 @@
-﻿namespace Waystone.Sample.Application.Products;
+﻿namespace Waystone.Sample.Application.Products.CreateProduct;
 
 using System.Net;
+using Common.Application.Contracts.Mediator;
 using Domain.Prices;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 
-public sealed record CreateProductCommand(
-    string Name,
-    string? Description,
-    decimal AmountExcludingTax,
-    decimal TaxPercentage,
-    decimal? DiscountPercentage) : IRequest<Result<ProductDto>>
-{ }
-
-public sealed class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<ProductDto>>
+internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ProductDto>
 {
     private readonly IRepository _repository;
 

@@ -1,12 +1,10 @@
-﻿namespace Waystone.Sample.Application.Products;
+﻿namespace Waystone.Sample.Application.Products.DeleteProduct;
 
+using Common.Application.Contracts.Mediator;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 
-public sealed record DeleteProductCommand(Guid Id) : IRequest<Result>
-{ }
-
-internal sealed class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Result>
+internal sealed class DeleteProductCommandHandler : ICommandHandler<DeleteProductCommand>
 {
     private readonly IRepository _repository;
 

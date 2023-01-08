@@ -4,6 +4,10 @@
 public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
     where TId : IEquatable<TId>
 {
+    /// <summary>
+    /// Creates a new instance of an Entity with an optional ID.
+    /// </summary>
+    /// <param name="id">The ID of the entity.</param>
     protected Entity(TId? id = default)
     {
         Id = id;
@@ -46,6 +50,10 @@ public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
         return Equals((Entity<TId>)obj);
     }
 
+    /// <summary>
+    /// Assigns an ID to the current entity.
+    /// </summary>
+    /// <param name="id">The ID.</param>
     public void AssignId(TId id)
     {
         Id = id;
@@ -65,6 +73,7 @@ public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
     /// <inheritdoc />
     public override int GetHashCode()
     {
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
         if (!IsTransient()) return Id!.GetHashCode();
 
         return GetSignatureComponents()

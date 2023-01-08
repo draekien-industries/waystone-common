@@ -49,16 +49,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundProblemDetails"
-                }
-              }
-            }
-          },
           "500": {
             "description": "",
             "content": {
@@ -112,16 +102,6 @@
           "x-position": 1
         },
         "responses": {
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundProblemDetails"
-                }
-              }
-            }
-          },
           "500": {
             "description": "",
             "content": {
@@ -138,6 +118,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusCodeProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusCodeProblemDetails"
                 }
               }
             }
@@ -176,16 +176,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundProblemDetails"
-                }
-              }
-            }
-          },
           "500": {
             "description": "",
             "content": {
@@ -205,6 +195,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundProblemDetails"
+                }
+              }
+            }
           }
         }
       },
@@ -212,12 +212,14 @@
         "tags": [
           "Products"
         ],
+        "summary": "Deletes an existing product.",
         "operationId": "Products_Delete",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "The ID of the product to delete.",
             "schema": {
               "type": "string",
               "format": "guid"
@@ -236,16 +238,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NotFoundProblemDetails"
-                }
-              }
-            }
-          },
           "500": {
             "description": "",
             "content": {
@@ -257,7 +249,7 @@
             }
           },
           "204": {
-            "description": ""
+            "description": "No content."
           }
         }
       }
@@ -265,14 +257,14 @@
   },
   "components": {
     "schemas": {
-      "NotFoundProblemDetails": {
+      "UnknownProblemDetails": {
         "allOf": [
           {
             "$ref": "#/components/schemas/StatusCodeProblemDetails"
           },
           {
             "type": "object",
-            "description": "Not found problem details.",
+            "description": "Internal server error problem details.",
             "additionalProperties": {
               "nullable": true
             }
@@ -324,20 +316,6 @@
             "additionalProperties": {}
           }
         }
-      },
-      "UnknownProblemDetails": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/StatusCodeProblemDetails"
-          },
-          {
-            "type": "object",
-            "description": "Internal server error problem details.",
-            "additionalProperties": {
-              "nullable": true
-            }
-          }
-        ]
       },
       "PaginatedResponseOfProductDto": {
         "type": "object",
@@ -395,54 +373,96 @@
       },
       "ProductDto": {
         "type": "object",
+        "description": "A public facing representation of the Product entity.",
         "additionalProperties": false,
         "properties": {
           "id": {
             "type": "string",
+            "description": "The product's ID.",
             "format": "guid"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The product's name."
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "The product's description."
           },
           "amountExcludingTax": {
             "type": "number",
+            "description": "The product's price (excluding tax).",
             "format": "decimal"
           },
           "tax": {
             "type": "number",
+            "description": "The amount of tax charged for this product.",
             "format": "decimal"
           },
           "total": {
             "type": "number",
+            "description": "The total amount charged for this product.",
             "format": "decimal"
           }
         }
       },
+      "NotFoundProblemDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/StatusCodeProblemDetails"
+          },
+          {
+            "type": "object",
+            "description": "Not found problem details.",
+            "additionalProperties": {
+              "nullable": true
+            }
+          }
+        ]
+      },
       "CreateProductCommand": {
         "type": "object",
+        "description": "Command for creating a new Product",
         "additionalProperties": false,
+        "required": [
+          "name",
+          "amountExcludingTax",
+          "taxPercentage"
+        ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the new product.",
+            "minLength": 1,
+            "nullable": false
           },
           "description": {
             "type": "string",
+            "description": "The description of the new product.",
             "nullable": true
           },
           "amountExcludingTax": {
             "type": "number",
-            "format": "decimal"
+            "description": "The amount to charge for the product (excluding tax).",
+            "format": "decimal",
+            "minimum": 0.0,
+            "minLength": 1,
+            "nullable": false,
+            "exclusiveMinimum": true
           },
           "taxPercentage": {
             "type": "number",
-            "format": "decimal"
+            "description": "The percentage of tax to be changed on this product.",
+            "format": "decimal",
+            "minimum": 0.0,
+            "minLength": 1,
+            "nullable": false
           },
           "discountPercentage": {
             "type": "number",
+            "description": "An optional discount that will be applied on the product's price.",
             "format": "decimal",
+            "minimum": 0.0,
             "nullable": true
           }
         }

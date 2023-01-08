@@ -2,9 +2,9 @@
 
 using System.Net;
 
-public static class ProductsErrors
+internal static class ProductsErrors
 {
-    public static HttpError NotFound = new(
+    public static readonly HttpError NotFound = new(
         HttpStatusCode.NotFound,
         "Products_NotFound",
         "The product associated with the provided ID was not found.");

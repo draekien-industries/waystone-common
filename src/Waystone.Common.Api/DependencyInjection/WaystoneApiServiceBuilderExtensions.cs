@@ -13,6 +13,7 @@ using Hellang.Middleware.ProblemDetails;
 using Hellang.Middleware.ProblemDetails.Mvc;
 using Hosting;
 using Logging;
+using Models;
 using Newtonsoft.Json.Converters;
 using NJsonSchema;
 using Options;
@@ -25,7 +26,7 @@ using Waystone.Common.Domain.Contracts.Exceptions;
 using ZymLabs.NSwag.FluentValidation;
 
 /// <summary>Extensions for configuring the Waystone Common API dependency injection.</summary>
-public static class WaystoneApiBuilderExtensions
+public static class WaystoneApiServiceBuilderExtensions
 {
     /// <summary>Accept the default configuration for the Waystone Common API.</summary>
     /// <remarks>
@@ -33,21 +34,17 @@ public static class WaystoneApiBuilderExtensions
     /// any of the other methods in this class.
     /// </remarks>
     /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
-    /// <param name="apiName">The name of the api.</param>
-    /// <param name="apiVersion">The version of the api.</param>
-    /// <param name="apiDescription">The description of the api.</param>
+    /// <param name="api">The metadata for the API consuming this method.</param>
     public static void AcceptDefaults(
         this IWaystoneApiServiceBuilder serviceBuilder,
-        string apiName,
-        string apiVersion,
-        string apiDescription = "")
+        ApiMetadata api)
     {
         serviceBuilder.AddHttpContextDtoMiddleware();
         serviceBuilder.AddControllers()
                       .AddRoutingConventions()
                       .AddProblemDetailMaps(
                            options => ConfigureDefaultProblemDetailMaps(options, serviceBuilder.Environment))
-                      .AddSwaggerDocumentation(apiName, apiVersion, apiDescription)
+                      .AddSwaggerDocumentation(api.Name, api.Version, api.Description)
                       .ConfigureInvalidModelStateResponse()
                       .BindCorrelationIdHeaderOptions();
     }
@@ -109,10 +106,11 @@ public static class WaystoneApiBuilderExtensions
     /// <summary>Adds the controller configuration for the Waystone Common API.</summary>
     /// <param name="serviceBuilder">The <see cref="IWaystoneApiServiceBuilder" />.</param>
     /// <returns>The <see cref="IWaystoneApiServiceBuilder" />.</returns>
-    public static IWaystoneApiServiceBuilder AddControllers(this IWaystoneApiServiceBuilder serviceBuilder)
+    public static IWaystoneApiServiceBuilder AddControllers(
+        this IWaystoneApiServiceBuilder serviceBuilder)
     {
         serviceBuilder.Services.AddControllers(ConfigureMvcOptions)
-                      .AddFluentValidation(ConfigureFluentValidation)
+                      .AddFluentValidation(options => ConfigureFluentValidation(options, serviceBuilder.Assemblies))
                       .AddProblemDetailsConventions()
                       .AddNewtonsoftJson(ConfigureMvcNewtonsoftJson);
 
@@ -265,9 +263,11 @@ public static class WaystoneApiBuilderExtensions
     }
 
     private static void ConfigureFluentValidation(
-        FluentValidationMvcConfiguration options)
+        FluentValidationMvcConfiguration options,
+        IEnumerable<Assembly> assemblies)
     {
         options.AutomaticValidationEnabled = false;
+        options.RegisterValidatorsFromAssemblies(assemblies, includeInternalTypes: true);
     }
 
     private static void ConfigureMvcOptions(MvcOptions options)
