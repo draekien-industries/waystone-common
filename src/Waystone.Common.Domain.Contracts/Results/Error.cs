@@ -6,6 +6,7 @@ using System.Net;
 /// An error that occured during the normal operation of the application.
 /// Used inside the <see cref="Result" /> object.
 /// </summary>
+[PublicAPI]
 public class Error
 {
     /// <summary>

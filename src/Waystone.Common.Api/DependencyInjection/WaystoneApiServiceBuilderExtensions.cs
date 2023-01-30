@@ -26,6 +26,7 @@ using Waystone.Common.Domain.Contracts.Exceptions;
 using ZymLabs.NSwag.FluentValidation;
 
 /// <summary>Extensions for configuring the Waystone Common API dependency injection.</summary>
+[PublicAPI]
 public static class WaystoneApiServiceBuilderExtensions
 {
     /// <summary>Accept the default configuration for the Waystone Common API.</summary>
@@ -39,8 +40,8 @@ public static class WaystoneApiServiceBuilderExtensions
         this IWaystoneApiServiceBuilder serviceBuilder,
         ApiMetadata api)
     {
-        serviceBuilder.AddHttpContextDtoMiddleware();
-        serviceBuilder.AddControllers()
+        serviceBuilder.AddHttpContextDtoMiddleware()
+                      .AddControllers()
                       .AddRoutingConventions()
                       .AddProblemDetailMaps(
                            options => ConfigureDefaultProblemDetailMaps(options, serviceBuilder.Environment))

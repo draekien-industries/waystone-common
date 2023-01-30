@@ -5,6 +5,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 using Configuration;
 
 /// <summary>Extensions for the <see cref="IServiceCollection" /> interface.</summary>
+[PublicAPI]
 public static class ServiceCollectionExtensions
 {
     /// <summary>

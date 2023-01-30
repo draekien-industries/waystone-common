@@ -3,7 +3,7 @@
 using Application.Contracts.Services;
 
 /// <inheritdoc />
-public class DateTimeProvider : IDateTimeProvider
+internal sealed class DateTimeProvider : IDateTimeProvider
 {
     /// <inheritdoc />
     public DateTime Now => DateTime.Now;

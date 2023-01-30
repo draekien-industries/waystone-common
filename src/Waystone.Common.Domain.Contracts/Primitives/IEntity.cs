@@ -5,6 +5,7 @@
 /// </summary>
 /// <remarks>Commonly used types for <c>TId</c> are <c>int</c>, <c>Guid</c>.</remarks>
 /// <typeparam name="TId">The type of the unique identifier.</typeparam>
+[PublicAPI]
 public interface IEntity<out TId> where TId : IEquatable<TId>
 {
     /// <summary>

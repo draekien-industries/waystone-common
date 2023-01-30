@@ -11,6 +11,7 @@ using Waystone.Common.Api.Logging;
 /// <summary>
 /// Extensions for the <see cref="IWaystoneApiHostBuilder" />.
 /// </summary>
+[PublicAPI]
 public static class WaystoneApiHostBuilderExtensions
 {
     /// <summary>

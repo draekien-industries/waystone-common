@@ -6,6 +6,7 @@ using static System.Reflection.BindingFlags;
 /// <summary>
 /// An alternate enumeration class to get around the limitations of Enum types.
 /// </summary>
+[PublicAPI]
 public abstract class Enumeration : IComparable
 {
     private string? _displayName;

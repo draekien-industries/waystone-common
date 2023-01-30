@@ -1,6 +1,7 @@
 ﻿namespace Waystone.Common.Domain.Contracts.Primitives;
 
 /// <inheritdoc cref="IEntity{TId}" />
+[PublicAPI]
 public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
     where TId : IEquatable<TId>
 {

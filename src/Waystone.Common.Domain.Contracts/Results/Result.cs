@@ -5,6 +5,7 @@
 /// It should be used in place of throwing exceptions as control flow. Return a Result
 /// instead and handle the failure states appropriately.
 /// </summary>
+[PublicAPI]
 public class Result
 {
     /// <summary>
@@ -177,6 +178,7 @@ public class Result
 /// A result which contains a value of type TValue.
 /// </summary>
 /// <typeparam name="TValue">The type of the value associated with a successful result.</typeparam>
+[PublicAPI]
 public class Result<TValue> : Result
 {
     private readonly TValue? _value;

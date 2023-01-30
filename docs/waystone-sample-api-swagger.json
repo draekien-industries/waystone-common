@@ -18,22 +18,18 @@
           {
             "name": "Limit",
             "in": "query",
-            "description": "The maximum number of records to return;",
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "example": 10
+              "format": "int32"
             },
             "x-position": 1
           },
           {
             "name": "Cursor",
             "in": "query",
-            "description": "The offset (from 0) of the first record to return;",
             "schema": {
               "type": "integer",
-              "format": "int32",
-              "example": 0
+              "format": "int32"
             },
             "x-position": 2
           },
@@ -264,7 +260,6 @@
           },
           {
             "type": "object",
-            "description": "Internal server error problem details.",
             "additionalProperties": {
               "nullable": true
             }
@@ -319,11 +314,9 @@
       },
       "PaginatedResponseOfProductDto": {
         "type": "object",
-        "description": "Represents a page of records.",
         "additionalProperties": false,
         "properties": {
           "links": {
-            "description": "The previous, current, and next page Links.",
             "nullable": true,
             "oneOf": [
               {
@@ -333,13 +326,10 @@
           },
           "total": {
             "type": "integer",
-            "description": "The total number of records available.",
-            "format": "int32",
-            "example": 100
+            "format": "int32"
           },
           "results": {
             "type": "array",
-            "description": "The current page of records.",
             "items": {
               "$ref": "#/components/schemas/ProductDto"
             }
@@ -348,24 +338,20 @@
       },
       "Links": {
         "type": "object",
-        "description": "The links used to navigate between pages in a paginated collection.",
         "additionalProperties": false,
         "properties": {
           "self": {
             "type": "string",
-            "description": "The URI link to the current page of results.",
             "format": "uri",
             "nullable": true
           },
           "next": {
             "type": "string",
-            "description": "The URI link to the next page of results if it exists.",
             "format": "uri",
             "nullable": true
           },
           "previous": {
             "type": "string",
-            "description": "The URI link to the previous page of results if it exists.",
             "format": "uri",
             "nullable": true
           }
@@ -413,7 +399,6 @@
           },
           {
             "type": "object",
-            "description": "Not found problem details.",
             "additionalProperties": {
               "nullable": true
             }

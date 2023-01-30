@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.WebUtilities;
 /// <summary>
 /// Middleware for populating the <see cref="HttpContextDto" /> from the <see cref="HttpContext" />.
 /// </summary>
-internal class HttpContextDtoMiddleware
+internal sealed class HttpContextDtoMiddleware
 {
     private readonly RequestDelegate _next;
 

@@ -7,6 +7,7 @@ using MediatR;
 /// and stored in the distributed cache.
 /// </summary>
 /// <typeparam name="TResponse">The response type. Must have a parameterless constructor.</typeparam>
+[PublicAPI]
 public interface ICachedRequest<out TResponse> : IRequest<TResponse> where TResponse : new()
 {
     /// <summary>

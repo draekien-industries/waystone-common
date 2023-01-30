@@ -4,6 +4,7 @@
 /// An object that is immutable and has no identity. Learn more:
 /// https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/implement-value-objects
 /// </summary>
+[PublicAPI]
 public abstract class ValueObject
 {
     /// <summary>Gets the hashcode of the current value object.</summary>

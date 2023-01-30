@@ -10,6 +10,7 @@ using Serilog.Configuration;
 /// <summary>
 /// Extensions for the <see cref="LoggerEnrichmentConfiguration" />.
 /// </summary>
+[PublicAPI]
 public static class LoggerEnrichmentConfigurationExtensions
 {
     /// <summary>

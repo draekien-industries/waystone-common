@@ -7,6 +7,7 @@ using Waystone.Common.Application.Contracts.Caching;
 /// <summary>
 /// Options for configuring the <see cref="IWaystoneApplicationBuilder" />.
 /// </summary>
+[PublicAPI]
 public class WaystoneApplicationBuilderOptions
 {
     /// <summary>
