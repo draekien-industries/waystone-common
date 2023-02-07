@@ -5,6 +5,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 using AspNetCore.Builder;
 
 /// <summary>Extensions for the <see cref="WebApplication" />.</summary>
+[PublicAPI]
 public static class WebApplicationExtensions
 {
     /// <summary>

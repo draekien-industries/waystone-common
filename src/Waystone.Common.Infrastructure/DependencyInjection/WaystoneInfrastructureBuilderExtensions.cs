@@ -14,6 +14,7 @@ using Waystone.Common.Infrastructure.Caching;
 using Waystone.Common.Infrastructure.Services;
 
 /// <summary>Extensions for configuring the Waystone Common infrastructure dependency injection.</summary>
+[PublicAPI]
 public static class WaystoneInfrastructureBuilderExtensions
 {
     private const string RedisConnectionStringKey = "Redis";

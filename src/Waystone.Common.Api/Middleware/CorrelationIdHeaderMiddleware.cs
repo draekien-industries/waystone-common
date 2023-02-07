@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
 /// <summary>Middleware to handle the correlation ID header.</summary>
-internal class CorrelationIdHeaderMiddleware
+internal sealed class CorrelationIdHeaderMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly CorrelationIdHeaderOptions _options;

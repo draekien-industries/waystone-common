@@ -4,6 +4,7 @@ using System.Net.Mime;
 using Newtonsoft.Json;
 
 /// <summary>Extensions for <see cref="HttpContent" />.</summary>
+[PublicAPI]
 public static class HttpContentExtensions
 {
     /// <summary>Deserializes the JSON string contained in the <see cref="HttpContent" /> to an object of the specified type.</summary>

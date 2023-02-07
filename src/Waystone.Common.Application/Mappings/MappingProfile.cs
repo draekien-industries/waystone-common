@@ -5,6 +5,7 @@ using AutoMapper;
 using Contracts.Mappings;
 
 /// <summary>The mapping profile which registers all classes implementing <see cref="IMapFrom{T}" />.</summary>
+[PublicAPI]
 public sealed class MappingProfile : Profile
 {
     /// <summary>Initializes a new <see cref="MappingProfile" />.</summary>

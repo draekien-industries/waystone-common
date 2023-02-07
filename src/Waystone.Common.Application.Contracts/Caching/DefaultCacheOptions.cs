@@ -3,6 +3,7 @@
 /// <summary>
 /// Options for the default caching behaviour.
 /// </summary>
+[PublicAPI]
 public sealed class DefaultCacheOptions
 {
     /// <summary>

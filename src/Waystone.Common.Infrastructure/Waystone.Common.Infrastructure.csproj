@@ -4,16 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Title>Waystone.Common.Infrastructure</Title>
         <Description>The foundational code required to create .NET 6 Clean Architecture Infrastructure layer projects for Draekien Industries.</Description>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <Copyright>Draekien Industries</Copyright>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/draekien-industries/waystone-common</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/draekien-industries/waystone-common</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 

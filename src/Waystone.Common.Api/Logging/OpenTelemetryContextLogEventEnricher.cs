@@ -7,7 +7,7 @@ using Serilog.Events;
 /// <summary>
 /// Log event enricher for OpenTelemetry.
 /// </summary>
-internal class OpenTelemetryContextLogEventEnricher : ILogEventEnricher
+internal sealed class OpenTelemetryContextLogEventEnricher : ILogEventEnricher
 {
     /// <inheritdoc />
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)

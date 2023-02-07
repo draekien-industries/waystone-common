@@ -146,6 +146,7 @@ public class DistributedCacheFacadeTests
 
     private class ObjectToStore
     {
+        // ReSharper disable once UnusedMember.Local
         public int Id { get; set; }
 
         public string Value { get; set; } = string.Empty;

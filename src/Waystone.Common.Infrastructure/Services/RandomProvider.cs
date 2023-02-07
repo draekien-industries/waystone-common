@@ -3,7 +3,7 @@
 using Application.Contracts.Services;
 
 /// <inheritdoc />
-public class RandomProvider : IRandomProvider
+internal sealed class RandomProvider : IRandomProvider
 {
     /// <inheritdoc />
     public int Next()

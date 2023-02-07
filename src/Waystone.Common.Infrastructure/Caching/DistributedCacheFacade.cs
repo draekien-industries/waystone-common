@@ -5,7 +5,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-internal class DistributedCacheFacade : IDistributedCacheFacade
+internal sealed class DistributedCacheFacade : IDistributedCacheFacade
 {
     private readonly IDistributedCache _cache;
     private readonly DefaultCacheOptions _defaultCacheOptions;

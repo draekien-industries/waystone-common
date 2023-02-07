@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection.Models;
 using Serilog;
 using Serilog.Debugging;
 using Waystone.Sample.Application;
@@ -16,14 +17,16 @@ try
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+    ApiMetadata api = new("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
+
     builder.Services.AddWaystoneApiServiceBuilder(
                 builder.Environment,
                 builder.Configuration,
                 typeof(ApplicationAssemblyMarker))
-           .AcceptDefaults("Waystone.Sample.Api", "v1", "A sample API built with Waystone.Common.Api");
+           .AcceptDefaults(api);
 
     builder.Services.AddSampleApplication(builder.Configuration);
-    builder.Services.AddSampleInfrastructure(builder.Configuration);
+    builder.Services.AddSampleInfrastructure(builder.Configuration, builder.Environment);
 
     builder.Host.UseWaystoneApiHostBuilder()
            .AcceptDefaults();
@@ -45,15 +48,26 @@ try
 }
 catch (Exception ex)
 {
+    string type = ex.GetType().Name;
+
+    if (type.Equals("HostAbortedException", StringComparison.Ordinal))
+    {
+        Log.Information(ex, "Host startup was aborted: {Message}", ex.Message);
+
+        return 0;
+    }
+
     Log.Fatal(ex, "Host terminated unexpectedly. Check the WebHost configuration");
 
-    throw;
+    return 1;
 }
 finally
 {
     Log.Information("Waystone.Sample.Api stopped");
     Log.CloseAndFlush();
 }
+
+return 0;
 
 /// <summary>Expose Program for integration tests</summary>
 public partial class Program

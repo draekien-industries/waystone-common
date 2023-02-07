@@ -1,6 +1,7 @@
 ﻿namespace Waystone.Common.Infrastructure.Caching;
 
-internal class RedisCacheConfiguration
+[PublicAPI]
+public sealed class RedisCacheConfiguration
 {
     public string[] Endpoints { get; init; } = Array.Empty<string>();
 

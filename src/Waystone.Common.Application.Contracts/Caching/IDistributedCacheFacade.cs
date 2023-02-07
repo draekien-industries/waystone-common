@@ -5,6 +5,7 @@ using Microsoft.Extensions.Caching.Distributed;
 /// <summary>
 /// A facade for using the Redis as a distributed cache.
 /// </summary>
+[PublicAPI]
 public interface IDistributedCacheFacade
 {
     /// <summary>

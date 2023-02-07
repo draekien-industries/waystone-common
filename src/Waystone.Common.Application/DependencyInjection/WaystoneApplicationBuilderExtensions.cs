@@ -12,6 +12,7 @@ using Waystone.Common.Application.Mappings;
 /// <summary>
 /// Extensions for configuring the dependency injection provided by the Waystone Application.
 /// </summary>
+[PublicAPI]
 public static class WaystoneApplicationBuilderExtensions
 {
     /// <summary>

@@ -8,7 +8,7 @@ using Serilog.Events;
 /// <summary>
 /// An enricher that adds http context information to log events.
 /// </summary>
-internal class HttpContextEnricher : ILogEventEnricher
+internal sealed class HttpContextEnricher : ILogEventEnricher
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 

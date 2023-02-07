@@ -6,6 +6,7 @@ using System.Reflection;
 using Configuration;
 
 /// <summary>A builder that manages the dependency injection of the services provided by the library.</summary>
+[PublicAPI]
 public interface IWaystoneApplicationBuilder
 {
     /// <summary>The service collection.</summary>
