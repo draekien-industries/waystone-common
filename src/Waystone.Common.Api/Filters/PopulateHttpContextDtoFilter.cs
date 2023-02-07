@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>
 /// A filter that populates the <see cref="HttpContextDto" />.
 /// </summary>
-internal class PopulateHttpContextDtoFilter : IAsyncActionFilter
+internal sealed class PopulateHttpContextDtoFilter : IAsyncActionFilter
 {
     /// <inheritdoc />
     public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

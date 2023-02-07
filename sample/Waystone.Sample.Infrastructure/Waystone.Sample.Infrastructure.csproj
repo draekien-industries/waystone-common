@@ -11,4 +11,18 @@
         <ProjectReference Include="..\Waystone.Sample.Application\Waystone.Sample.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="Waystone.Sample.Api.IntegrationTests" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Migrations" />
+    </ItemGroup>
+
 </Project>

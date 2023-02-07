@@ -1,0 +1,12 @@
+﻿<Project>
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Copyright>Draekien Industries</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/draekien-industries/waystone-common</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/draekien-industries/waystone-common</PackageProjectUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+</Project>

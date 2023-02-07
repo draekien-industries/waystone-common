@@ -7,7 +7,8 @@ using Microsoft.Extensions.Primitives;
 /// <summary>
 /// Contract for logging the HttpContext.
 /// </summary>
-internal class HttpContextDto
+[PublicAPI]
+public sealed class HttpContextDto
 {
     /// <summary>
     /// The <see cref="Claim" />s of the current user.

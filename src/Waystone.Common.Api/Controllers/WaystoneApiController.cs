@@ -1,12 +1,17 @@
 ﻿namespace Waystone.Common.Api.Controllers;
 
+using System.Net;
 using System.Net.Mime;
 using Application.Contracts.Pagination;
+using ConfigurationOptions;
+using Domain.Contracts.Results;
 using ExceptionProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 
 /// <summary>
 /// The base controller that should be used for all API controllers. Provides access to Mediator and utility
@@ -16,11 +21,17 @@ using Microsoft.Extensions.DependencyInjection;
 [Route("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 [Consumes(MediaTypeNames.Application.Json)]
-[ProducesResponseType(typeof(NotFoundProblemDetails), StatusCodes.Status400BadRequest)]
 [ProducesResponseType(typeof(UnknownProblemDetails), StatusCodes.Status500InternalServerError)]
-public class WaystoneApiController : ControllerBase
+public abstract class WaystoneApiController : ControllerBase
 {
+    private IConfiguration? _configuration;
     private IMediator? _mediator;
+
+    /// <summary>
+    /// Provides access to the API's configuration without dependency injection.
+    /// </summary>
+    protected IConfiguration Configuration =>
+        _configuration ??= HttpContext.RequestServices.GetRequiredService<IConfiguration>();
 
     /// <summary>Provides access to an instance of <see cref="IMediator" /> without dependency injection.</summary>
     protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
@@ -46,6 +57,63 @@ public class WaystoneApiController : ControllerBase
         string? previous = GetPreviousOrDefault(actionName, request);
 
         return BuildLinks(self, next, previous);
+    }
+
+    /// <summary>
+    /// Converts a <see cref="Result{T}" /> into an <see cref="IActionResult" /> based on whether it was a success or failure.
+    /// </summary>
+    /// <param name="result">The result that will be processed.</param>
+    /// <param name="actionResultFactory">
+    /// The factory that is invoked to create the action result representing a success status
+    /// code.
+    /// </param>
+    /// <typeparam name="T">The object that is returned inside the action result.</typeparam>
+    /// <returns>An instance of IActionResult.</returns>
+    protected IActionResult HandleResult<T>(Result<T> result, Func<T, IActionResult> actionResultFactory)
+    {
+        return result.Succeeded ? actionResultFactory(result.Value) : CreateProblem(result);
+    }
+
+    /// <summary>
+    /// Converts a <see cref="Result" /> into a NoContent action result or a Problem action result based on whether it was
+    /// successful or not.
+    /// </summary>
+    /// <param name="result">The result to process.</param>
+    /// <returns><c>NoContent</c> if the result was a success; otherwise a <c>Problem</c>.</returns>
+    protected IActionResult HandleResult(
+        Result result)
+    {
+        return result.Succeeded ? NoContent() : CreateProblem(result);
+    }
+
+    private IActionResult CreateProblem(Result result)
+    {
+        CorrelationIdHeaderOptions correlationIdHeaderOptions = Configuration
+                                                               .GetSection(CorrelationIdHeaderOptions.SectionName)
+                                                               .Get<CorrelationIdHeaderOptions>()
+                                                             ?? new CorrelationIdHeaderOptions();
+
+        string headerName = correlationIdHeaderOptions.HeaderName;
+
+        HttpContext.Request.Headers.TryGetValue(headerName, out StringValues correlationIdHeader);
+
+        if (result.Errors.All(error => error is not HttpError))
+        {
+            return Problem(
+                result.Error,
+                correlationIdHeader,
+                StatusCodes.Status500InternalServerError,
+                HttpStatusCode.InternalServerError.ToString());
+        }
+
+        Error error = result.Errors.First(e => e is HttpError);
+        var httpError = (HttpError)error;
+
+        return Problem(
+            result.Error,
+            correlationIdHeader,
+            (int)httpError.HttpStatusCode,
+            httpError.HttpStatusCode.ToString());
     }
 
     private string? GetNextOrDefault<T>(string actionName, PaginatedRequest<T> request, PaginatedResponse<T> response)

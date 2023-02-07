@@ -36,5 +36,9 @@ using Waystone.Application.DependencyInjection;
 services.AddWaystoneApplicationBuilder(typeof(DependencyInjection))
         .AddAutoMapper()
         .AddMediatR()
-        .AddFluentValidation();
+        .AddFluentValidation()
+        .ConfigurePipelineBehaviours(options => {
+            options.UseValidationPipelineBehaviour = true;
+            options.UseCachingPipelineBehaviour = true;
+        });
 ```

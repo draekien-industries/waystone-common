@@ -7,6 +7,7 @@ using AspNetCore.Builder;
 /// <summary>
 /// Extensions for the <see cref="ConfigureHostBuilder" />.
 /// </summary>
+[PublicAPI]
 public static class ConfigureHostBuilderExtensions
 {
     /// <summary>

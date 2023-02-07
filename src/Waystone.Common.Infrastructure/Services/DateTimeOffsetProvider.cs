@@ -3,7 +3,7 @@
 using Application.Contracts.Services;
 
 /// <inheritdoc />
-public class DateTimeOffsetProvider : IDateTimeOffsetProvider
+internal sealed class DateTimeOffsetProvider : IDateTimeOffsetProvider
 {
     /// <inheritdoc />
     public DateTimeOffset Now => DateTimeOffset.Now;

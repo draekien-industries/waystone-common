@@ -6,6 +6,7 @@ using Configuration;
 using Hosting;
 
 /// <summary>Extensions for the <see cref="IServiceCollection" />.</summary>
+[PublicAPI]
 public static class ServiceCollectionExtensions
 {
     /// <summary>
