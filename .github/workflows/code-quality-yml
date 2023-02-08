@@ -1,0 +1,37 @@
+name: "Code Quality"
+
+concurrency:
+  group: "code quality"
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  branches:
+    - main
+  paths:
+    - "src/**"
+
+jobs:
+  build-and-scan:
+    name: Build and Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
+
+      - name: Setup .NET Core 6
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "6.x"
+          include-prerelease: true
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Scan
+        uses: JetBrains/qodana-action@main
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
