@@ -1,15 +1,19 @@
-name: Verify Pull Request
+name: "Code Quality"
+
+concurrency:
+  group: "code quality"
+  cancel-in-progress: true
 
 on:
-  pull_request:
-    branches:
-      - main
-      - develop
-      - "release/**"
+  workflow_dispatch:
+  branches:
+    - main
+  paths:
+    - "src/**"
 
 jobs:
-  build-and-test:
-    name: Build and run tests
+  build-and-scan:
+    name: Build and Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,12 +31,7 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Test
+      - name: Scan
+        uses: JetBrains/qodana-action@main
         env:
-          ASPNETCORE_ENVIRONMENT: Test
-        run: dotnet test --no-restore --collect:"XPlat Code Coverage"
-
-      - name: Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
