@@ -1,20 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Title>Waystone.Common.Domain</Title>
+    <Description>The boilerplate code for creating .NET 6 Clean Architecture Domain layer projects for Draekien Industries.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <None Update="README.md">
-        <Pack>true</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-    </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>true</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
