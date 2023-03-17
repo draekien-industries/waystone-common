@@ -7,7 +7,7 @@ using System.Net;
 /// Used inside the <see cref="Result" /> object.
 /// </summary>
 [PublicAPI]
-public class Error
+public record Error
 {
     /// <summary>
     /// An error that occured during the normal operation of the application.
@@ -42,7 +42,7 @@ public class Error
 /// <summary>
 /// An error that can be mapped to a <see cref="HttpStatusCode" />.
 /// </summary>
-public class HttpError : Error
+public record HttpError : Error
 {
     /// <summary>
     /// An error that can be mapped to a <see cref="HttpStatusCode" />.
