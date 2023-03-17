@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Waystone.Common.Application.Contracts\Waystone.Common.Application.Contracts.csproj" />
+        <ProjectReference Include="..\Waystone.Common.Domain\Waystone.Common.Domain.csproj" />
         <ProjectReference Include="..\Waystone.Common.Infrastructure.Contracts\Waystone.Common.Infrastructure.Contracts.csproj" />
     </ItemGroup>
 

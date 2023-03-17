@@ -1,8 +1,8 @@
 ﻿namespace Waystone.Sample.Domain.Prices;
 
 using System.Globalization;
-using Common.Domain.Contracts.Primitives;
-using Common.Domain.Contracts.Results;
+using Common.Domain.Primitives;
+using Common.Domain.Results;
 
 /// <summary>
 /// A price represents the cost of purchasing a product or service.

@@ -1,7 +1,7 @@
 ﻿namespace Waystone.Sample.Domain.Products;
 
-using Common.Domain.Contracts.Primitives;
-using Common.Domain.Contracts.Results;
+using Common.Domain.Primitives;
+using Common.Domain.Results;
 using Prices;
 
 /// <summary>

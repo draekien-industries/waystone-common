@@ -1,4 +1,6 @@
-﻿namespace Waystone.Common.Domain.Contracts.Primitives;
+﻿namespace Waystone.Common.Domain.Primitives;
+
+using Contracts.Primitives;
 
 /// <inheritdoc cref="IEntity{TId}" />
 [PublicAPI]

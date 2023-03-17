@@ -1,6 +1,7 @@
 ﻿namespace Waystone.Sample.Application.Products.DeleteProduct;
 
 using Common.Application.Contracts.Mediator;
+using Common.Domain.Results;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 

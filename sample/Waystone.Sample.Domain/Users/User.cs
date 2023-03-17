@@ -1,6 +1,6 @@
 ﻿namespace Waystone.Sample.Domain.Users;
 
-using Common.Domain.Contracts.Primitives;
+using Common.Domain.Primitives;
 
 /// <summary>
 /// A user of the application

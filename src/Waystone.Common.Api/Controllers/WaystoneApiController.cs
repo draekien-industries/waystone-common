@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Mime;
 using Application.Contracts.Pagination;
 using ConfigurationOptions;
-using Domain.Contracts.Results;
+using Domain.Results;
 using ExceptionProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Http;

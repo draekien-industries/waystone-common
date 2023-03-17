@@ -8,7 +8,6 @@ using Application.Products.ListProducts;
 using Common.Api.Controllers;
 using Common.Api.ExceptionProblemDetails;
 using Common.Application.Contracts.Pagination;
-using Common.Domain.Contracts.Results;
 using Common.Domain.Results;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;

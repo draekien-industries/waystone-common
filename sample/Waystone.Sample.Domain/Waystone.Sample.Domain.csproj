@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
+      <ProjectReference Include="..\..\src\Waystone.Common.Domain\Waystone.Common.Domain.csproj" />
     </ItemGroup>
 
 </Project>

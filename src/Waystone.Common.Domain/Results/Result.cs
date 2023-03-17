@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Domain.Contracts.Results;
+﻿namespace Waystone.Common.Domain.Results;
 
 /// <summary>
 /// A result is a container that has either a success state or a failure state.

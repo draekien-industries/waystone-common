@@ -22,7 +22,7 @@ using Waystone.Common.Api.ExceptionProblemDetails;
 using Waystone.Common.Api.Filters;
 using Waystone.Common.Api.Logging;
 using Waystone.Common.Api.SwaggerDocument;
-using Waystone.Common.Domain.Contracts.Exceptions;
+using Waystone.Common.Domain.Exceptions;
 using ZymLabs.NSwag.FluentValidation;
 
 /// <summary>Extensions for configuring the Waystone Common API dependency injection.</summary>

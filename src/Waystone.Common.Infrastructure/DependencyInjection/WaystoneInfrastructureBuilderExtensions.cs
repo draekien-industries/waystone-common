@@ -9,7 +9,7 @@ using Extensions;
 using StackExchange.Redis;
 using Waystone.Common.Application.Contracts.Caching;
 using Waystone.Common.Application.Contracts.Services;
-using Waystone.Common.Domain.Contracts.Exceptions;
+using Waystone.Common.Domain.Exceptions;
 using Waystone.Common.Infrastructure.Caching;
 using Waystone.Common.Infrastructure.Services;
 

@@ -1,6 +1,7 @@
 ﻿namespace Waystone.Sample.Application.Products;
 
 using System.Net;
+using Common.Domain.Results;
 
 internal static class ProductsErrors
 {
