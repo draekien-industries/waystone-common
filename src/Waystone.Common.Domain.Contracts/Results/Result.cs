@@ -75,6 +75,12 @@ public class Result
         return new Result<TValue>(true, value);
     }
 
+    /// <inheritdoc cref="Success{TValue}" />
+    public static Result<TValue> Create<TValue>(TValue value)
+    {
+        return Success(value);
+    }
+
     /// <summary>
     /// Creates a result in it's failed state.
     /// </summary>
