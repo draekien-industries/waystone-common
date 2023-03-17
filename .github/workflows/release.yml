@@ -119,7 +119,8 @@ jobs:
         working-directory: src
         run: |
           dotnet restore Waystone.Common.Api
-          dotnet restore Waystone.Common.Application          
+          dotnet restore Waystone.Common.Application
+          dotnet restore Waystone.Common.Domain          
           dotnet restore Waystone.Common.Infrastructure
 
       - name: Build
@@ -127,6 +128,7 @@ jobs:
         run: |
           dotnet build Waystone.Common.Api -c Release --no-restore
           dotnet build Waystone.Common.Application -c Release --no-restore
+          dotnet build Waystone.Common.Domain -c Release --no-restore
           dotnet build Waystone.Common.Infrastructure -c Release --no-restore
 
       - name: Pack
@@ -135,6 +137,7 @@ jobs:
           dotnet pack Waystone.Common.Api -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
           dotnet pack Waystone.Common.Application -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
           dotnet pack Waystone.Common.Application.Contracts -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
+          dotnet pack Waystone.Common.Domain -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
           dotnet pack Waystone.Common.Domain.Contracts -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
           dotnet pack Waystone.Common.Infrastructure -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
           dotnet pack Waystone.Common.Infrastructure.Contracts -c Release --no-restore -o out -p:PackageVersion=${{ needs.calculate-version.outputs.semVer }}
