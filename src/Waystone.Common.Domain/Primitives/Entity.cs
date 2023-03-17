@@ -70,7 +70,7 @@ public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
     /// Use <c>yield return</c> to return each signature that uniquely identifies
     /// a transient entity.
     /// </remarks>
-    /// <returns>THe set of signature components.</returns>
+    /// <returns>The set of signature components.</returns>
     protected abstract IEnumerable<object?> GetSignatureComponents();
 
     /// <inheritdoc />
