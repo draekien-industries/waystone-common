@@ -40,4 +40,38 @@ public class ResultTests
         updateNameResult.Errors.Should().Contain(ProductErrors.UnNamed);
         product.Name.Should().Be("abc");
     }
+
+    [Fact]
+    public void GivenEmptyProductDescription_WhenUpdatingProductDescription_ThenResultShouldBeSuccess()
+    {
+        // Arrange
+        Result<Price> createPriceResult = Price.Create(1, 0.1m);
+        Result<Product> createProductResult = Product.CreateTransient("abc", createPriceResult.Value, "abc");
+
+        Product product = createProductResult.Value;
+
+        // Act
+        Result updateDescriptionResult = product.UpdateDescription("");
+
+        // Assert
+        updateDescriptionResult.Succeeded.Should().BeTrue();
+        product.Description.Should().Be("");
+    }
+
+    [Fact]
+    public void GivenTooLongDescription_WhenUpdatingProductDescription_ThenResultShouldBeFailure()
+    {
+        // Arrange
+        Result<Price> createPriceResult = Price.Create(1, 0.1m);
+        Result<Product> createProductResult = Product.CreateTransient("abc", createPriceResult.Value, "abc");
+
+        Product product = createProductResult.Value;
+
+        // Act
+        Result updateDescriptionResult = product.UpdateDescription(new string('a', Product.DescriptionMaxLength + 1));
+
+        // Assert
+        updateDescriptionResult.Succeeded.Should().BeFalse();
+        product.Description.Should().Be("abc");
+    }
 }
