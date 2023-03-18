@@ -81,6 +81,14 @@ public static class ResultExtensions
         return await func(result.Value);
     }
 
+    /// <summary>
+    /// Executes a function depending on the outcome of the current <see cref="Result" />
+    /// </summary>
+    /// <param name="result">The current result</param>
+    /// <param name="onSuccess">The delegate which will be invoked upon a successful result</param>
+    /// <param name="onFailure">The delegate which will be invoked upon a failed result</param>
+    /// <typeparam name="TOut">The success function return type</typeparam>
+    /// <returns>The success function return type</returns>
     public static TOut Match<TOut>(
         this Result result,
         Func<TOut> onSuccess,
@@ -94,6 +102,15 @@ public static class ResultExtensions
         return onFailure(result.Errors);
     }
 
+    /// <summary>
+    /// Executes a function depending on the outcome of the current <see cref="Result{TValue}" />
+    /// </summary>
+    /// <param name="result">The current result</param>
+    /// <param name="onSuccess">The delegate which will be invoked upon a successful result</param>
+    /// <param name="onFailure">The delegate which will be invoked upon a failed result</param>
+    /// <typeparam name="TIn">The current result value type</typeparam>
+    /// <typeparam name="TOut">The success function return type</typeparam>
+    /// <returns>The success function return type</returns>
     public static TOut Match<TIn, TOut>(
         this Result<TIn> result,
         Func<TIn, TOut> onSuccess,
