@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Domain.Contracts.Exceptions;
+﻿namespace Waystone.Common.Domain.Exceptions;
 
 using System.Runtime.Serialization;
 

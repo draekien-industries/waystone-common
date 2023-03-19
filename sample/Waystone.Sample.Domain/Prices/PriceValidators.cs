@@ -1,6 +1,6 @@
 ﻿namespace Waystone.Sample.Domain.Prices;
 
-using Common.Domain.Contracts.Results;
+using Common.Domain.Results;
 
 internal static class PriceValidators
 {

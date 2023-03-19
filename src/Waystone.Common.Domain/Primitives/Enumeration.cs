@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Domain.Contracts.Primitives;
+﻿namespace Waystone.Common.Domain.Primitives;
 
 using System.Reflection;
 using static System.Reflection.BindingFlags;

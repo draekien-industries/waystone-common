@@ -2,6 +2,7 @@
 
 using Common.Application.Contracts.Mediator;
 using Common.Application.Contracts.Pagination;
+using Common.Domain.Results;
 using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 

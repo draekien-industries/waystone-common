@@ -1,6 +1,6 @@
 ﻿namespace Waystone.Sample.Domain.Products;
 
-using Common.Domain.Contracts.Results;
+using Common.Domain.Results;
 
 internal static class ProductErrors
 {

@@ -17,12 +17,18 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                 ServiceDescriptor? dbContextDescriptor =
                     services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<SampleDbContext>));
 
-                services.Remove(dbContextDescriptor);
+                if (dbContextDescriptor is not null)
+                {
+                    services.Remove(dbContextDescriptor);
+                }
 
                 ServiceDescriptor? dbConnectionDescriptor =
                     services.SingleOrDefault(d => d.ServiceType == typeof(DbConnection));
 
-                services.Remove(dbConnectionDescriptor);
+                if (dbConnectionDescriptor is not null)
+                {
+                    services.Remove(dbConnectionDescriptor);
+                }
 
                 services.AddDbContext<SampleDbContext>(
                     (container, options) => { options.UseInMemoryDatabase("WaystoneSample"); });

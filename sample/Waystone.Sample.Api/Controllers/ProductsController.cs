@@ -8,7 +8,7 @@ using Application.Products.ListProducts;
 using Common.Api.Controllers;
 using Common.Api.ExceptionProblemDetails;
 using Common.Application.Contracts.Pagination;
-using Common.Domain.Contracts.Results;
+using Common.Domain.Results;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,16 +29,16 @@ public class ProductsController : WaystoneApiController
         [FromQuery] ListProductsQuery request,
         CancellationToken cancellationToken)
     {
-        Result<PaginatedResponse<ProductDto>> result = await Mediator.Send(request, cancellationToken);
+        return await Result.Create(request)
+                           .BindAsync(query => Mediator.Send(query, cancellationToken))
+                           .MatchAsync(
+                                products =>
+                                {
+                                    products.Links = CreatePaginationLinks("List", request, products);
 
-        return HandleResult(
-            result,
-            page =>
-            {
-                page.Links = CreatePaginationLinks("List", request, page);
-
-                return Ok(page);
-            });
+                                    return Ok(products);
+                                },
+                                CreateProblem);
     }
 
     /// <summary>
@@ -55,9 +55,9 @@ public class ProductsController : WaystoneApiController
     {
         GetProductByIdQuery request = new(id);
 
-        Result<ProductDto> result = await Mediator.Send(request, cancellationToken);
-
-        return HandleResult(result, Ok);
+        return await Result.Create(request)
+                           .BindAsync(query => Mediator.Send(query, cancellationToken))
+                           .MatchAsync(Ok, CreateProblem);
     }
 
     /// <summary>
@@ -74,9 +74,11 @@ public class ProductsController : WaystoneApiController
         [FromBody] CreateProductCommand request,
         CancellationToken cancellationToken)
     {
-        Result<ProductDto> result = await Mediator.Send(request, cancellationToken);
-
-        return HandleResult(result, created => CreatedAtAction("GetById", new { id = created.Id }, created));
+        return await Result.Create(request)
+                           .BindAsync(command => Mediator.Send(command, cancellationToken))
+                           .MatchAsync(
+                                product => CreatedAtAction("GetById", new { id = product.Id }, product),
+                                CreateProblem);
     }
 
     /// <summary>
@@ -92,8 +94,8 @@ public class ProductsController : WaystoneApiController
     {
         DeleteProductCommand command = new(id);
 
-        Result result = await Mediator.Send(command, cancellationToken);
-
-        return HandleResult(result);
+        return await Result.Create(command)
+                           .BindAsync(request => Mediator.Send(request, cancellationToken))
+                           .MatchAsync(NoContent, CreateProblem);
     }
 }

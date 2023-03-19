@@ -4,10 +4,11 @@ using System.Net;
 using System.Net.Mime;
 using Application.Contracts.Pagination;
 using ConfigurationOptions;
-using Domain.Contracts.Results;
+using Domain.Results;
 using ExceptionProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,33 +61,11 @@ public abstract class WaystoneApiController : ControllerBase
     }
 
     /// <summary>
-    /// Converts a <see cref="Result{T}" /> into an <see cref="IActionResult" /> based on whether it was a success or failure.
+    /// Takes a collection of errors and turns them into problem details
     /// </summary>
-    /// <param name="result">The result that will be processed.</param>
-    /// <param name="actionResultFactory">
-    /// The factory that is invoked to create the action result representing a success status
-    /// code.
-    /// </param>
-    /// <typeparam name="T">The object that is returned inside the action result.</typeparam>
-    /// <returns>An instance of IActionResult.</returns>
-    protected IActionResult HandleResult<T>(Result<T> result, Func<T, IActionResult> actionResultFactory)
-    {
-        return result.Succeeded ? actionResultFactory(result.Value) : CreateProblem(result);
-    }
-
-    /// <summary>
-    /// Converts a <see cref="Result" /> into a NoContent action result or a Problem action result based on whether it was
-    /// successful or not.
-    /// </summary>
-    /// <param name="result">The result to process.</param>
-    /// <returns><c>NoContent</c> if the result was a success; otherwise a <c>Problem</c>.</returns>
-    protected IActionResult HandleResult(
-        Result result)
-    {
-        return result.Succeeded ? NoContent() : CreateProblem(result);
-    }
-
-    private IActionResult CreateProblem(Result result)
+    /// <param name="errors">The collection of errors</param>
+    /// <returns>A status code result containing the problem details</returns>
+    protected IActionResult CreateProblem(IReadOnlyCollection<Error> errors)
     {
         CorrelationIdHeaderOptions correlationIdHeaderOptions = Configuration
                                                                .GetSection(CorrelationIdHeaderOptions.SectionName)
@@ -97,23 +76,38 @@ public abstract class WaystoneApiController : ControllerBase
 
         HttpContext.Request.Headers.TryGetValue(headerName, out StringValues correlationIdHeader);
 
-        if (result.Errors.All(error => error is not HttpError))
+        string instance = HttpContext.Request.GetEncodedPathAndQuery();
+
+        if (errors.All(error => error is not HttpError))
         {
-            return Problem(
-                result.Error,
-                correlationIdHeader,
+            ProblemDetails internalServerErrorProblemDetails = ProblemDetailsFactory.CreateProblemDetails(
+                HttpContext,
                 StatusCodes.Status500InternalServerError,
-                HttpStatusCode.InternalServerError.ToString());
+                HttpStatusCode.InternalServerError.ToString(),
+                "https://httpstatuscodes.io/500",
+                string.Join(' ', errors),
+                instance);
+
+            internalServerErrorProblemDetails.Extensions.Add("TraceId", correlationIdHeader.ToString());
+
+            return StatusCode(
+                StatusCodes.Status500InternalServerError,
+                internalServerErrorProblemDetails);
         }
 
-        Error error = result.Errors.First(e => e is HttpError);
+        Error error = errors.First(e => e is HttpError);
         var httpError = (HttpError)error;
+        var statusCode = (int)httpError.HttpStatusCode;
 
-        return Problem(
-            result.Error,
-            correlationIdHeader,
-            (int)httpError.HttpStatusCode,
-            httpError.HttpStatusCode.ToString());
+        ProblemDetails statusCodeProblemDetails = ProblemDetailsFactory.CreateProblemDetails(
+            HttpContext,
+            statusCode,
+            httpError.HttpStatusCode.ToString(),
+            $"https://httpstatuscodes.io/{(int)httpError.HttpStatusCode}",
+            string.Join(' ', errors),
+            instance);
+
+        return StatusCode(statusCode, statusCodeProblemDetails);
     }
 
     private string? GetNextOrDefault<T>(string actionName, PaginatedRequest<T> request, PaginatedResponse<T> response)

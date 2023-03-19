@@ -1,6 +1,6 @@
 ﻿namespace Waystone.Common.Application.Contracts.Mediator;
 
-using Domain.Contracts.Results;
+using Domain.Results;
 using MediatR;
 
 /// <summary>

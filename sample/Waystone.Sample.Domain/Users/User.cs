@@ -1,12 +1,16 @@
 ﻿namespace Waystone.Sample.Domain.Users;
 
 using Common.Domain.Contracts.Primitives;
+using Common.Domain.Primitives;
+using Common.Domain.Results;
+using JetBrains.Annotations;
 
 /// <summary>
 /// A user of the application
 /// </summary>
-public class User : Entity<Guid>
+public class User : Entity<Guid>, IAggregateRoot
 {
+    [UsedImplicitly]
     private User()
     { }
 
@@ -28,22 +32,48 @@ public class User : Entity<Guid>
     /// <summary>
     /// The user's username.
     /// </summary>
-    public string Username { get; set; }
+    public string Username { get; init; } = default!;
 
     /// <summary>
     /// The user's hashed password.
     /// </summary>
-    public string Password { get; set; }
+    public string Password { get; private set; } = default!;
 
     /// <summary>
     /// The user's email address.
     /// </summary>
-    public string EmailAddress { get; set; }
+    public string EmailAddress { get; private set; } = default!;
 
     /// <summary>
     /// A flag indicating whether the email was verified.
     /// </summary>
-    public bool EmailVerified { get; set; }
+    public bool EmailVerified { get; private set; }
+
+    public Result<User> UpdatePassword(string password)
+    {
+        Password = password;
+
+        return this;
+    }
+
+    public Result<User> UpdateEmail(string emailAddress)
+    {
+        EmailAddress = emailAddress;
+
+        return this;
+    }
+
+    public Result<User> UpdateEmailVerified(bool verified)
+    {
+        EmailVerified = verified;
+
+        return this;
+    }
+
+    public static Result<User> CreateTransient(string username, string password, string emailAddress)
+    {
+        return new User(username, password, emailAddress);
+    }
 
     /// <inheritdoc />
     protected override IEnumerable<object?> GetSignatureComponents()

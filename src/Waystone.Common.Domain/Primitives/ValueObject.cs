@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Domain.Contracts.Primitives;
+﻿namespace Waystone.Common.Domain.Primitives;
 
 /// <summary>
 /// An object that is immutable and has no identity. Learn more:

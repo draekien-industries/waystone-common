@@ -1,6 +1,6 @@
 ﻿namespace Waystone.Common.Api.ExceptionProblemDetails;
 
-using Domain.Contracts.Exceptions;
+using Domain.Exceptions;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Http;
 

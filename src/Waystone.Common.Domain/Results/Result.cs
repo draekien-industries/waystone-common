@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Domain.Contracts.Results;
+﻿namespace Waystone.Common.Domain.Results;
 
 /// <summary>
 /// A result is a container that has either a success state or a failure state.
@@ -73,6 +73,12 @@ public class Result
     public static Result<TValue> Success<TValue>(TValue value)
     {
         return new Result<TValue>(true, value);
+    }
+
+    /// <inheritdoc cref="Success{TValue}" />
+    public static Result<TValue> Create<TValue>(TValue value)
+    {
+        return Success(value);
     }
 
     /// <summary>

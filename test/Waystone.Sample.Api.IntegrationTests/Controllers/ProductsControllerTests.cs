@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using Application.Products;
 using Application.Products.CreateProduct;
 using Common.Application.Contracts.Pagination;
+using Domain.Products;
 
 public sealed class ProductsControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>, IAsyncLifetime
 {
@@ -90,6 +91,28 @@ public sealed class ProductsControllerTests : IClassFixture<CustomWebApplication
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+
+    [Fact]
+    public async Task GivenNonHttpError_WhenCreatingProblem_ThenReturnInternalServerError()
+    {
+        // Arrange
+        HttpClient client = _factory.CreateClient();
+        CreateProductCommand? command = _fixture.Build<CreateProductCommand>()
+                                                .With(x => x.Name, new string('a', Product.NameMaxLength + 1))
+                                                .With(x => x.AmountExcludingTax, 100)
+                                                .With(x => x.DiscountPercentage, 0.1m)
+                                                .With(x => x.TaxPercentage, 0.1m)
+                                                .Create();
+
+        Uri uri = new("Products", UriKind.Relative);
+
+        // Act
+        HttpResponseMessage response = await client.PostAsJsonAsync(uri, command);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
     }
 
     [Fact]

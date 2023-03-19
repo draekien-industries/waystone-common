@@ -1,4 +1,4 @@
-﻿namespace Waystone.Common.Domain.Contracts.Results;
+﻿namespace Waystone.Common.Domain.Results;
 
 using System.Runtime.Serialization;
 

@@ -1,5 +1,14 @@
 ﻿<Project>
+    <PropertyGroup>
+        <Authors>draekien-industries</Authors>
+        <Copyright>William Pei</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/draekien-industries/waystone-common</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+        <PackageReference Include="JetBrains.Annotations" Version="*" />
     </ItemGroup>
 </Project>

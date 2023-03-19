@@ -2,7 +2,7 @@
 
 using System.Net;
 using System.Text;
-using Common.Domain.Contracts.Results;
+using Common.Domain.Results;
 
 /// <summary>
 /// Errors that occur when interacting with the <see cref="Price" /> entity.
