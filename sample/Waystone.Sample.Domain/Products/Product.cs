@@ -1,5 +1,6 @@
 ﻿namespace Waystone.Sample.Domain.Products;
 
+using Common.Domain.Contracts.Primitives;
 using Common.Domain.Primitives;
 using Common.Domain.Results;
 using Prices;
@@ -7,7 +8,7 @@ using Prices;
 /// <summary>
 /// A product that can be sold.
 /// </summary>
-public class Product : Entity<Guid>
+public class Product : Entity<Guid>, IAggregateRoot
 {
     /// <summary>
     /// The max length of the product's name.
@@ -42,18 +43,18 @@ public class Product : Entity<Guid>
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public Result<Product> UpdateName(string name)
+    public Result UpdateName(string name)
     {
-        Result validationResult = ProductValidators.ValidateName(name);
+        return Result.Create(name)
+                     .Bind(ProductValidators.ValidateName)
+                     .Match(
+                          () =>
+                          {
+                              Name = name;
 
-        if (validationResult.Failed)
-        {
-            return validationResult.Errors;
-        }
-
-        Name = name;
-
-        return this;
+                              return Result.Success();
+                          },
+                          Result.Fail);
     }
 
     /// <summary>
@@ -61,18 +62,18 @@ public class Product : Entity<Guid>
     /// </summary>
     /// <param name="description"></param>
     /// <returns></returns>
-    public Result<Product> UpdateDescription(string description)
+    public Result UpdateDescription(string description)
     {
-        Result validationResult = ProductValidators.ValidateDescription(description);
+        return Result.Create(description)
+                     .Bind(ProductValidators.ValidateDescription)
+                     .Match(
+                          () =>
+                          {
+                              Description = description;
 
-        if (validationResult.Failed)
-        {
-            return validationResult.Errors;
-        }
-
-        Description = description;
-
-        return this;
+                              return Result.Success();
+                          },
+                          Result.Fail);
     }
 
     /// <summary>
@@ -80,18 +81,18 @@ public class Product : Entity<Guid>
     /// </summary>
     /// <param name="price"></param>
     /// <returns></returns>
-    public Result<Product> UpdatePrice(Price price)
+    public Result UpdatePrice(Price price)
     {
-        Result validationResult = ProductValidators.ValidatePrice(price);
+        return Result.Create(price)
+                     .Bind(ProductValidators.ValidatePrice)
+                     .Match(
+                          () =>
+                          {
+                              Price = price;
 
-        if (validationResult.Failed)
-        {
-            return validationResult.Errors;
-        }
-
-        Price = price;
-
-        return this;
+                              return Result.Success();
+                          },
+                          Result.Fail);
     }
 
     /// <summary>

@@ -30,8 +30,8 @@ public class ProductsController : WaystoneApiController
         CancellationToken cancellationToken)
     {
         return await Result.Create(request)
-                           .BindFunctionAsync(query => Mediator.Send(query, cancellationToken))
-                           .MatchResultAsync(
+                           .BindAsync(query => Mediator.Send(query, cancellationToken))
+                           .MatchAsync(
                                 products =>
                                 {
                                     products.Links = CreatePaginationLinks("List", request, products);
@@ -56,8 +56,8 @@ public class ProductsController : WaystoneApiController
         GetProductByIdQuery request = new(id);
 
         return await Result.Create(request)
-                           .BindFunctionAsync(query => Mediator.Send(query, cancellationToken))
-                           .MatchResultAsync(Ok, CreateProblem);
+                           .BindAsync(query => Mediator.Send(query, cancellationToken))
+                           .MatchAsync(Ok, CreateProblem);
     }
 
     /// <summary>
@@ -75,8 +75,8 @@ public class ProductsController : WaystoneApiController
         CancellationToken cancellationToken)
     {
         return await Result.Create(request)
-                           .BindFunctionAsync(command => Mediator.Send(command, cancellationToken))
-                           .MatchResultAsync(
+                           .BindAsync(command => Mediator.Send(command, cancellationToken))
+                           .MatchAsync(
                                 product => CreatedAtAction("GetById", new { id = product.Id }, product),
                                 CreateProblem);
     }
@@ -95,7 +95,7 @@ public class ProductsController : WaystoneApiController
         DeleteProductCommand command = new(id);
 
         return await Result.Create(command)
-                           .BindFunctionAsync(request => Mediator.Send(request, cancellationToken))
-                           .MatchResultAsync(NoContent, CreateProblem);
+                           .BindAsync(request => Mediator.Send(request, cancellationToken))
+                           .MatchAsync(NoContent, CreateProblem);
     }
 }

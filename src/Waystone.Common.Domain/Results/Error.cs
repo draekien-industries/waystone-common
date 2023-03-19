@@ -7,7 +7,7 @@ using System.Net;
 /// Used inside the <see cref="Result" /> object.
 /// </summary>
 [PublicAPI]
-public class Error
+public record Error
 {
     /// <summary>
     /// An error that occured during the normal operation of the application.
@@ -37,12 +37,18 @@ public class Error
     /// The exception which caused the error.
     /// </summary>
     public Exception? Exception { get; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return $"{Code}: {Message}";
+    }
 }
 
 /// <summary>
 /// An error that can be mapped to a <see cref="HttpStatusCode" />.
 /// </summary>
-public class HttpError : Error
+public record HttpError : Error
 {
     /// <summary>
     /// An error that can be mapped to a <see cref="HttpStatusCode" />.
@@ -73,4 +79,10 @@ public class HttpError : Error
     /// The HTTP Status Code this error should be mapped to.
     /// </summary>
     public HttpStatusCode HttpStatusCode { get; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return $"{Code}({HttpStatusCode}): {Message}";
+    }
 }

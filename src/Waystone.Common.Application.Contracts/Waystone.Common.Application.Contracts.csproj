@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Waystone.Common.Domain.Contracts\Waystone.Common.Domain.Contracts.csproj" />
         <ProjectReference Include="..\Waystone.Common.Domain\Waystone.Common.Domain.csproj" />
     </ItemGroup>
 
