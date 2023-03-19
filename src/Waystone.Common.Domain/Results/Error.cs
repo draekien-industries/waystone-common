@@ -37,6 +37,12 @@ public record Error
     /// The exception which caused the error.
     /// </summary>
     public Exception? Exception { get; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return $"{Code}: {Message}";
+    }
 }
 
 /// <summary>
@@ -73,4 +79,10 @@ public record HttpError : Error
     /// The HTTP Status Code this error should be mapped to.
     /// </summary>
     public HttpStatusCode HttpStatusCode { get; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return $"{Code}({HttpStatusCode}): {Message}";
+    }
 }
