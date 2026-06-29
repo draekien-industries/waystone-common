@@ -7,6 +7,9 @@
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 
+> [!WARNING]
+> This repository is not receiving ongoing updates. It may be resurrected at a later date.
+
 ## Introduction
 
 Waystone Common contains the foundational code required to create Clean Architecture based .NET 6 applications for
